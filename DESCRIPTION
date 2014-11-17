@@ -1,9 +1,16 @@
 Package: soasAPI
-Type: Package
-Title: What the package does (short line)
-Version: 1.0
-Date: 2014-11-13
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Title: Interface to the SOAS API
+Version: 0.1
+Author@R: person("Bartosz", "Chrol", email="bartek.chrol@gmail.com", 
+    role=c("aut", "cre"))
+Description: An interface to the API for SOAS, a repository of judgments from
+    Polish common courts (district, regional and appellate) and the Supreme
+    Court of Poland
+Depends:
+    R (>= 3.1.1),
+License: GPL-2
+LazyData: true
+Imports:
+    RCurl, 
+    jsonlite, 
+    httr
