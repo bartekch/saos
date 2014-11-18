@@ -19,7 +19,7 @@
 #'   
 #' @export
  
-count_judgments <- function(query){
+count_judgments <- function(query = NULL){
   query <- paste_query(query)
   url <- "https://saos-test.icm.edu.pl/results"
   tmp <- RCurl::getURL(paste0(url, "?size=1&", query))
