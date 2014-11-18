@@ -7,11 +7,11 @@
 #' @value data.frame with rows corresponding to judgments, or NULL if none
 #'  judgment is available
 #'  
-#'  @examples
-#'  get_judgments(128334)
-#'  get_judgments(c(128334, 77354))
+#' @examples
+#' get_judgments(128334)
+#' get_judgments(c(128334, 77354))
 #'  
-#'  @export
+#' @export
 
 get_judgments <- function(idlist){
   url <- "https://saos-test.icm.edu.pl/api/judgments/"
@@ -30,4 +30,28 @@ get_judgments <- function(idlist){
     }
   }
   result
+}
+
+
+
+#' Get full texts of given judgments
+#' 
+#' Get full texts, if available, of judgments with IDs from a given vector
+#' 
+#' @param idlist integer vector with judgments' IDs
+#' 
+#' @value named character vector with judgments
+#'  
+#' @examples
+#' get_judgment_texts(128334)
+#' get_judgment_texts(c(128334, 77354))
+#'  
+#' @export
+
+get_judgment_texts <- function(idlist){
+  judgments <- get_judgments(idlist)
+  texts <- judgments$textContent
+  # these texts are in HTML, we need pure text as in search/API, but full
+  names(texts) <- idlist
+  texts
 }
