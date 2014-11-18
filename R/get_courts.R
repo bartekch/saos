@@ -1,27 +1,12 @@
-library(jsonlite)
-library(httr)
-
-
-get_response <- function(link){
-  res <- GET(link)
-  res <- content(res, as = "text")
-  res <- fromJSON(res, simplifyVector = TRUE)
-  res
-}
-
-extract_courts <- function(response){
-  courts <- response$items
-  courts$parentCourt <- courts$parentCourt[,1]
-  courts
-}
-
-extract_link <- function(response){
-  links <- response$links
-  if (any(links$rel == "next")){
-    res <- links[links$rel == "next", "href"]
-  } else res <- NULL
-  res
-}
+#' Download all courts
+#'
+#' Download information about all courts in the repository.
+#'     
+#' @return data.frame with rows corresponding to courts and columns TO DO
+#' 
+#' @seealso \code{\link[soasAPI]{get_scChambers}}
+#' 
+#' @export
 
 get_courts <- function(){
   #   tmp <- GET("https://saos-test.icm.edu.pl/", path = "api/dump/courts",
@@ -35,5 +20,12 @@ get_courts <- function(){
     courts <- rbind(courts, extract_courts(response))
     next_page <- extract_link(response)
   }
+  courts
+}
+
+
+extract_courts <- function(response){
+  courts <- response$items
+  courts$parentCourt <- courts$parentCourt[,1]
   courts
 }

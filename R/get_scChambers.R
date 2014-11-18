@@ -1,27 +1,16 @@
-library(jsonlite)
-library(httr)
-
-
-get_response <- function(link){
-  res <- GET(link)
-  res <- content(res, as = "text")
-  res <- fromJSON(res, simplifyVector = TRUE)
-  res
-}
-
-extract_chambers <- function(response){
-  chambers <- response$items
-  chambers
-}
-
-extract_link <- function(response){
-  links <- response$links
-  if (any(links$rel == "next")){
-    res <- links[links$rel == "next", "href"]
-    res <- sub("http:", "https:", res)
-  } else res <- NULL
-  res
-}
+#' Download all Supreme Court chambers
+#'
+#' Download information about all chambers of the Supreme Court of Poland.
+#' 
+#' @param flatten logical, whether flatten information about divisions of every
+#'  chamber
+#'
+#' @return data.frame with rows corresponding to chambers or, if flatten == TRUE,
+#'  to their divisions
+#' 
+#' @seealso \code{\link[soasAPI]{get_courts}}
+#' 
+#' @export
 
 get_scChambers <- function(flatten = FALSE){
   #   tmp <- GET("https://saos-test.icm.edu.pl/", path = "api/dump/courts",
@@ -45,3 +34,8 @@ get_scChambers <- function(flatten = FALSE){
   chambers
 }
 
+
+extract_chambers <- function(response){
+  chambers <- response$items
+  chambers
+}
