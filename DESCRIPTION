@@ -1,7 +1,7 @@
 Package: soasAPI
 Title: Interface to the SOAS API
 Version: 0.1
-Author@R: person("Bartosz", "Chrol", email="bartek.chrol@gmail.com", 
+Author@R: person("Bartosz", "Chrol", email="bartek.chrol@gmail.com",
     role=c("aut", "cre"))
 Description: An interface to the API for SOAS, a repository of judgments from
     Polish common courts (district, regional and appellate) and the Supreme
@@ -11,6 +11,6 @@ Depends:
 License: GPL-2
 LazyData: true
 Imports:
-    RCurl, 
-    jsonlite, 
+    RCurl,
+    jsonlite,
     httr

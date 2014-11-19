@@ -4,7 +4,7 @@
 #' 
 #' @param idlist integer vector with judgments' IDs
 #' 
-#' @value data.frame with rows corresponding to judgments, or NULL if none
+#' @return data.frame with rows corresponding to judgments, or NULL if none
 #'  judgment is available
 #'  
 #' @examples
