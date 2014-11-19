@@ -7,9 +7,10 @@
 #' @return data.frame with rows corresponding to judgments, or NULL if none
 #'  judgment is available
 #'  
-#' @examples
+#' @examples \dontrun{
 #' get_judgments(128334)
 #' get_judgments(c(128334, 77354))
+#'  }
 #'  
 #' @export
 
@@ -42,9 +43,10 @@ get_judgments <- function(idlist){
 #' 
 #' @return named character vector with judgments
 #'  
-#' @examples
+#' @examples \dontrun{
 #' get_judgment_texts(128334)
 #' get_judgment_texts(c(128334, 77354))
+#'  }
 #'  
 #' @export
 

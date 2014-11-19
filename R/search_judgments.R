@@ -11,8 +11,9 @@
 #' @return data.frame with rows corresponding to judgments, or NULL if none
 #'  judgment is available
 #'  
-#' @examples
+#' @examples \dontrun{
 #' search_judgments(list(dateFrom = "10-11-2014"))
+#'  }
 #'  
 #' @export
 
