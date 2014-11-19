@@ -1,3 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 .txt$
+
+# Travis scripts
+.travis.yml
