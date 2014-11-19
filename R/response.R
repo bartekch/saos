@@ -4,7 +4,7 @@ get_response <- function(link, simplify = TRUE){
   # download response directly from link
   res <- httr::GET(link)
   
-  # TO DO error handling!
+  httr::stop_for_status(res)
   
   res <- httr::content(res, as = "text")
   res <- jsonlite::fromJSON(res, simplifyVector = simplify)

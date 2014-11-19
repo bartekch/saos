@@ -22,7 +22,9 @@
 count_judgments <- function(query = NULL){
   query <- paste_query(query)
   url <- "https://saos-test.icm.edu.pl/results"
-  tmp <- RCurl::getURL(paste0(url, "?size=1&", query))
+  link <- paste0(url, "?size=1&", query)
+  response <- httr::GET(link)
+  httr::stop_for_status(response)
   pos <- gregexpr("Wynik wyszukiwania", tmp)[[1]]
   str <- substr(tmp, pos + 24, pos + 40)
   str <- strsplit(str, "orzecz")[[1]][1]
