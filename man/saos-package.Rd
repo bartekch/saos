@@ -2,8 +2,20 @@
 \docType{package}
 \name{saos-package}
 \alias{saos-package}
-\title{saos}
+\title{R interface to the SAOS API}
 \description{
-saos
+Package provides functions to communicate through API with SAOS, a repository
+ of judgments from Polish common courts (district, regional and appellate)
+ and the Supreme Court of Poland.
 }
+\details{
+The main function is \code{\link{search_judgments}} for searching for
+ judgments matching the given query.
+
+API key is not demanded.
+}
+\author{
+Bartosz Chroł \email{bartek.chrol@gmail.com}
+}
+\keyword{package}
 
