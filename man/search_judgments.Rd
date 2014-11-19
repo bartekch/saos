@@ -22,6 +22,8 @@ Search for judgments matching the given query
 The available query parameters:
 }
 \examples{
+\dontrun{
 search_judgments(list(dateFrom = "10-11-2014"))
+ }
 }
 

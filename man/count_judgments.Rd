@@ -21,8 +21,10 @@ Count the number of results for a given search. Useful to check before
 The available query parameters:
 }
 \examples{
-count_judgments(list(dateFrom="01-11-2014"))
+\dontrun{
+ count_judgments(list(dateFrom="01-11-2014"))
  count_judgments(list(judgeName="Maria+Tyszel", dateTo="01-11-1995"))
+  }
 }
 \seealso{
 \code{\link[saos]{search_judgments}}

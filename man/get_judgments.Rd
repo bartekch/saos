@@ -16,7 +16,9 @@ data.frame with rows corresponding to judgments, or NULL if none
 Get all judgments, if available, with IDs from a given vector
 }
 \examples{
+\dontrun{
 get_judgments(128334)
 get_judgments(c(128334, 77354))
+ }
 }
 
