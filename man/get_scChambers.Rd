@@ -17,6 +17,6 @@ data.frame with rows corresponding to chambers or, if flatten == TRUE,
 Download information about all chambers of the Supreme Court of Poland.
 }
 \seealso{
-\code{\link[soasAPI]{get_courts}}
+\code{\link[saos]{get_courts}}
 }
 

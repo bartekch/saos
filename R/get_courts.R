@@ -4,7 +4,7 @@
 #'     
 #' @return data.frame with rows corresponding to courts and columns TO DO
 #' 
-#' @seealso \code{\link[soasAPI]{get_scChambers}}
+#' @seealso \code{\link[saos]{get_scChambers}}
 #' 
 #' @export
 

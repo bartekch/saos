@@ -11,7 +11,7 @@
 #' 
 #' @return the number of results (integer)
 #' 
-#' @seealso \code{\link[soasAPI]{search_judgments}}
+#' @seealso \code{\link[saos]{search_judgments}}
 #' 
 #' @examples
 #'  count_judgments(list(dateFrom="01-11-2014"))

@@ -8,7 +8,7 @@
 #' @return data.frame with rows corresponding to chambers or, if flatten == TRUE,
 #'  to their divisions
 #' 
-#' @seealso \code{\link[soasAPI]{get_courts}}
+#' @seealso \code{\link[saos]{get_courts}}
 #' 
 #' @export
 

@@ -12,6 +12,6 @@ data.frame with rows corresponding to courts and columns TO DO
 Download information about all courts in the repository.
 }
 \seealso{
-\code{\link[soasAPI]{get_scChambers}}
+\code{\link[saos]{get_scChambers}}
 }
 
