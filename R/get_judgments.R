@@ -40,7 +40,7 @@ get_judgments <- function(idlist){
 #' 
 #' @param idlist integer vector with judgments' IDs
 #' 
-#' @value named character vector with judgments
+#' @return named character vector with judgments
 #'  
 #' @examples
 #' get_judgment_texts(128334)

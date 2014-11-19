@@ -13,7 +13,7 @@
 #' 
 #' @seealso \code{\link[soasAPI]{search_judgments}}
 #' 
-#' @example
+#' @examples
 #'  count_judgments(list(dateFrom="01-11-2014"))
 #'  count_judgments(list(judgeName="Maria+Tyszel", dateTo="01-11-1995"))
 #'   
