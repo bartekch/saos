@@ -26,7 +26,7 @@ count_judgments <- function(query = NULL){
   link <- paste0(url, "?size=1&", query)
   response <- httr::GET(link)
   httr::stop_for_status(response)
-  text <- content(response, as = "text")
+  text <- httr::content(response, as = "text")
   pos <- gregexpr("Wynik wyszukiwania", text)[[1]]
   str <- substr(text, pos + 24, pos + 40)
   str <- strsplit(str, "orzecz")[[1]][1]
