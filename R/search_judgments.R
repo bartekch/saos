@@ -19,16 +19,33 @@
 #' @export
 
 search_judgments <- function(query = NULL, limit = 200, force = FALSE){
-  
+  # count expected number of results 
   count <- count_judgments(query)
-  if (limit > count) limit <- count
-    
-  if ((limit > 200) & !force){
-    limit <- 200
-    warning(sprintf("Pulling down only 200 out of expected %s results. If you
-are sure to pull down everything use force = TRUE", limit))
+  
+  # check number of results  
+  if (count == 0){
+    message("No search results.")
+    return(NULL)
   }
   
+  # set limit
+  if ((limit > count) | is.null(limit)) limit <- count
+  
+  # check limit size
+  if (limit < 0) stop("Limit should be non-negative")
+  if (limit == 0){
+    message("Limit is set to 0, no results.")
+    return(NULL)
+  }
+  
+  # check for extreme number of results    
+  if ((limit > 200) & !force){
+    message(sprintf("Pulling down only 200 out of expected %s results. If you
+are sure to pull down everything use force = TRUE", limit))
+    limit <- 200
+  }
+  
+  # get results 
   query <- paste_query(query)
   url <- "https://saos-test.icm.edu.pl/api/search/judgments/?pageSize=100&"
   link <- paste0(url, query)
@@ -42,8 +59,12 @@ are sure to pull down everything use force = TRUE", limit))
     number <- nrow(judgments)
     next_page <- extract_link(response)
   }
+  
+  # reduce number of results to limit
   if (number > limit){
     judgments <- judgments[1:limit, ]
   }
+  
+  message(sprintf("Number of records downloaded: %s.", nrow(judgments)))
   judgments
 }
