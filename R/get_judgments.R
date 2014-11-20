@@ -18,7 +18,9 @@ get_judgments <- function(idlist){
   url <- "https://saos-test.icm.edu.pl/api/judgments/"
   links <- paste0(url, idlist)
   result <- lapply(links, function(link){
-    response <- get_response(link)
+    response <- tryCatch(get_response(link), http_404 = function(x) NA)
+    if (is.na(response)) return(NA)
+
     data <- response$data
     # convert NULLs to NA
     data <- lapply(data, function(x) if (length(x) == 0){ NA } else { x })
@@ -30,5 +32,6 @@ get_judgments <- function(idlist){
       result[, i] <- unlist(result[, i])
     }
   }
+  rownames(result) <- idlist
   result
 }
