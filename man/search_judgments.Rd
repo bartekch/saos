@@ -3,13 +3,15 @@
 \alias{search_judgments}
 \title{Search for judgments}
 \usage{
-search_judgments(query = NULL, limit = 100)
+search_judgments(query = NULL, limit = 200, force = FALSE)
 }
 \arguments{
 \item{query}{Search pattern as a named list; pairs name-value are treated
 as query parameters with corresponding values, see Details.}
 
 \item{limit}{Limit the number of search results.}
+
+\item{force}{If TRUE, force search request even if it seems extreme.}
 }
 \value{
 data.frame with rows corresponding to judgments, or NULL if none
