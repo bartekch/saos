@@ -23,11 +23,16 @@ search_judgments <- function(query = NULL, limit = 100){
   link <- paste0(url, query)
   response <- get_response(paste0(url, query))
   judgments <- extract_judgments(response)
-#   next_page <- extract_link(response)
-#   while (!is.null(next_page)){
-#     response <- get_response(next_page)
-#     judgments <- rbind(judgments, extract_courts(response))
-#     next_page <- extract_link(response)
-#   }
+  number <- nrow(judgments)
+  next_page <- extract_link(response)
+  while (!is.null(next_page) & (number < limit)){
+    response <- get_response(next_page)
+    judgments <- rbind(judgments, extract_judgments(response))
+    number <- number + nrow(judgments)
+    next_page <- extract_link(response)
+  }
+  if (number > limit){
+    judgments <- judgments[1:limit, ]
+  }
   judgments
 }
