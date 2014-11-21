@@ -1,2 +1,5 @@
 ## TO DO:
-# - handling empty responses
+# - in get_judgments - what to do with empty responses!?!
+# - create proper query processing - we lack information about API search 
+# - write tests
+# - write vignette
