@@ -15,7 +15,7 @@ The main function is \code{\link{search_judgments}} for searching for
 API key is not demanded.
 }
 \author{
-Bartosz Chroł \email{bartek.chrol@gmail.com}
+Bartosz Chrol \email{bartek.chrol@gmail.com}
 }
 \keyword{package}
 

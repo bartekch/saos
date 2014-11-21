@@ -12,7 +12,7 @@
 #' @name saos-package
 #' @docType package
 #'
-#' @author Bartosz Chroł \email{bartek.chrol@@gmail.com}
+#' @author Bartosz Chrol \email{bartek.chrol@@gmail.com}
 #' 
 #' @keywords package
 NULL
