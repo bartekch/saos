@@ -9,7 +9,7 @@ get_judgments(idlist)
 \item{idlist}{integer vector with judgments' IDs}
 }
 \value{
-data.frame with rows corresponding to judgments, or NULL if none
+data.frame with rows corresponding to judgments, or NA if none
  judgment is available
 }
 \description{
@@ -17,8 +17,14 @@ Get all judgments, if available, with IDs from a given vector
 }
 \examples{
 \dontrun{
+# single ID
 get_judgments(128334)
+
+# vector of IDs
 get_judgments(c(128334, 77354))
+
+# vector of IDs with non-existent judgment
+get_judgments(c(128334, 1, 77354))
  }
 }
 

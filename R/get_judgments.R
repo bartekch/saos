@@ -4,34 +4,41 @@
 #' 
 #' @param idlist integer vector with judgments' IDs
 #' 
-#' @return data.frame with rows corresponding to judgments, or NULL if none
+#' @return data.frame with rows corresponding to judgments, or NA if none
 #'  judgment is available
 #'  
 #' @examples \dontrun{
+#' # single ID
 #' get_judgments(128334)
+#' 
+#' # vector of IDs 
 #' get_judgments(c(128334, 77354))
+#' 
+#' # vector of IDs with non-existent judgment
+#' get_judgments(c(128334, 1, 77354))
 #'  }
 #'  
 #' @export
 
 get_judgments <- function(idlist){
+  idlist <- sort(unique(idlist))
   url <- "https://saos-test.icm.edu.pl/api/judgments/"
   links <- paste0(url, idlist)
   result <- lapply(links, function(link){
-    response <- tryCatch(get_response(link), http_404 = function(x) NA)
-    if (is.na(response)) return(NA)
-
-    data <- response$data
-    # convert NULLs to NA
-    data <- lapply(data, function(x) if (length(x) == 0){ NA } else { x })
-    data
-  })
-  result <- as.data.frame(do.call(rbind, result))
-  for (i in seq_along(result)){
-    if (all(sapply(result[, i], length) <= 1)){
-      result[, i] <- unlist(result[, i])
+    response <- get_response_if_available(link)
+    if (is.null(response)){
+      NA
+    } else {
+      extract_judgments(response)
     }
-  }
+  })
+  result <- do.call(rbind, result)
   rownames(result) <- idlist
   result
+}
+
+
+
+get_response_if_available <- function(link){
+  tryCatch(get_response(link), http_404 = function(x) NULL)
 }

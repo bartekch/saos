@@ -24,8 +24,16 @@ extract_link <- function(response){
 
 # function extracting information about judgments in proper structure
 extract_judgments <- function(response){
-  judg <- response$items
-  judg$division <- lapply(1:nrow(judg), function(i) judg$division[i,])
+  if (any(names(response) == "items")){
+    judg <- response$items
+    judg$division <- lapply(1:nrow(judg), function(i) judg$division[i,])
+  } else if (any(names(response) == "data")){
+    judg <- response$data
+    judg <- as.data.frame(t(as.matrix(judg)))  # find some better way to do it!
+  } else {
+    stop("No content")
+  }
+  
   jl <- sapply(judg, is.list)
   
   # replace NULLs with NAs
@@ -33,7 +41,20 @@ extract_judgments <- function(response){
     lapply(col, function(x) if (length(x) == 0) { NA } else { x }))
   
   # unlist columns where possible
-  judg[, jl] <- lapply(judg[,jl], function(x)
-    if (all(sapply(x, length) == 1)) { unlist(x) } else { x })
+  judg <- unlist_columns(judg)
   judg
+}
+
+
+
+# unlisting columns if possible
+unlist_columns <- function(df){
+  dl <- sapply(df, is.list)
+  df[, dl] <- lapply(df[, dl], function(x){
+    if (is.null(dim(x)) & all(sapply(x, length) == 1)){
+      unlist(x)
+    } else {
+      x
+    }})
+  df
 }
