@@ -26,6 +26,12 @@ The available query parameters:
 \examples{
 \dontrun{
 search_judgments(list(dateFrom = "10-11-2014"))
+
+# search with no query, various limit options
+search_judgments()
+search_judgments(limit = 50)
+search_judgments(limit = 300)
+search_judgments(limit = 300, force = TRUE)
  }
 }
 

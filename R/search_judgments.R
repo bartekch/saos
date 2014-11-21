@@ -14,6 +14,12 @@
 #'  
 #' @examples \dontrun{
 #' search_judgments(list(dateFrom = "10-11-2014"))
+#' 
+#' # search with no query, various limit options
+#' search_judgments()
+#' search_judgments(limit = 50)
+#' search_judgments(limit = 300)
+#' search_judgments(limit = 300, force = TRUE)
 #'  }
 #'  
 #' @export
@@ -66,5 +72,7 @@ are sure to pull down everything use force = TRUE", limit))
   }
   
   message(sprintf("Number of records downloaded: %s.", nrow(judgments)))
+  message(sprintf("Number of records expected: %s.", count))
+  
   judgments
 }
