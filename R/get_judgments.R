@@ -33,7 +33,7 @@ get_judgments <- function(idlist){
     }
   })
   result <- do.call(rbind, result)
-  rownames(result) <- idlist
+  result$id <- idlist
   result
 }
 

@@ -66,6 +66,8 @@ are sure to pull down everything use force = TRUE", limit))
     next_page <- extract_link(response)
   }
   
+  judgments$id <- sapply(strsplit(judgments$href, "/"), function(x) tail(x, 1))
+  
   # reduce number of results to limit
   if (number > limit){
     judgments <- judgments[1:limit, ]
