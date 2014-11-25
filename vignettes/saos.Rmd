@@ -1,0 +1,18 @@
+---
+title: "Using saos API"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using saos API}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+
+SAOS is an online repository for judgments made by Polish courts and the Supreme Court of Poland. It enables to browse through judgments and search for judgments by their date, signature, type and trial court. In addition it contains database of all courts and Supreme Court chambers together with their divisions.
+
+## Browsing courts
+
+To obtain the latest version of courts or Supreme Court chambers database use `get_courts()` or `get_scChambers()` respectively. Both functions return data frames.
+
+## To be continued
+
+

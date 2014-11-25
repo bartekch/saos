@@ -13,3 +13,6 @@ LazyData: true
 Imports:
     jsonlite,
     httr
+Suggests:
+    knitr
+VignetteBuilder: knitr
