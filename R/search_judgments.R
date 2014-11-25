@@ -9,8 +9,29 @@
 #' 
 #' @details The available query parameters:
 #' 
-#' @return data.frame with rows corresponding to judgments, or NULL if none
-#'  judgment is available
+#' @return data.frame with rows corresponding to judgments, or \code{NULL} if 
+#'  none judgment is available, and following columns (* means that column is 
+#'  a list with elements of given type, if impossible to unlist)
+#' \tabular{rlll}{
+#' n \tab name \tab type \tab description \cr
+#' [,1] \tab id \tab integer \tab judgment ID in the repository \cr
+#' [,2] \tab href \tab character \tab link to judgment's page in API \cr
+#' [,3] \tab courtCases \tab character \tab case signature, indicates division
+#'   of the trial court, a case number and a year of the judgment \cr
+#' [,4] \tab judgmentType \tab character \tab one from "DECISION", "RESOLUTION",
+#'   "SENTENCE", "REGULATION", "REASONS" \cr
+#' [,5] \tab judges \tab data.frame* \tab two columns with judges names ("name")
+#'   and their role ("specialRoles") \cr
+#' [,6] \tab textContent \tab character \tab shortened version of full text of 
+#'   the judgment \cr
+#' [,7] \tab keywords \tab character* \tab keywords associated with the given
+#'   judgment \cr
+#' [,8] \tab division \tab data.frame* \tab information about the court (columns
+#'   "court.name", "court.code", "court.href") and its division (columns "name",
+#'   "code", "href"), see \link{get_courts} for details \cr
+#' [,9] \tab judgmentDate \tab character \tab date of the judgment in format
+#'   YYYY-MM-DD \cr
+#' } 
 #'  
 #' @examples \dontrun{
 #' search_judgments(list(dateFrom = "10-11-2014"))
@@ -38,7 +59,7 @@ search_judgments <- function(query = NULL, limit = 200, force = FALSE){
   if ((limit > count) | is.null(limit)) limit <- count
   
   # check limit size
-  if (limit < 0) stop("Limit should be non-negative")
+  if (limit < 0) stop("Limit should be non-negative.")
   if (limit == 0){
     message("Limit is set to 0, no results.")
     return(NULL)
@@ -51,10 +72,14 @@ are sure to pull down everything use force = TRUE", limit))
     limit <- 200
   }
   
-  # get results 
+  # prepare link to API
   query <- paste_query(query)
-  url <- "https://saos-test.icm.edu.pl/api/search/judgments/?pageSize=100&"
+  pagesize <- if (limit > 100) { 100 } else { limit }
+  query <- paste0(sprintf("pageSize=%s&", pagesize), query)
+  url <- "https://saos-test.icm.edu.pl/api/search/judgments/?"
   link <- paste0(url, query)
+  
+  # get results
   response <- get_response(paste0(url, query))
   judgments <- extract_judgments(response)
   number <- nrow(judgments)
@@ -66,7 +91,8 @@ are sure to pull down everything use force = TRUE", limit))
     next_page <- extract_link(response)
   }
   
-  judgments$id <- sapply(strsplit(judgments$href, "/"), function(x) tail(x, 1))
+  id <- as.integer(sapply(strsplit(judgments$href, "/"), function(x) tail(x, 1)))
+  judgments <- cbind(id, judgments)
   
   # reduce number of results to limit
   if (number > limit){

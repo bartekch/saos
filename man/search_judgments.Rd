@@ -14,8 +14,29 @@ as query parameters with corresponding values, see Details.}
 \item{force}{If TRUE, force search request even if it seems extreme.}
 }
 \value{
-data.frame with rows corresponding to judgments, or NULL if none
- judgment is available
+data.frame with rows corresponding to judgments, or \code{NULL} if
+ none judgment is available, and following columns (* means that column is
+ a list with elements of given type, if impossible to unlist)
+\tabular{rlll}{
+n \tab name \tab type \tab description \cr
+[,1] \tab id \tab integer \tab judgment ID in the repository \cr
+[,2] \tab href \tab character \tab link to judgment's page in API \cr
+[,3] \tab courtCases \tab character \tab case signature, indicates division
+  of the trial court, a case number and a year of the judgment \cr
+[,4] \tab judgmentType \tab character \tab one from "DECISION", "RESOLUTION",
+  "SENTENCE", "REGULATION", "REASONS" \cr
+[,5] \tab judges \tab data.frame* \tab two columns with judges names ("name")
+  and their role ("specialRoles") \cr
+[,6] \tab textContent \tab character \tab shortened version of full text of
+  the judgment \cr
+[,7] \tab keywords \tab character* \tab keywords associated with the given
+  judgment \cr
+[,8] \tab division \tab data.frame* \tab information about the court (columns
+  "court.name", "court.code", "court.href") and its division (columns "name",
+  "code", "href"), see \link{get_courts} for details \cr
+[,9] \tab judgmentDate \tab character \tab date of the judgment in format
+  YYYY-MM-DD \cr
+}
 }
 \description{
 Search for judgments matching the given query
