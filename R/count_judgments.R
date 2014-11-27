@@ -22,15 +22,14 @@
  
 count_judgments <- function(query = NULL){
   query <- paste_query(query)
-  url <- "https://saos-test.icm.edu.pl/results"
-  link <- paste0(url, "?size=1&", query)
-  response <- httr::GET(link)
-  httr::stop_for_status(response)
-  text <- httr::content(response, as = "text")
-  pos <- gregexpr("Wynik wyszukiwania", text)[[1]]
-  str <- substr(text, pos + 24, pos + 40)
-  str <- strsplit(str, "orzecz")[[1]][1]
-  str <- suppressWarnings(as.numeric(strsplit(str, "")[[1]]))
-  str <- as.numeric(paste(na.omit(str), collapse = ""))
-  str
+  url <- "https://saos-test.icm.edu.pl/api/search/judgments"
+  link <- paste0(url, "?pageSize=1&", query)
+  response <- get_response(link)
+  extract_total(response)
+}
+
+
+
+extract_total <- function(response){
+  response$info$totalResults
 }
