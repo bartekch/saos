@@ -7,15 +7,15 @@
 #' @param query Search pattern as a named list; pairs name-value are treated
 #'   as query parameters with corresponding values, see Details.
 #' 
-#' @details The available query parameters:
+#' @template query
 #' 
 #' @return the number of results (integer)
 #' 
 #' @seealso \code{\link[saos]{search_judgments}}
 #' 
 #' @examples \dontrun{
-#'  count_judgments(list(dateFrom="01-11-2014"))
-#'  count_judgments(list(judgeName="Maria+Tyszel", dateTo="01-11-1995"))
+#'  count_judgments(list(judgmentDateFrom="2014-01-01"))
+#'  count_judgments(list(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30"))
 #'   }
 #'   
 #' @export

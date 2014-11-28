@@ -1,6 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 .txt$
-
+man-roxygen
 # Travis scripts
 .travis.yml

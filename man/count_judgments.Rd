@@ -18,12 +18,20 @@ Count the number of results for a given search. Useful to check before
  memory and time consuming.
 }
 \details{
-The available query parameters:
+The available query parameters: \cr
+ \code{all} - character, search everywhere, \cr
+ \code{legalBase} - character, \cr
+ \code{referencedRegulation} - character, \cr
+ \code{keyword} - character, exact matching, \cr
+ \code{courtName} - character, exact matching, \cr
+ \code{judgeName} - character, \cr
+ \code{judgmentDateFrom} - character in format "YYYY-MM-DD", \cr
+ \code{judgmentDateTo} - character in format "YYYY-MM-DD".
 }
 \examples{
 \dontrun{
- count_judgments(list(dateFrom="01-11-2014"))
- count_judgments(list(judgeName="Maria+Tyszel", dateTo="01-11-1995"))
+ count_judgments(list(judgmentDateFrom="2014-01-01"))
+ count_judgments(list(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30"))
   }
 }
 \seealso{

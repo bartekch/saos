@@ -42,11 +42,20 @@ n \tab name \tab type \tab description \cr
 Search for judgments matching the given query
 }
 \details{
-The available query parameters:
+The available query parameters: \cr
+ \code{all} - character, search everywhere, \cr
+ \code{legalBase} - character, \cr
+ \code{referencedRegulation} - character, \cr
+ \code{keyword} - character, exact matching, \cr
+ \code{courtName} - character, exact matching, \cr
+ \code{judgeName} - character, \cr
+ \code{judgmentDateFrom} - character in format "YYYY-MM-DD", \cr
+ \code{judgmentDateTo} - character in format "YYYY-MM-DD".
 }
 \examples{
 \dontrun{
-search_judgments(list(dateFrom = "10-11-2014"))
+search_judgments(list(judgmentDateFrom = "2014-11-20"))
+search_judgments(list(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30"))
 
 # search with no query, various limit options
 search_judgments()

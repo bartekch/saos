@@ -7,7 +7,8 @@
 #' @param limit Limit the number of search results.
 #' @param force If TRUE, force search request even if it seems extreme.
 #' 
-#' @details The available query parameters:
+#' @template query
+#' 
 #' 
 #' @return data.frame with rows corresponding to judgments, or \code{NULL} if 
 #'  none judgment is available, and following columns (* means that column is 
@@ -34,7 +35,8 @@
 #' } 
 #'  
 #' @examples \dontrun{
-#' search_judgments(list(dateFrom = "10-11-2014"))
+#' search_judgments(list(judgmentDateFrom = "2014-11-20"))
+#' search_judgments(list(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30"))
 #' 
 #' # search with no query, various limit options
 #' search_judgments()
