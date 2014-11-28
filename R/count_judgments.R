@@ -11,8 +11,8 @@
 #' @seealso \code{\link[saos]{search_judgments}}
 #' 
 #' @examples \dontrun{
-#'  count_judgments(list(judgmentDateFrom="2014-01-01"))
-#'  count_judgments(list(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30"))
+#'  count_judgments(judgmentDateFrom="2014-01-01")
+#'  count_judgments(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30")
 #'   }
 #'   
 #' @export
@@ -25,11 +25,11 @@ count_judgments <- function(all = NULL, legalBase = NULL,
                 referencedRegulation = referencedRegulation, keyword = keyword,
                 courtName = courtName, judgeName = judgeName,
                 judgmentDateFrom = judgmentDateFrom, 
-                judgmentDateTo = judgmentDateTo)
-  query <- paste_query(query)
+                judgmentDateTo = judgmentDateTo, pageSize = 1)
+
   url <- "https://saos-test.icm.edu.pl/api/search/judgments"
-  link <- paste0(url, "?pageSize=1&", query)
-  response <- get_response(link)
+  query <- c(query, pageSize = 1)
+  response <- get_response(url, query = query)
   extract_total(response)
 }
 

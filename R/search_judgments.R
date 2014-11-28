@@ -32,8 +32,8 @@
 #' } 
 #'  
 #' @examples \dontrun{
-#' search_judgments(list(judgmentDateFrom = "2014-11-20"))
-#' search_judgments(list(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30"))
+#' search_judgments(judgmentDateFrom = "2014-11-20")
+#' search_judgments(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30")
 #' 
 #' # search with no query, various limit options
 #' search_judgments()
@@ -81,14 +81,12 @@ are sure to pull down everything use force = TRUE", limit))
   }
   
   # prepare link to API
-  query <- paste_query(query)
   pagesize <- if (limit > 100) { 100 } else { limit }
-  query <- paste0(sprintf("pageSize=%s&", pagesize), query)
-  url <- "https://saos-test.icm.edu.pl/api/search/judgments/?"
-  link <- paste0(url, query)
+  query <- c(query, pageSize = pagesize)
+  url <- "https://saos-test.icm.edu.pl/api/search/judgments"
   
   # get results
-  response <- get_response(paste0(url, query))
+  response <- get_response(url, query = query)
   judgments <- extract_judgments(response)
   number <- nrow(judgments)
   next_page <- extract_link(response)

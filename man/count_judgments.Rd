@@ -36,8 +36,8 @@ Count the number of results for a given search. Useful to check before
 }
 \examples{
 \dontrun{
- count_judgments(list(judgmentDateFrom="2014-01-01"))
- count_judgments(list(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30"))
+ count_judgments(judgmentDateFrom="2014-01-01")
+ count_judgments(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30")
   }
 }
 \seealso{

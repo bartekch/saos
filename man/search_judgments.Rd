@@ -61,8 +61,8 @@ Search for judgments matching the given query
 }
 \examples{
 \dontrun{
-search_judgments(list(judgmentDateFrom = "2014-11-20"))
-search_judgments(list(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30"))
+search_judgments(judgmentDateFrom = "2014-11-20")
+search_judgments(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30")
 
 # search with no query, various limit options
 search_judgments()
