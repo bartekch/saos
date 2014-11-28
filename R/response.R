@@ -1,8 +1,8 @@
 
 # function for accessing API and processing a response
-get_response <- function(link, simplify = TRUE){
-  # download response directly from link
-  res <- httr::GET(link)
+get_response <- function(url, query = NULL, simplify = TRUE){
+  # download response
+  res <- httr::GET(url, query = query)
   
   httr::stop_for_status(res)
   
