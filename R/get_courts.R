@@ -44,10 +44,8 @@
 #' @export
 
 get_courts <- function(){
-  #   tmp <- GET("https://saos-test.icm.edu.pl/", path = "api/dump/courts",
-  #              query = list(pageSize = 100))
-  url <- "https://saos-test.icm.edu.pl/api/dump/courts/?pageSize=100"
-  response <- get_response(url)
+  url <- "https://saos-test.icm.edu.pl/api/dump/courts"
+  response <- get_response(url, query = list(pageSize = 100))
   courts <- extract_courts(response)
   next_page <- extract_link(response)
   while (!is.null(next_page)){

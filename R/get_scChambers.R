@@ -33,8 +33,6 @@
 #' @export
 
 get_scChambers <- function(flatten = FALSE){
-  #   tmp <- GET("https://saos-test.icm.edu.pl/", path = "api/dump/courts",
-  #              query = list(pageSize = 100))
   url <- "https://saos-test.icm.edu.pl/api/dump/scChambers"
   response <- get_response(url)
   chambers <- extract_chambers(response)
