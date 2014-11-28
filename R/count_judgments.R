@@ -4,10 +4,7 @@
 #'  attempting to download a huge number of records, which could be very
 #'  memory and time consuming.
 #'     
-#' @param query Search pattern as a named list; pairs name-value are treated
-#'   as query parameters with corresponding values, see Details.
-#' 
-#' @template query
+#' @template query_param
 #' 
 #' @return the number of results (integer)
 #' 
@@ -20,7 +17,15 @@
 #'   
 #' @export
  
-count_judgments <- function(query = NULL){
+count_judgments <- function(all = NULL, legalBase = NULL,
+                            referencedRegulation = NULL, keyword = NULL,
+                            courtName = NULL, judgeName = NULL,
+                            judgmentDateFrom = NULL, judgmentDateTo = NULL){
+  query <- list(all = all, legalBase = legalBase, 
+                referencedRegulation = referencedRegulation, keyword = keyword,
+                courtName = courtName, judgeName = judgeName,
+                judgmentDateFrom = judgmentDateFrom, 
+                judgmentDateTo = judgmentDateTo)
   query <- paste_query(query)
   url <- "https://saos-test.icm.edu.pl/api/search/judgments"
   link <- paste0(url, "?pageSize=1&", query)

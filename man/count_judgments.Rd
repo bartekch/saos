@@ -3,11 +3,28 @@
 \alias{count_judgments}
 \title{Count number of results for a given search}
 \usage{
-count_judgments(query = NULL)
+count_judgments(all = NULL, legalBase = NULL, referencedRegulation = NULL,
+  keyword = NULL, courtName = NULL, judgeName = NULL,
+  judgmentDateFrom = NULL, judgmentDateTo = NULL)
 }
 \arguments{
-\item{query}{Search pattern as a named list; pairs name-value are treated
-  as query parameters with corresponding values, see Details.}
+\item{all}{search everywhere for given phrase}
+
+\item{legalBase}{legal basis of judgments}
+
+\item{referencedRegulation}{regulations referenced in judgments}
+
+\item{keyword}{keywords of judgments}
+
+\item{courtName}{name of the trial court}
+
+\item{judgeName}{name of any judge}
+
+\item{judgmentDateFrom}{judgments from and including given date,
+format "YYYY-MM-DD"}
+
+\item{judgmentDateTo}{judgments to and including given date,
+format "YYYY-MM-DD"}
 }
 \value{
 the number of results (integer)
@@ -16,17 +33,6 @@ the number of results (integer)
 Count the number of results for a given search. Useful to check before
  attempting to download a huge number of records, which could be very
  memory and time consuming.
-}
-\details{
-The available query parameters: \cr
- \code{all} - character, search everywhere, \cr
- \code{legalBase} - character, \cr
- \code{referencedRegulation} - character, \cr
- \code{keyword} - character, exact matching, \cr
- \code{courtName} - character, exact matching, \cr
- \code{judgeName} - character, \cr
- \code{judgmentDateFrom} - character in format "YYYY-MM-DD", \cr
- \code{judgmentDateTo} - character in format "YYYY-MM-DD".
 }
 \examples{
 \dontrun{

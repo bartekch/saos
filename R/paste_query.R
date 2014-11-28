@@ -1,7 +1,7 @@
 paste_query <- function(query){
   if (is.null(query))
     return(query)
-  #   url$query <- compact(url$query)  # removing NULL see httr::build_url
+  query <- query[!vapply(query, is.null, logical(1))]  # removing NULLs
   params <- c("all", "legalBase", "referencedRegulation", "keyword", "courtName",
               "judgeName", "judgmentDateFrom", "judgmentDateTo")
   names <- RCurl::curlEscape(names(query))

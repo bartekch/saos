@@ -3,11 +3,29 @@
 \alias{search_judgments}
 \title{Search for judgments}
 \usage{
-search_judgments(query = NULL, limit = 200, force = FALSE)
+search_judgments(all = NULL, legalBase = NULL,
+  referencedRegulation = NULL, keyword = NULL, courtName = NULL,
+  judgeName = NULL, judgmentDateFrom = NULL, judgmentDateTo = NULL,
+  limit = 200, force = FALSE)
 }
 \arguments{
-\item{query}{Search pattern as a named list; pairs name-value are treated
-as query parameters with corresponding values, see Details.}
+\item{all}{search everywhere for given phrase}
+
+\item{legalBase}{legal basis of judgments}
+
+\item{referencedRegulation}{regulations referenced in judgments}
+
+\item{keyword}{keywords of judgments}
+
+\item{courtName}{name of the trial court}
+
+\item{judgeName}{name of any judge}
+
+\item{judgmentDateFrom}{judgments from and including given date,
+format "YYYY-MM-DD"}
+
+\item{judgmentDateTo}{judgments to and including given date,
+format "YYYY-MM-DD"}
 
 \item{limit}{Limit the number of search results.}
 
@@ -40,17 +58,6 @@ n \tab name \tab type \tab description \cr
 }
 \description{
 Search for judgments matching the given query
-}
-\details{
-The available query parameters: \cr
- \code{all} - character, search everywhere, \cr
- \code{legalBase} - character, \cr
- \code{referencedRegulation} - character, \cr
- \code{keyword} - character, exact matching, \cr
- \code{courtName} - character, exact matching, \cr
- \code{judgeName} - character, \cr
- \code{judgmentDateFrom} - character in format "YYYY-MM-DD", \cr
- \code{judgmentDateTo} - character in format "YYYY-MM-DD".
 }
 \examples{
 \dontrun{

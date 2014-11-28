@@ -1,13 +1,10 @@
 #' Search for judgments
 #' 
 #' Search for judgments matching the given query
-#' 
-#' @param query Search pattern as a named list; pairs name-value are treated
-#'   as query parameters with corresponding values, see Details.
+#'
+#' @template query_param 
 #' @param limit Limit the number of search results.
 #' @param force If TRUE, force search request even if it seems extreme.
-#' 
-#' @template query
 #' 
 #' 
 #' @return data.frame with rows corresponding to judgments, or \code{NULL} if 
@@ -47,9 +44,18 @@
 #'  
 #' @export
 
-search_judgments <- function(query = NULL, limit = 200, force = FALSE){
+search_judgments <- function(all = NULL, legalBase = NULL,
+                             referencedRegulation = NULL, keyword = NULL,
+                             courtName = NULL, judgeName = NULL,
+                             judgmentDateFrom = NULL, judgmentDateTo = NULL,
+                             limit = 200, force = FALSE){
+  query <- list(all = all, legalBase = legalBase, 
+                referencedRegulation = referencedRegulation, keyword = keyword,
+                courtName = courtName, judgeName = judgeName,
+                judgmentDateFrom = judgmentDateFrom, 
+                judgmentDateTo = judgmentDateTo)
   # count expected number of results 
-  count <- count_judgments(query)
+  count <- do.call(count_judgments, query)
   
   # check number of results  
   if (count == 0){
