@@ -10,25 +10,8 @@ get_scChambers(flatten = FALSE)
  chamber}
 }
 \value{
-If \code{flatten = FALSE} (default) data.frame with rows
-  corresponding to chambers and three columns
-\tabular{rlll}{
-n \tab name \tab type \tab description \cr
-[,1] \tab id \tab integer \tab ID in the repository \cr
-[,2] \tab name \tab character \tab full name of the chamber \cr
-[,3] \tab divisions \tab list \tab details of the chamber's divisions, see
-  details below \cr
-}
-
-Information about divisions is stored in dataframes with following columns.
-\tabular{rlll}{
-n \tab name \tab type \tab description \cr
-[,1] \tab id \tab integer \tab uniue ID \cr
-[,2] \tab name \tab character \tab name of the division \cr
-[,3] \tab fullName \tab character \tab full name of a division, composed from
-  names of both chamber and its division \cr
-}
-
+If \code{flatten = FALSE} (default) data.frame as described in
+  \code{\link[saos]{scchambers}}.
 If \code{flatten = TRUE} data.frame with rows corresponding to divisions
   and five columns: information about chamber (\code{id, name}) and
   information about division (\code{div_id, div_name, div_fullName}).
@@ -37,6 +20,6 @@ If \code{flatten = TRUE} data.frame with rows corresponding to divisions
 Download information about all chambers of the Supreme Court of Poland.
 }
 \seealso{
-\code{\link[saos]{get_courts}}
+\code{\link[saos]{scchambers}}, \code{\link[saos]{get_courts}}
 }
 
