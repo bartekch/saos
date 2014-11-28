@@ -54,6 +54,8 @@ search_judgments <- function(all = NULL, legalBase = NULL,
                 courtName = courtName, judgeName = judgeName,
                 judgmentDateFrom = judgmentDateFrom, 
                 judgmentDateTo = judgmentDateTo)
+  query <- check_query(query)
+  
   # count expected number of results 
   count <- do.call(count_judgments, query)
   

@@ -25,8 +25,9 @@ count_judgments <- function(all = NULL, legalBase = NULL,
                 referencedRegulation = referencedRegulation, keyword = keyword,
                 courtName = courtName, judgeName = judgeName,
                 judgmentDateFrom = judgmentDateFrom, 
-                judgmentDateTo = judgmentDateTo, pageSize = 1)
-
+                judgmentDateTo = judgmentDateTo)
+  query <- check_query(query)
+  
   url <- "https://saos-test.icm.edu.pl/api/search/judgments"
   query <- c(query, pageSize = 1)
   response <- get_response(url, query = query)
