@@ -1,6 +1,6 @@
-#' Download all courts
+#' Download all common courts
 #'
-#' Download information about all courts in the repository.
+#' Download information about all common courts in the repository.
 #'     
 #' @return data.frame with rows corresponding to courts and following columns
 #' \tabular{rlll}{
@@ -14,7 +14,8 @@
 #' [,6] \tab divisions \tab list \tab details of the court's divisions, see 
 #'   details below   \cr
 #' }
-#' Court's code represents nested structure. It is in format "15BBCCDD" where 
+#' Court's code represents nested structure. It is in format "15BBCCDD" where
+#'   "15" - code representing common courts, 
 #'   "BB" - code of the coresponding appeal court, 
 #'   "CC" - code of the corresponding regional court ("00" for appeal courts),
 #'   "DD" - code of the district court ("00" for appeal and regional courts).
@@ -29,10 +30,12 @@
 #' [,4] \tab type \tab character \tab type of the division \cr
 #' }
 #' Code of the division is in the format "AABCCDD", where
-#'   "AA" - usually  "00", or number of affiliate division,
-#'   "B" - usually "0", in case of affiliate divisions "1" or "2",
-#'   "CC" - number of division in the given court (multiples of five),
-#'   "DD" - code corresponding to the type of the division.
+#'   "AA" - code of affiliate division, "00" for local division
+#'   "B" - type of affiliate division, "0" for local division, "1" or "2" for 
+#'     affiliate division
+#'   "CC" - number of division in the given court (multiples of five or, in
+#'     cases of more than 20 divisions, multiples of three),
+#'   "DD" - code corresponding to the type of the division (multiples of three).
 #' 
 #' Information in the repository should be thorough (no missing data).
 #' 
