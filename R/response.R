@@ -1,8 +1,14 @@
 
 # function for accessing API and processing a response
 get_response <- function(url, query = NULL, simplify = TRUE){
-  # download response
-  res <- httr::GET(url, query = query)
+  
+  # if query is NULL we probably have DIRECT link, so we do not want to
+  # override it with NULL  
+  if (is.null(query)){
+    res <- httr::GET(url)
+  } else {
+    res <- httr::GET(url, query = query)
+  }
   
   httr::stop_for_status(res)
   
