@@ -6,7 +6,7 @@
 #' 
 #' @return named character vector with judgments
 #'  
-#' @examples \dontrun{
+#' @examples \donttest{
 #' get_judgment_texts(128334)
 #' get_judgment_texts(c(128334, 77354))
 #'  }

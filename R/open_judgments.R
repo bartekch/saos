@@ -8,7 +8,7 @@
 #' 
 #' @return (Invisibly) Vector of character strings with URLs of abstracts opened.
 #'  
-#' @examples \dontrun{
+#' @examples \donttest{
 #' judgments <- search_judgments()
 #' open_judgments(judgments)
 #'  }

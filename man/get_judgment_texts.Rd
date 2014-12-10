@@ -15,7 +15,7 @@ named character vector with judgments
 Get full texts, if available, of judgments with IDs from a given vector
 }
 \examples{
-\dontrun{
+\donttest{
 get_judgment_texts(128334)
 get_judgment_texts(c(128334, 77354))
  }

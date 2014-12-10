@@ -10,7 +10,7 @@
 #' 
 #' @seealso \code{\link[saos]{search_judgments}}
 #' 
-#' @examples \dontrun{
+#' @examples \donttest{
 #'  count_judgments(judgmentDateFrom="2014-01-01")
 #'  count_judgments(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30")
 #'   }

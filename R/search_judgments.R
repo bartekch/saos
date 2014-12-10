@@ -31,7 +31,7 @@
 #'   YYYY-MM-DD \cr
 #' } 
 #'  
-#' @examples \dontrun{
+#' @examples \donttest{
 #' search_judgments(judgmentDateFrom = "2014-11-20")
 #' search_judgments(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30")
 #' 

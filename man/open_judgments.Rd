@@ -18,7 +18,7 @@ open_judgments(judgments, limit = 5)
 Open in web browser SAOS pages for given judgments.
 }
 \examples{
-\dontrun{
+\donttest{
 judgments <- search_judgments()
 open_judgments(judgments)
  }

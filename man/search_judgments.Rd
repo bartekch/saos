@@ -60,7 +60,7 @@ n \tab name \tab type \tab description \cr
 Search for judgments matching the given query
 }
 \examples{
-\dontrun{
+\donttest{
 search_judgments(judgmentDateFrom = "2014-11-20")
 search_judgments(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30")
 

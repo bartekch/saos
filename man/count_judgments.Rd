@@ -35,7 +35,7 @@ Count the number of results for a given search. Useful to check before
  memory and time consuming.
 }
 \examples{
-\dontrun{
+\donttest{
  count_judgments(judgmentDateFrom="2014-01-01")
  count_judgments(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30")
   }

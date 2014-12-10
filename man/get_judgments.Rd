@@ -16,7 +16,7 @@ data.frame with rows corresponding to judgments, or NA if none
 Get all judgments, if available, with IDs from a given vector
 }
 \examples{
-\dontrun{
+\donttest{
 # single ID
 get_judgments(128334)
 

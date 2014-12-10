@@ -7,7 +7,7 @@
 #' @return data.frame with rows corresponding to judgments, or NA if none
 #'  judgment is available
 #'  
-#' @examples \dontrun{
+#' @examples \donttest{
 #' # single ID
 #' get_judgments(128334)
 #' 
