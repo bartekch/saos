@@ -21,9 +21,18 @@ get_response <- function(url, query = NULL, simplify = TRUE){
 # function extracting link for the next page from current response
 extract_link <- function(response){
   links <- response$links
-  if (any(links$rel == "next")){
-    res <- links[links$rel == "next", "href"]
-  } else res <- NULL
+  if (is.data.frame(links)){
+    if (any(links$rel == "next")){
+      res <- links[links$rel == "next", "href"]
+    } else res <- NULL
+  } else {
+    pos <- which(sapply(links, function(x) x$rel) == "next")
+    if (length(pos) == 0){
+      res <- NULL
+    } else {
+      res <- links[[pos]]$href
+    }
+  }
   res
 }
 
