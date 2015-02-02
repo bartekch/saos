@@ -20,8 +20,15 @@ check_query <- function(query){
 check_date <- function(date){
   if (is.null(date)) return(date)
   
-  d <- as.Date(date, format = "%Y-%m-%d")
-  if (is.na(d))
-    stop("Date should be given in format 'YYYY-MM-DD'")
-  return(date)
+  if (inherits(date, "Date")) return(format(date, "%Y-%m-%d"))
+  
+  if (!is.character(date)) {
+    stop("Date should be given as string in format 'YYYY-MM-DD' or an object of
+         class 'Date'")
+  } else {
+    d <- as.Date(date, format = "%Y-%m-%d")
+    if (is.na(d))
+      stop("Date should be given in format 'YYYY-MM-DD'")
+    return(date)
+  }
 }
