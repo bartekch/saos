@@ -19,18 +19,18 @@
 #'  
 #' @examples 
 #' \dontrun{
-#' full <- get_judgments_dump()
-#' lastchanges <- get_judgments_dump(modification_date = Sys.Date() - 7)
+#' full <- get_dump_judgments()
+#' lastchanges <- get_dump_judgments(modification_date = Sys.Date() - 7)
 #' }
 #' \donttest{
 #' # judgments from last week
-#' lastweek <- get_judgments_dump(start_date = Sys.Date() - 7, 
+#' lastweek <- get_dump_judgments(start_date = Sys.Date() - 7, 
 #'                                end_date = Sys.Date())
 #'  }
 #'  
 #' @export
 
-get_judgments_dump <- function(start_date = NULL, end_date = NULL,
+get_dump_judgments <- function(start_date = NULL, end_date = NULL,
                                modification_date = NULL){
   url <- "https://saos-test.icm.edu.pl/api/dump/judgments/"
   

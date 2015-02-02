@@ -8,7 +8,7 @@
 #' 
 #' @export
 
-get_courts <- function(){
+get_dump_courts <- function(){
   url <- "https://saos-test.icm.edu.pl/api/dump/courts"
   response <- get_response(url, query = list(pageSize = 100))
   courts <- extract_courts(response)

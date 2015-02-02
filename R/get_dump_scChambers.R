@@ -15,7 +15,7 @@
 #' 
 #' @export
 
-get_scChambers <- function(flatten = FALSE){
+get_dump_scChambers <- function(flatten = FALSE){
   url <- "https://saos-test.icm.edu.pl/api/dump/scChambers"
   response <- get_response(url)
   chambers <- extract_chambers(response)
