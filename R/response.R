@@ -17,6 +17,17 @@ get_response <- function(url, query = NULL, simplify = TRUE){
   res
 }
 
+# function downloading all possible pages for a given response
+get_all_items <- function(response){
+  items <- response$items
+  next_page <- extract_link(response)
+  while (!is.null(next_page)){
+    response <- get_response(next_page, simplify = FALSE)
+    items <- c(items, response$items)
+    next_page <- extract_link(response)
+  }
+  items
+}
 
 # function extracting link for the next page from current response
 extract_link <- function(response){

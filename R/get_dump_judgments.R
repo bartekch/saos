@@ -15,7 +15,7 @@
 #'   Allows to select judgments which were modified later than the specified 
 #'   time. If missing, no time limit is set.
 #' 
-#' @return List of judgments as returned from API.
+#' @return The list of judgments as returned from API.
 #'  
 #' @examples 
 #' \dontrun{
@@ -23,8 +23,8 @@
 #' lastchanges <- get_dump_judgments(modification_date = Sys.Date() - 7)
 #' }
 #' \donttest{
-#' # judgments from last week
-#' lastweek <- get_dump_judgments(start_date = Sys.Date() - 7, 
+#' # Download judgments from last month
+#' lastmonth <- get_dump_judgments(start_date = Sys.Date() - 30, 
 #'                                end_date = Sys.Date())
 #'  }
 #'  
@@ -49,13 +49,7 @@ get_dump_judgments <- function(start_date = NULL, end_date = NULL,
   
   # get results
   response <- get_response(url, query = query, simplify = FALSE)
-  judgments <- response$items
-  next_page <- extract_link(response)
-  while (!is.null(next_page)){
-    response <- get_response(next_page, simplify = FALSE)
-    judgments <- c(judgments, response$items)
-    next_page <- extract_link(response)
-  }
+  judgments <- get_all_items(response)
   
   judgments
 }

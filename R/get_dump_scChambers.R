@@ -2,41 +2,44 @@
 #'
 #' Download information about all chambers of the Supreme Court of Poland.
 #' 
-#' @param flatten logical, whether flatten information about divisions of every
-#'  chamber
+#' @return The list of all Supreme Courts chambers as returned from API.
+#' 
+# @param flatten logical, whether flatten information about divisions of every
+#  chamber
+# 
+# @return If \code{flatten = FALSE} (default) data.frame as described in 
+#   \code{\link[saos]{scchambers}}.  
+# If \code{flatten = TRUE} data.frame with rows corresponding to divisions
+#   and five columns: information about chamber (\code{id, name}) and
+#   information about division (\code{div_id, div_name, div_fullName}). 
 #'
-#' @return If \code{flatten = FALSE} (default) data.frame as described in 
-#'   \code{\link[saos]{scchambers}}.  
-#' If \code{flatten = TRUE} data.frame with rows corresponding to divisions
-#'   and five columns: information about chamber (\code{id, name}) and
-#'   information about division (\code{div_id, div_name, div_fullName}). 
-#'
-#' @seealso \code{\link[saos]{scchambers}}, \code{\link[saos]{get_courts}}
+#' @seealso \code{\link[saos]{scchambers}}, \code{\link[saos]{get_dump_courts}}
 #' 
 #' @export
 
-get_dump_scChambers <- function(flatten = FALSE){
+get_dump_scChambers <- function(){
   url <- "https://saos-test.icm.edu.pl/api/dump/scChambers"
   response <- get_response(url)
-  chambers <- extract_chambers(response)
-  next_page <- extract_link(response)
-  while (!is.null(next_page)){
-    response <- get_response(next_page)
-    chambers <- rbind(chambers, extract_chambers(response))
-    next_page <- extract_link(response)
-  }
-  if (flatten){
-    l <- sapply(chambers$divisions, nrow)
-    ind <- rep(seq(nrow(chambers)), times = l)
-    divisions <- do.call(rbind, chambers$divisions)
-    names(divisions) <- paste("div", names(divisions), sep = "_")
-    chambers <- cbind(chambers[ind, 1:2], divisions)
-  }
+  chambers <- get_all_items(response)
+#   chambers <- extract_chambers(response)
+#   next_page <- extract_link(response)
+#   while (!is.null(next_page)){
+#     response <- get_response(next_page)
+#     chambers <- rbind(chambers, extract_chambers(response))
+#     next_page <- extract_link(response)
+#   }
+#   if (flatten){
+#     l <- sapply(chambers$divisions, nrow)
+#     ind <- rep(seq(nrow(chambers)), times = l)
+#     divisions <- do.call(rbind, chambers$divisions)
+#     names(divisions) <- paste("div", names(divisions), sep = "_")
+#     chambers <- cbind(chambers[ind, 1:2], divisions)
+#   }
   chambers
 }
 
-
-extract_chambers <- function(response){
-  chambers <- response$items
-  chambers
-}
+# 
+# extract_chambers <- function(response){
+#   chambers <- response$items
+#   chambers
+# }
