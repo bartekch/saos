@@ -3,6 +3,7 @@
 export(count_judgments)
 export(extract)
 export(get_dump_courts)
+export(get_dump_enrichments)
 export(get_dump_judgments)
 export(get_dump_scChambers)
 export(get_judgment_texts)
