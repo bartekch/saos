@@ -17,18 +17,17 @@ check_query <- function(query){
   return(query)
 }
 
-check_date <- function(date){
+check_date <- function(date, format = "%Y-%m-%d"){
   if (is.null(date)) return(date)
   
-  if (inherits(date, "Date")) return(format(date, "%Y-%m-%d"))
-  
-  if (!is.character(date)) {
-    stop("Date should be given as string in format 'YYYY-MM-DD' or an object of
-         class 'Date'")
+  if (is.character(date)) {
+    date <- as.POSIXct(date, format = format)
+    if (is.na(date))
+      stop(sprintf("Wrong date format, should be %s.", format))
   } else {
-    d <- as.Date(date, format = "%Y-%m-%d")
-    if (is.na(d))
-      stop("Date should be given in format 'YYYY-MM-DD'")
-    return(date)
+    date <- as.POSIXct(date)
   }
+  date <- format(date, format = format)
+  
+  return(date)
 }
