@@ -52,8 +52,7 @@ get_dump_judgments <- function(start_date = NULL, end_date = NULL,
              sinceModificationDate = modification_date)
   
   # get results
-  response <- get_response(url, query = query, simplify = simplify)
-  judgments <- get_all_items(response, simplify = simplify)
+  judgments <- get_all_items(url, query, simplify)
   
   # simplify courtcases
   if (simplify) judgments$courtCases <- unlist(judgments$courtCases)

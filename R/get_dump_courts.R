@@ -14,8 +14,8 @@
 
 get_dump_courts <- function(simplify = FALSE){
   url <- "https://saos-test.icm.edu.pl/api/dump/courts"
-  response <- get_response(url, query = list(pageSize = 100), simplify = simplify)
-  courts <- get_all_items(response, simplify = simplify, simp_fun = simp_courts)
+  courts <- get_all_items(url, query = list(pageSize = 100),
+                          simplify = simplify, simp_fun = simp_courts)
 #   courts <- extract_courts(response)
 #   next_page <- extract_link(response)
 #   while (!is.null(next_page)){

@@ -12,12 +12,8 @@
 get_dump_enrichments <- function(simplify = FALSE){
   url <- "https://saos-test.icm.edu.pl/api/dump/enrichments"
   
-  # prepare query to API
-  query <- list(pageSize = 100)
-  
   # get results
-  response <- get_response(url, query = query, simplify = simplify)
-  tags <- get_all_items(response, simplify = simplify)
+  tags <- get_all_items(url, query = list(pageSize = 100), simplify = simplify)
   
   tags
 }

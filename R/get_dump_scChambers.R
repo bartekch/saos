@@ -22,8 +22,7 @@
 
 get_dump_scChambers <- function(simplify = FALSE){
   url <- "https://saos-test.icm.edu.pl/api/dump/scChambers"
-  response <- get_response(url, simplify = simplify)
-  chambers <- get_all_items(response, simplify = simplify)
+  chambers <- get_all_items(url, simplify = simplify)
 #   }
 #   if (flatten){
 #     l <- sapply(chambers$divisions, nrow)
