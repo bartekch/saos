@@ -18,7 +18,8 @@ get_response <- function(url, query = NULL, simplify = TRUE){
 }
 
 # function downloading all possible pages for a given response
-get_all_items <- function(url, query = NULL, simplify = FALSE, simp_fun = NULL){
+get_all_items <- function(url, query = NULL, simplify = FALSE, flatten = FALSE,
+                          simp_fun = NULL){
   if (is.null(simp_fun)) simp_fun <- base::identity
   
   response <- get_response(url, query, simplify)
@@ -34,6 +35,7 @@ get_all_items <- function(url, query = NULL, simplify = FALSE, simp_fun = NULL){
     }
     next_page <- extract_link(response)
   }
+  if (simplify & flatten) items <- jsonlite::flatten(items)
   items
 }
 

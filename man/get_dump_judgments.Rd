@@ -5,7 +5,7 @@
 \title{Get all judgments}
 \usage{
 get_dump_judgments(start_date = NULL, end_date = NULL,
-  modification_date = NULL, simplify = FALSE)
+  modification_date = NULL, simplify = FALSE, flatten = simplify)
 }
 \arguments{
 \item{start_date}{Any date/time object that could be properly converted with

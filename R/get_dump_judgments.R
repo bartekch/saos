@@ -32,7 +32,8 @@
 #' @export
 
 get_dump_judgments <- function(start_date = NULL, end_date = NULL,
-                               modification_date = NULL, simplify = FALSE){
+                               modification_date = NULL, simplify = FALSE,
+                               flatten = simplify){
   url <- "https://saos-test.icm.edu.pl/api/dump/judgments/"
   
   # check arguments
@@ -49,7 +50,8 @@ get_dump_judgments <- function(start_date = NULL, end_date = NULL,
              sinceModificationDate = modification_date)
   
   # get results
-  judgments <- get_all_items(url, query, simplify)
+  judgments <- get_all_items(url, query = query, simplify = simplify,
+                             flatten = flatten)
   
   # simplify courtcases
   if (simplify) judgments$courtCases <- unlist(judgments$courtCases)
