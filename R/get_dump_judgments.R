@@ -14,10 +14,7 @@
 #'   \code{as.POSIXct}, or a string in format "\%Y-\%m-\%dT\%H:\%M:\%S". 
 #'   Allows to select judgments which were modified later than the specified 
 #'   time. If missing, no time limit is set.
-#' @param simplify Logical. If \code{TRUE} results will be returned as 
-#'   \code{data.frame}.
-# @param flatten Logical, works only if \code{simplify = TRUE}. If \code{TRUE}
-#   resulting data.frame will be flattened.
+#' @template dump_param
 #'   
 #' @return The list of judgments as returned from API.
 #'  

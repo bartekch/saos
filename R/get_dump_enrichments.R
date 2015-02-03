@@ -2,8 +2,7 @@
 #' 
 #' Get the list of all tags with extra information abour judgments
 #' 
-#' @param simplify Logical. If \code{TRUE} results will be returned as 
-#'   \code{data.frame}.
+#' @template dump_param
 #'   
 #' @return List of enrichment tags as returned from API.
 #'  

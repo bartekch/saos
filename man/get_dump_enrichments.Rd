@@ -8,7 +8,7 @@ get_dump_enrichments(simplify = FALSE)
 }
 \arguments{
 \item{simplify}{Logical. If \code{TRUE} results will be returned as
-  \code{data.frame}.}
+\code{data.frame}.}
 }
 \value{
 List of enrichment tags as returned from API.

@@ -2,8 +2,7 @@
 #'
 #' Download information about all chambers of the Supreme Court of Poland.
 #' 
-#' @param simplify Logical. If \code{TRUE} results will be returned as 
-#'   \code{data.frame}.
+#' @template dump_param
 #'   
 #' @return The list of all Supreme Courts chambers as returned from API.
 #' 

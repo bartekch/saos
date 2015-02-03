@@ -2,9 +2,8 @@
 #'
 #' Download information about all common courts in the repository.
 #'
-#' @param simplify Logical. If \code{TRUE} results will be returned as 
-#'   \code{data.frame}.
-#'   
+#' @template dump_param
+#' 
 #' @return The list of all common courts as returned from API.
 # @return data.frame as described in \code{\link[saos]{courts}}
 #' 

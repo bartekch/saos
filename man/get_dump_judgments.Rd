@@ -24,7 +24,7 @@ Allows to select judgments which were modified later than the specified
 time. If missing, no time limit is set.}
 
 \item{simplify}{Logical. If \code{TRUE} results will be returned as
-  \code{data.frame}.}
+\code{data.frame}.}
 }
 \value{
 The list of judgments as returned from API.

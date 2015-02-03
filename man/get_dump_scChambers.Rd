@@ -8,7 +8,7 @@ get_dump_scChambers(simplify = FALSE)
 }
 \arguments{
 \item{simplify}{Logical. If \code{TRUE} results will be returned as
-  \code{data.frame}.}
+\code{data.frame}.}
 }
 \value{
 The list of all Supreme Courts chambers as returned from API.
