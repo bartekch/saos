@@ -2,6 +2,9 @@
 #'
 #' Download information about all chambers of the Supreme Court of Poland.
 #' 
+#' @param simplify Logical. If \code{TRUE} results will be returned as 
+#'   \code{data.frame}.
+#'   
 #' @return The list of all Supreme Courts chambers as returned from API.
 #' 
 # @param flatten logical, whether flatten information about divisions of every
@@ -17,16 +20,10 @@
 #' 
 #' @export
 
-get_dump_scChambers <- function(){
+get_dump_scChambers <- function(simplify = FALSE){
   url <- "https://saos-test.icm.edu.pl/api/dump/scChambers"
-  response <- get_response(url)
-  chambers <- get_all_items(response)
-#   chambers <- extract_chambers(response)
-#   next_page <- extract_link(response)
-#   while (!is.null(next_page)){
-#     response <- get_response(next_page)
-#     chambers <- rbind(chambers, extract_chambers(response))
-#     next_page <- extract_link(response)
+  response <- get_response(url, simplify = simplify)
+  chambers <- get_all_items(response, simplify = simplify)
 #   }
 #   if (flatten){
 #     l <- sapply(chambers$divisions, nrow)
@@ -37,9 +34,3 @@ get_dump_scChambers <- function(){
 #   }
   chambers
 }
-
-# 
-# extract_chambers <- function(response){
-#   chambers <- response$items
-#   chambers
-# }

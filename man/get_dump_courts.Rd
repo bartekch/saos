@@ -4,7 +4,11 @@
 \alias{get_dump_courts}
 \title{Download all common courts}
 \usage{
-get_dump_courts()
+get_dump_courts(simplify = FALSE)
+}
+\arguments{
+\item{simplify}{Logical. If \code{TRUE} results will be returned as
+  \code{data.frame}.}
 }
 \value{
 The list of all common courts as returned from API.

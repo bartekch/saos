@@ -18,12 +18,18 @@ get_response <- function(url, query = NULL, simplify = TRUE){
 }
 
 # function downloading all possible pages for a given response
-get_all_items <- function(response){
-  items <- response$items
+get_all_items <- function(response, simplify = FALSE, simp_fun = NULL){
+  if (is.null(simp_fun)) simp_fun <- base::identity
+  
+  items <- simp_fun(response$items)
   next_page <- extract_link(response)
   while (!is.null(next_page)){
-    response <- get_response(next_page, simplify = FALSE)
-    items <- c(items, response$items)
+    response <- get_response(next_page, simplify = simplify)
+    if (simplify){
+      items <- rbind(items, simp_fun(response$items))
+    } else {
+      items <- c(items, response$items)
+    }
     next_page <- extract_link(response)
   }
   items

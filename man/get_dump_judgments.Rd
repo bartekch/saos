@@ -5,7 +5,7 @@
 \title{Get all judgments}
 \usage{
 get_dump_judgments(start_date = NULL, end_date = NULL,
-  modification_date = NULL)
+  modification_date = NULL, simplify = FALSE)
 }
 \arguments{
 \item{start_date}{Any date/time object that could be properly converted with
@@ -19,9 +19,12 @@ Represents the latest allowed judgment's date on the list.
 If missing, no time limit is set.}
 
 \item{modification_date}{Any date/time object that could be properly converted with
-  \code{as.POSIXct}, or a string in format "\%Y-\%m-\%dT\%H:\%M:\%S".
-  Allows to select judgments which were modified later than the specified
-  time. If missing, no time limit is set.}
+\code{as.POSIXct}, or a string in format "\%Y-\%m-\%dT\%H:\%M:\%S".
+Allows to select judgments which were modified later than the specified
+time. If missing, no time limit is set.}
+
+\item{simplify}{Logical. If \code{TRUE} results will be returned as
+  \code{data.frame}.}
 }
 \value{
 The list of judgments as returned from API.

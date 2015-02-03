@@ -4,7 +4,11 @@
 \alias{get_dump_scChambers}
 \title{Download all Supreme Court chambers}
 \usage{
-get_dump_scChambers()
+get_dump_scChambers(simplify = FALSE)
+}
+\arguments{
+\item{simplify}{Logical. If \code{TRUE} results will be returned as
+  \code{data.frame}.}
 }
 \value{
 The list of all Supreme Courts chambers as returned from API.

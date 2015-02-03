@@ -14,7 +14,11 @@
 #'   \code{as.POSIXct}, or a string in format "\%Y-\%m-\%dT\%H:\%M:\%S". 
 #'   Allows to select judgments which were modified later than the specified 
 #'   time. If missing, no time limit is set.
-#' 
+#' @param simplify Logical. If \code{TRUE} results will be returned as 
+#'   \code{data.frame}.
+# @param flatten Logical, works only if \code{simplify = TRUE}. If \code{TRUE}
+#   resulting data.frame will be flattened.
+#'   
 #' @return The list of judgments as returned from API.
 #'  
 #' @examples 
@@ -31,7 +35,7 @@
 #' @export
 
 get_dump_judgments <- function(start_date = NULL, end_date = NULL,
-                               modification_date = NULL){
+                               modification_date = NULL, simplify = FALSE){
   url <- "https://saos-test.icm.edu.pl/api/dump/judgments/"
   
   # check arguments
@@ -48,8 +52,11 @@ get_dump_judgments <- function(start_date = NULL, end_date = NULL,
              sinceModificationDate = modification_date)
   
   # get results
-  response <- get_response(url, query = query, simplify = FALSE)
-  judgments <- get_all_items(response)
+  response <- get_response(url, query = query, simplify = simplify)
+  judgments <- get_all_items(response, simplify = simplify)
+  
+  # simplify courtcases
+  if (simplify) judgments$courtCases <- unlist(judgments$courtCases)
   
   judgments
 }

@@ -4,7 +4,11 @@
 \alias{get_dump_enrichments}
 \title{Get all enrichments tags (EXPERIMENTAL)}
 \usage{
-get_dump_enrichments()
+get_dump_enrichments(simplify = FALSE)
+}
+\arguments{
+\item{simplify}{Logical. If \code{TRUE} results will be returned as
+  \code{data.frame}.}
 }
 \value{
 List of enrichment tags as returned from API.

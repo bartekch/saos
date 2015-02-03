@@ -2,6 +2,9 @@
 #'
 #' Download information about all common courts in the repository.
 #'
+#' @param simplify Logical. If \code{TRUE} results will be returned as 
+#'   \code{data.frame}.
+#'   
 #' @return The list of all common courts as returned from API.
 # @return data.frame as described in \code{\link[saos]{courts}}
 #' 
@@ -9,10 +12,10 @@
 #' 
 #' @export
 
-get_dump_courts <- function(){
+get_dump_courts <- function(simplify = FALSE){
   url <- "https://saos-test.icm.edu.pl/api/dump/courts"
-  response <- get_response(url, query = list(pageSize = 100))
-  courts <- get_all_items(response)
+  response <- get_response(url, query = list(pageSize = 100), simplify = simplify)
+  courts <- get_all_items(response, simplify = simplify, simp_fun = simp_courts)
 #   courts <- extract_courts(response)
 #   next_page <- extract_link(response)
 #   while (!is.null(next_page)){
@@ -23,9 +26,8 @@ get_dump_courts <- function(){
   courts
 }
 
-# 
-# extract_courts <- function(response){
-#   courts <- response$items
-#   courts$parentCourt <- courts$parentCourt[,1]
-#   courts
-# }
+ 
+simp_courts <- function(items){
+  items$parentCourt <- items$parentCourt[,1]
+  items
+}
