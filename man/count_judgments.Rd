@@ -77,7 +77,7 @@ SC_PERSONNEL_TYPE, SC_COURT_DIVISION_ID, SC_COURT_DIVISION_NAME,
 SC_COURT_DIVISIONS_CHAMBER_ID, SC_COURT_DIVISIONS_CHAMBER_NAME.}
 
 \item{sortingDirection}{Character, one from ASC, DESC. Indicates whether sort
-should be increasing or decreasing.}
+  should be increasing or decreasing.}
 }
 \value{
 the number of results (integer)
@@ -86,6 +86,10 @@ the number of results (integer)
 Count the number of results for a given search. Useful to check before
  attempting to download a huge number of records, which could be very
  memory and time consuming.
+}
+\section{Query details}{
+
+All character parameters are case insensitive.
 }
 \examples{
 \donttest{

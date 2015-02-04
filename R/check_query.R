@@ -14,7 +14,7 @@ check_query <- function(query){
   query$scDivisionId <- check_natural(query$scDivisionId)
   
   # checking sort
-  query$sortingField <- match.arg(query$sortingField, 
+  query$sortingField <- match.arg(toupper(query$sortingField),
                                   c("DATABASE_ID", "JUDGMENT_DATE", "CASE_NUMBER",
                                     "CC_COURT_TYPE", "CC_COURT_ID", "CC_COURT_CODE",
                                     "CC_COURT_NAME", "CC_COURT_DIVISION_ID",
@@ -23,27 +23,27 @@ check_query <- function(query){
                                     "SC_COURT_DIVISION_ID", "SC_COURT_DIVISION_NAME",
                                     "SC_COURT_DIVISIONS_CHAMBER_ID",
                                     "SC_COURT_DIVISIONS_CHAMBER_NAME"))
-  query$sortingDirection <- match.arg(query$sortingDirection, c("ASC", "DESC"))
+  query$sortingDirection <- match.arg(toupper(query$sortingDirection), c("ASC", "DESC"))
   
   # check arguments with predefined list of values and single value allowed only
   if (!is.null(query$courtType)){
-    query$courtType <- match.arg(query$courtType, 
+    query$courtType <- match.arg(toupper(query$courtType),
                                c("COMMON", "SUPREME","ADMINISTRATIVE",
                                  "CONSTITUTIONAL_TRIBUNAL", 
                                  "NATIONAL_APPEAL_CHAMBER"))
   }
   if (!is.null(query$ccCourtType)){
-    query$ccCourtType <- match.arg(query$ccCourtType, 
+    query$ccCourtType <- match.arg(toupper(query$ccCourtType),
                                    c("APPEAL", "REGIONAL", "DISTRICT"))
   }
   if (!is.null(query$scPersonnelType)){
-    query$scPersonnelType <- match.arg(query$scPersonnelType,
+    query$scPersonnelType <- match.arg(toupper(query$scPersonnelType),
                                        c("ONE_PERSON", "THREE_PERSON", "FIVE_PERSON",
                                          "SEVEN_PERSON", "ALL_COURT", "ALL_CHAMBER",
                                          "JOINED_CHAMBERS"))
   }
   if (!is.null(query$judgmentTypes)){
-    query$judgmentTypes <- match.arg(query$judgmentTypes,
+    query$judgmentTypes <- match.arg(toupper(query$judgmentTypes),
                                      c("DECISION", "RESOLUTION", "SENTENCE",
                                        "REGULATION", "REASONS"))
   }

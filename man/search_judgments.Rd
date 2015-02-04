@@ -78,7 +78,7 @@ SC_PERSONNEL_TYPE, SC_COURT_DIVISION_ID, SC_COURT_DIVISION_NAME,
 SC_COURT_DIVISIONS_CHAMBER_ID, SC_COURT_DIVISIONS_CHAMBER_NAME.}
 
 \item{sortingDirection}{Character, one from ASC, DESC. Indicates whether sort
-should be increasing or decreasing.}
+  should be increasing or decreasing.}
 
 \item{limit}{Limit the number of search results.}
 
@@ -89,6 +89,10 @@ List of judgments as returned from API.
 }
 \description{
 Search for judgments matching the given query
+}
+\section{Query details}{
+
+All character parameters are case insensitive.
 }
 \examples{
 \donttest{

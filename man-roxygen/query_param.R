@@ -38,3 +38,6 @@
 #'   SC_COURT_DIVISIONS_CHAMBER_ID, SC_COURT_DIVISIONS_CHAMBER_NAME.
 #' @param sortingDirection Character, one from ASC, DESC. Indicates whether sort
 #'   should be increasing or decreasing.
+#'   
+#' @section Query details:
+#' All character parameters are case insensitive.
