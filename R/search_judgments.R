@@ -6,7 +6,8 @@
 #' @param limit Limit the number of search results.
 #' @param force If TRUE, force search request even if it seems extreme.
 #' 
-#' @return list of judgments 
+#' @return List of judgments as returned from API.
+#' 
 # @return data.frame with rows corresponding to judgments, or \code{NULL} if 
 #  none judgment is available, and following columns (* means that column is 
 #  a list with elements of given type, if impossible to unlist)
@@ -44,17 +45,47 @@
 #'  
 #' @export
 
-search_judgments <- function(all = NULL, legalBase = NULL,
-                             referencedRegulation = NULL, keyword = NULL,
-                             courtName = NULL, judgeName = NULL,
-                             judgmentDateFrom = NULL, judgmentDateTo = NULL,
+search_judgments <- function(all  = NULL, legalBase  = NULL,
+                             referencedRegulation  = NULL, judgeName  = NULL, 
+                             caseNumber  = NULL, courtType  = NULL,
+                             ccCourtType  = NULL, ccCourtId  = NULL, 
+                             ccCourtCode  = NULL, ccCourtName  = NULL,
+                             ccDivisionId  = NULL, ccDivisionCode  = NULL, 
+                             ccDivisionName  = NULL, scPersonnelType  = NULL, 
+                             scChamberId  = NULL, scChamberName  = NULL, 
+                             scDivisionId  = NULL, scDivisionName  = NULL, 
+                             judgmentTypes  = NULL, keywords  = NULL, 
+                             judgmentDateFrom  = NULL, judgmentDateTo  = NULL,
+                             sortingField = "DATABASE_ID", 
+                             sortingDirection = "ASC",
                              limit = 200, force = FALSE){
-  query <- list(all = all, legalBase = legalBase, 
-                referencedRegulation = referencedRegulation, keyword = keyword,
-                courtName = courtName, judgeName = judgeName,
-                judgmentDateFrom = judgmentDateFrom, 
-                judgmentDateTo = judgmentDateTo)
-  query <- check_query(query)
+  
+  query <- list(all  =  all, 
+                legalBase  =  legalBase, 
+                referencedRegulation  =  referencedRegulation, 
+                judgeName  =  judgeName, 
+                caseNumber  =  caseNumber, 
+                courtType  =  courtType, 
+                ccCourtType  =  ccCourtType, 
+                ccCourtId  =  ccCourtId, 
+                ccCourtCode  =  ccCourtCode, 
+                ccCourtName  =  ccCourtName, 
+                ccDivisionId  =  ccDivisionId, 
+                ccDivisionCode  =  ccDivisionCode, 
+                ccDivisionName  =  ccDivisionName, 
+                scPersonnelType  =  scPersonnelType, 
+                scChamberId  =  scChamberId, 
+                scChamberName  =  scChamberName, 
+                scDivisionId  =  scDivisionId, 
+                scDivisionName  =  scDivisionName, 
+                judgmentTypes  =  judgmentTypes, 
+                keywords  =  keywords, 
+                judgmentDateFrom  =  judgmentDateFrom, 
+                judgmentDateTo  =  judgmentDateTo,
+                sortingField = sortingField,
+                sortingDirection = sortingDirection)
+
+#   query <- check_query(query)
   
   # count expected number of results 
   count <- do.call(count_judgments, query)

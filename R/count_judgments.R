@@ -17,16 +17,47 @@
 #'   
 #' @export
  
-count_judgments <- function(all = NULL, legalBase = NULL,
-                            referencedRegulation = NULL, keyword = NULL,
-                            courtName = NULL, judgeName = NULL,
-                            judgmentDateFrom = NULL, judgmentDateTo = NULL){
-  query <- list(all = all, legalBase = legalBase, 
-                referencedRegulation = referencedRegulation, keyword = keyword,
-                courtName = courtName, judgeName = judgeName,
-                judgmentDateFrom = judgmentDateFrom, 
-                judgmentDateTo = judgmentDateTo)
-  query <- check_query(query)
+count_judgments <- function(all  = NULL, legalBase  = NULL,
+                            referencedRegulation  = NULL, judgeName  = NULL, 
+                            caseNumber  = NULL, courtType  = NULL,
+                            ccCourtType  = NULL, ccCourtId  = NULL, 
+                            ccCourtCode  = NULL, ccCourtName  = NULL,
+                            ccDivisionId  = NULL, ccDivisionCode  = NULL, 
+                            ccDivisionName  = NULL, scPersonnelType  = NULL, 
+                            scChamberId  = NULL, scChamberName  = NULL, 
+                            scDivisionId  = NULL, scDivisionName  = NULL, 
+                            judgmentTypes  = NULL, keywords  = NULL, 
+                            judgmentDateFrom  = NULL, judgmentDateTo  = NULL,
+                            sortingField = "DATABASE_ID", 
+                            sortingDirection = "ASC",
+                            limit = 200, force = FALSE){
+  
+  query <- list(all  =  all, 
+                legalBase  =  legalBase, 
+                referencedRegulation  =  referencedRegulation, 
+                judgeName  =  judgeName, 
+                caseNumber  =  caseNumber, 
+                courtType  =  courtType, 
+                ccCourtType  =  ccCourtType, 
+                ccCourtId  =  ccCourtId, 
+                ccCourtCode  =  ccCourtCode, 
+                ccCourtName  =  ccCourtName, 
+                ccDivisionId  =  ccDivisionId, 
+                ccDivisionCode  =  ccDivisionCode, 
+                ccDivisionName  =  ccDivisionName, 
+                scPersonnelType  =  scPersonnelType, 
+                scChamberId  =  scChamberId, 
+                scChamberName  =  scChamberName, 
+                scDivisionId  =  scDivisionId, 
+                scDivisionName  =  scDivisionName, 
+                judgmentTypes  =  judgmentTypes, 
+                keywords  =  keywords, 
+                judgmentDateFrom  =  judgmentDateFrom, 
+                judgmentDateTo  =  judgmentDateTo,
+                sortingField = sortingField,
+                sortingDirection = sortingDirection)
+  
+#   query <- check_query(query)
   
   url <- "https://saos-test.icm.edu.pl/api/search/judgments"
   query <- c(query, pageSize = 1)

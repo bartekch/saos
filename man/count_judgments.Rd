@@ -5,27 +5,81 @@
 \title{Count number of results for a given search}
 \usage{
 count_judgments(all = NULL, legalBase = NULL, referencedRegulation = NULL,
-  keyword = NULL, courtName = NULL, judgeName = NULL,
-  judgmentDateFrom = NULL, judgmentDateTo = NULL)
+  judgeName = NULL, caseNumber = NULL, courtType = NULL,
+  ccCourtType = NULL, ccCourtId = NULL, ccCourtCode = NULL,
+  ccCourtName = NULL, ccDivisionId = NULL, ccDivisionCode = NULL,
+  ccDivisionName = NULL, scPersonnelType = NULL, scChamberId = NULL,
+  scChamberName = NULL, scDivisionId = NULL, scDivisionName = NULL,
+  judgmentTypes = NULL, keywords = NULL, judgmentDateFrom = NULL,
+  judgmentDateTo = NULL, sortingField = "DATABASE_ID",
+  sortingDirection = "ASC", limit = 200, force = FALSE)
 }
 \arguments{
-\item{all}{search everywhere for given phrase}
+\item{all}{Character. Search everywhere for given phrase.}
 
-\item{legalBase}{legal basis of judgments}
+\item{legalBase}{Character. Search for legal basis of judgments.}
 
-\item{referencedRegulation}{regulations referenced in judgments}
+\item{referencedRegulation}{Character. Search for regulations referenced
+in judgments.}
 
-\item{keyword}{keywords of judgments}
+\item{judgeName}{Character. Search for name of any involved judge.}
+
+\item{caseNumber}{Character. Search for judgments with given signature.}
+
+\item{courtType}{Character, one from COMMON, SUPREME, ADMINISTRATIVE,
+CONSTITUTIONAL_TRIBUNAL, NATIONAL_APPEAL_CHAMBER. Search for type of court.}
+
+\item{ccCourtType}{Character, one from APPEAL, REGIONAL, DISTRICT. Search for
+type of common court.}
+
+\item{ccCourtId}{Integer. Search for the given common court ID.}
+
+\item{ccCourtCode}{Character. Search for the given common court code.}
+
+\item{ccCourtName}{Character. Search for the given common court name.}
+
+\item{ccDivisionId}{Integer. Search for given common court division ID.}
+
+\item{ccDivisionCode}{Character. Search for given common court division code.}
+
+\item{ccDivisionName}{Character. Search for given common court division name.}
+
+\item{scPersonnelType}{Character, one from ONE_PERSON, THREE_PERSON,
+FIVE_PERSON, SEVEN_PERSON, ALL_COURT, ALL_CHAMBER, JOINED_CHAMBERS. Search
+for supreme court judgment's personnel type.}
+
+\item{scChamberId}{Integer. Search for supreme court chamber ID.}
+
+\item{scChamberName}{Character. Search for supreme court chamber name.}
+
+\item{scDivisionId}{Integer. Search for supreme court chamber division ID.}
+
+\item{scDivisionName}{Character. Search for supreme court chamber division name.}
+
+\item{judgmentTypes}{Character, one from DECISION, RESOLUTION, SENTENCE,
+REGULATION, REASONS. Search for judgments type.}
+
+\item{judgmentDateFrom}{Any date/time object that could be properly converted
+with \code{as.POSIXct}, or a string in a format "\%Y-\%m-\%d".Represents
+the earliest allowed judgment's date on the list.}
+
+\item{judgmentDateTo}{Any date/time object that could be properly converted
+with \code{as.POSIXct}, or a string in a format "\%Y-\%m-\%d".Represents
+the latest allowed judgment's date on the list.}
+
+\item{sortingField}{Character. Represents the field by which you want to sort a list
+of items, one from: DATABASE_ID, JUDGMENT_DATE, CASE_NUMBER, CC_COURT_TYPE,
+CC_COURT_ID, CC_COURT_CODE, CC_COURT_NAME, CC_COURT_DIVISION_ID,
+CC_COURT_DIVISION_CODE, CC_COURT_DIVISION_NAME, SC_JUDGMENT_FORM,
+SC_PERSONNEL_TYPE, SC_COURT_DIVISION_ID, SC_COURT_DIVISION_NAME,
+SC_COURT_DIVISIONS_CHAMBER_ID, SC_COURT_DIVISIONS_CHAMBER_NAME.}
+
+\item{sortingDirection}{Character, one from ASC, DESC. Indicates whether sort
+should be increasing or decreasing.}
+
+\item{keyword}{Character. Search for keywords of judgments.}
 
 \item{courtName}{name of the trial court}
-
-\item{judgeName}{name of any judge}
-
-\item{judgmentDateFrom}{judgments from and including given date,
-format "YYYY-MM-DD"}
-
-\item{judgmentDateTo}{judgments to and including given date,
-format "YYYY-MM-DD"}
 }
 \value{
 the number of results (integer)
