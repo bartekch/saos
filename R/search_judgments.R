@@ -120,14 +120,14 @@ are sure to pull down everything use force = TRUE", limit))
   url <- "https://saos-test.icm.edu.pl/api/search/judgments"
   
   # get results
-  response <- get_response(url, query = query, simplify = FALSE)
+  response <- get_response(url, query = query)
   # judgments <- extract_judgments(response)
   judgments <- response$items
   #number <- nrow(judgments)
   number <- length(judgments)
   next_page <- extract_link(response)
   while (!is.null(next_page) & (number < limit)){
-    response <- get_response(next_page, simplify = FALSE)
+    response <- get_response(next_page)
     #judgments <- rbind(judgments, extract_judgments(response))
     judgments <- c(judgments, response$items)
     number <- length(judgments)

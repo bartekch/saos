@@ -1,6 +1,6 @@
 
 # function for accessing API and processing a response
-get_response <- function(url, query = NULL, simplify = TRUE){
+get_response <- function(url, query = NULL, simplify = FALSE){
   
   # if query is NULL we probably have DIRECT link, so we do not want to
   # override it with NULL  
