@@ -50,7 +50,9 @@ count_judgments <- function(all  = NULL, legalBase  = NULL,
                 judgmentTypes  =  judgmentTypes, 
                 keywords  =  keywords, 
                 judgmentDateFrom  =  judgmentDateFrom, 
-                judgmentDateTo  =  judgmentDateTo)
+                judgmentDateTo  =  judgmentDateTo,
+                sortingField = "DATABASE_ID",
+                sortingDirection = "ASC")
   
 #   query <- check_query(query)
   count_judgments_(query)
