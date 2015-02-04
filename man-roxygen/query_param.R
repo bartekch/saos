@@ -8,23 +8,22 @@
 #'   CONSTITUTIONAL_TRIBUNAL, NATIONAL_APPEAL_CHAMBER. Search for type of court.
 #' @param ccCourtType Character, one from APPEAL, REGIONAL, DISTRICT. Search for
 #'   type of common court.
-#' @param ccCourtId Integer. Search for the given common court ID.
+#' @param ccCourtId Positive integer. Search for the given common court ID.
 #' @param ccCourtCode Character. Search for the given common court code.
 #' @param ccCourtName Character. Search for the given common court name.
-#' @param ccDivisionId Integer. Search for given common court division ID.
+#' @param ccDivisionId Positive integer. Search for given common court division ID.
 #' @param ccDivisionCode Character. Search for given common court division code.
 #' @param ccDivisionName Character. Search for given common court division name.
 #' @param scPersonnelType Character, one from ONE_PERSON, THREE_PERSON, 
 #'   FIVE_PERSON, SEVEN_PERSON, ALL_COURT, ALL_CHAMBER, JOINED_CHAMBERS. Search
 #'   for supreme court judgment's personnel type.
-#' @param scChamberId Integer. Search for supreme court chamber ID.
+#' @param scChamberId Positive integer. Search for supreme court chamber ID.
 #' @param scChamberName Character. Search for supreme court chamber name.
-#' @param scDivisionId Integer. Search for supreme court chamber division ID.
+#' @param scDivisionId Positive integer. Search for supreme court chamber division ID.
 #' @param scDivisionName Character. Search for supreme court chamber division name.
 #' @param judgmentTypes Character, one from DECISION, RESOLUTION, SENTENCE, 
 #'   REGULATION, REASONS. Search for judgments type.
-#' @param keyword Character. Search for keywords of judgments.
-#' @param courtName name of the trial court
+#' @param keywords Character. Search for keywords of judgments.
 #' @param judgmentDateFrom Any date/time object that could be properly converted
 #'   with \code{as.POSIXct}, or a string in a format "\%Y-\%m-\%d".Represents 
 #'   the earliest allowed judgment's date on the list.

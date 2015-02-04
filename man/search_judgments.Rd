@@ -33,13 +33,13 @@ CONSTITUTIONAL_TRIBUNAL, NATIONAL_APPEAL_CHAMBER. Search for type of court.}
 \item{ccCourtType}{Character, one from APPEAL, REGIONAL, DISTRICT. Search for
 type of common court.}
 
-\item{ccCourtId}{Integer. Search for the given common court ID.}
+\item{ccCourtId}{Positive integer. Search for the given common court ID.}
 
 \item{ccCourtCode}{Character. Search for the given common court code.}
 
 \item{ccCourtName}{Character. Search for the given common court name.}
 
-\item{ccDivisionId}{Integer. Search for given common court division ID.}
+\item{ccDivisionId}{Positive integer. Search for given common court division ID.}
 
 \item{ccDivisionCode}{Character. Search for given common court division code.}
 
@@ -49,16 +49,18 @@ type of common court.}
 FIVE_PERSON, SEVEN_PERSON, ALL_COURT, ALL_CHAMBER, JOINED_CHAMBERS. Search
 for supreme court judgment's personnel type.}
 
-\item{scChamberId}{Integer. Search for supreme court chamber ID.}
+\item{scChamberId}{Positive integer. Search for supreme court chamber ID.}
 
 \item{scChamberName}{Character. Search for supreme court chamber name.}
 
-\item{scDivisionId}{Integer. Search for supreme court chamber division ID.}
+\item{scDivisionId}{Positive integer. Search for supreme court chamber division ID.}
 
 \item{scDivisionName}{Character. Search for supreme court chamber division name.}
 
 \item{judgmentTypes}{Character, one from DECISION, RESOLUTION, SENTENCE,
 REGULATION, REASONS. Search for judgments type.}
+
+\item{keywords}{Character. Search for keywords of judgments.}
 
 \item{judgmentDateFrom}{Any date/time object that could be properly converted
 with \code{as.POSIXct}, or a string in a format "\%Y-\%m-\%d".Represents
@@ -81,10 +83,6 @@ should be increasing or decreasing.}
 \item{limit}{Limit the number of search results.}
 
 \item{force}{If TRUE, force search request even if it seems extreme.}
-
-\item{keyword}{Character. Search for keywords of judgments.}
-
-\item{courtName}{name of the trial court}
 }
 \value{
 List of judgments as returned from API.
