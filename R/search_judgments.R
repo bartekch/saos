@@ -85,7 +85,7 @@ search_judgments <- function(all  = NULL, legalBase  = NULL,
                 sortingField = sortingField,
                 sortingDirection = sortingDirection)
 
-#   query <- check_query(query)
+  query <- check_query(query)
   
   # count expected number of results 
   count <- count_judgments_(query)
