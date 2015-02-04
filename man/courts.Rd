@@ -49,7 +49,7 @@ courts
 \description{
 A dataset containing basic information about Polish common courts and their
   organisational structure. Up-to-date version of this dataset could be
-  obtained with \code{\link{get_dump_courts(simplify = TRUE)}}.
+  obtained with \code{get_dump_courts(simplify = TRUE)}.
 }
 \keyword{datasets}
 

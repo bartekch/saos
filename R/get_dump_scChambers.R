@@ -4,17 +4,29 @@
 #' 
 #' @template dump_param
 #'   
-#' @return The list of all Supreme Courts chambers as returned from API.
-#' 
-# @param flatten logical, whether flatten information about divisions of every
-#  chamber
-# 
-# @return If \code{flatten = FALSE} (default) data.frame as described in 
-#   \code{\link[saos]{scchambers}}.  
-# If \code{flatten = TRUE} data.frame with rows corresponding to divisions
-#   and five columns: information about chamber (\code{id, name}) and
-#   information about division (\code{div_id, div_name, div_fullName}). 
-#'
+#' @return If \code{simplify = FALSE} the list of all Supreme Courts chambers 
+#'   as returned from API. Every element of the list represents one chamber and 
+#'   has the following, illustrative structure: \cr
+#'   List of 3 \cr
+#'   $ id       : int 1 \cr
+#'   $ name     : chr "Izba Karna" \cr
+#'   $ divisions:List of 6 \cr
+#'   ..$ :List of 3 \cr
+#'   .. ..$ id      : int 1 \cr
+#'   .. ..$ name    : chr "Wydział VI" \cr
+#'   .. ..$ fullName: chr "Izba Karna Wydział VI" \cr
+#'   ..$ :List of 3 \cr
+#'   .. ..$ id      : int 4 \cr
+#'   .. ..$ name    : chr "Wydział I" \cr
+#'   .. ..$ fullName: chr "Izba Karna Wydział I" \cr
+#'   .. ... \cr
+#'    
+#'    Detailed description of the meaning of all elements could be found in
+#'    \code{\link[saos]{scchambers}}.
+#'    
+#'    If \code{simplify = TRUE} a \code{data.frame} as described in 
+#'    \code{\link[saos]{scchambers}} is returned.
+#'    
 #' @seealso \code{\link[saos]{scchambers}}, \code{\link[saos]{get_dump_courts}}
 #' 
 #' @export
@@ -22,13 +34,5 @@
 get_dump_scChambers <- function(simplify = FALSE){
   url <- "https://saos-test.icm.edu.pl/api/dump/scChambers"
   chambers <- get_all_items(url, simplify = simplify)
-#   }
-#   if (flatten){
-#     l <- sapply(chambers$divisions, nrow)
-#     ind <- rep(seq(nrow(chambers)), times = l)
-#     divisions <- do.call(rbind, chambers$divisions)
-#     names(divisions) <- paste("div", names(divisions), sep = "_")
-#     chambers <- cbind(chambers[ind, 1:2], divisions)
-#   }
   chambers
 }

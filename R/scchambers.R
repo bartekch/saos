@@ -2,7 +2,7 @@
 #'
 #' A dataset containing basic information about chambers of the Supreme Court of
 #'   Poland and their organisational structure. Up-to-date version of this 
-#'   dataset could be obtained with \code{\link{get_scChambers}}.
+#'   dataset could be obtained with \code{get_dump_scChambers(simplify = TRUE)}.
 #'
 #' @format A data frame with 4 rows and 3 variables:
 #' \tabular{rlll}{
