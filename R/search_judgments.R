@@ -88,7 +88,7 @@ search_judgments <- function(all  = NULL, legalBase  = NULL,
 #   query <- check_query(query)
   
   # count expected number of results 
-  count <- do.call(count_judgments, query)
+  count <- count_judgments_(query)
   
   # check number of results  
   if (count == 0){

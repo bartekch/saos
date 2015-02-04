@@ -27,10 +27,7 @@ count_judgments <- function(all  = NULL, legalBase  = NULL,
                             scChamberId  = NULL, scChamberName  = NULL, 
                             scDivisionId  = NULL, scDivisionName  = NULL, 
                             judgmentTypes  = NULL, keywords  = NULL, 
-                            judgmentDateFrom  = NULL, judgmentDateTo  = NULL,
-                            sortingField = "DATABASE_ID", 
-                            sortingDirection = "ASC",
-                            limit = 200, force = FALSE){
+                            judgmentDateFrom  = NULL, judgmentDateTo  = NULL){
   
   query <- list(all  =  all, 
                 legalBase  =  legalBase, 
@@ -53,20 +50,17 @@ count_judgments <- function(all  = NULL, legalBase  = NULL,
                 judgmentTypes  =  judgmentTypes, 
                 keywords  =  keywords, 
                 judgmentDateFrom  =  judgmentDateFrom, 
-                judgmentDateTo  =  judgmentDateTo,
-                sortingField = sortingField,
-                sortingDirection = sortingDirection)
+                judgmentDateTo  =  judgmentDateTo)
   
 #   query <- check_query(query)
-  
-  url <- "https://saos-test.icm.edu.pl/api/search/judgments"
-  query <- c(query, pageSize = 1)
-  response <- get_response(url, query = query)
-  extract_total(response)
+  count_judgments_(query)
 }
 
 
 
-extract_total <- function(response){
+count_judgments_ <- function(query){
+  url <- "https://saos-test.icm.edu.pl/api/search/judgments"
+  query <- c(query, pageSize = 1)
+  response <- get_response(url, query = query)
   response$info$totalResults
 }
