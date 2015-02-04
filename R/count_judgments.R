@@ -27,7 +27,9 @@ count_judgments <- function(all  = NULL, legalBase  = NULL,
                             scChamberId  = NULL, scChamberName  = NULL, 
                             scDivisionId  = NULL, scDivisionName  = NULL, 
                             judgmentTypes  = NULL, keywords  = NULL, 
-                            judgmentDateFrom  = NULL, judgmentDateTo  = NULL){
+                            judgmentDateFrom  = NULL, judgmentDateTo  = NULL,
+                            sortingField = "DATABASE_ID", 
+                            sortingDirection = "ASC"){
   
   query <- list(all  =  all, 
                 legalBase  =  legalBase, 
@@ -51,8 +53,8 @@ count_judgments <- function(all  = NULL, legalBase  = NULL,
                 keywords  =  keywords, 
                 judgmentDateFrom  =  judgmentDateFrom, 
                 judgmentDateTo  =  judgmentDateTo,
-                sortingField = "DATABASE_ID",
-                sortingDirection = "ASC")
+                sortingField = sortingField,
+                sortingDirection = sortingDirection)
   
   query <- check_query(query)
   count_judgments_(query)
