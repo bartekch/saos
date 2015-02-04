@@ -6,7 +6,7 @@
 \title{Information about all common courts}
 \format{A data frame with 291 rows and 6 variables:
 \tabular{rlll}{
-n \tab name \tab type \tab description \cr
+n \tab name \tab class \tab description \cr
 [,1] \tab id \tab integer \tab court ID in the repository \cr
 [,2] \tab name \tab character \tab full name of the court \cr
 [,3] \tab type \tab character \tab type of the court; district, regional or
@@ -25,7 +25,7 @@ Court's code represents nested structure. It is in format "15BBCCDD" where
 
 Information about divisions is stored in dataframes with following columns.
 \tabular{rlll}{
-n \tab name \tab type \tab description \cr
+n \tab name \tab class \tab description \cr
 [,1] \tab id \tab integer \tab unique ID \cr
 [,2] \tab name \tab character \tab full name of the division \cr
 [,3] \tab code \tab character \tab court's code, see details below \cr
@@ -49,7 +49,7 @@ courts
 \description{
 A dataset containing basic information about Polish common courts and their
   organisational structure. Up-to-date version of this dataset could be
-  obtained with \code{\link{get_courts}}.
+  obtained with \code{\link{get_dump_courts(simplify = TRUE)}}.
 }
 \keyword{datasets}
 
