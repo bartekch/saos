@@ -21,23 +21,50 @@
 #'   "BB" - code of the coresponding appeal court, 
 #'   "CC" - code of the corresponding regional court ("00" for appeal courts),
 #'   "DD" - code of the district court ("00" for appeal and regional courts).
-#'  All codes are multiples of five.     
+#'  All codes are multiples of five, unique within their level of nesting.     
 #'
 #' Information about divisions is stored in dataframes with following columns.
 #' \tabular{rlll}{
 #' n \tab name \tab class \tab description \cr
 #' [,1] \tab id \tab integer \tab unique ID \cr
 #' [,2] \tab name \tab character \tab full name of the division \cr
-#' [,3] \tab code \tab character \tab court's code, see details below \cr
+#' [,3] \tab code \tab character \tab division's code, see details below \cr
 #' [,4] \tab type \tab character \tab type of the division \cr
 #' }
 #' Code of the division is in the format "AABCCDD", where
-#'   "AA" - code of affiliate division, "00" for local division
-#'   "B" - type of affiliate division, "0" for local division, "1" or "2" for 
-#'     affiliate division
-#'   "CC" - number of division in the given court (multiples of five or, in
-#'     cases of more than 20 divisions, multiples of three),
-#'   "DD" - code corresponding to the type of the division (multiples of three).
+#'   "AA" - code of unit, "00" for local divisions, multiples of five for other 
+#'     units (branches),
+#'   "B" - type of unit, "0" for local division, "1" branch offices, "2" for
+#'     branch division,
+#'   "CC" - number of division in the given court; multiples of five or four 
+#'     (in case of more than 20 divisions) or three (more than 25 divisions);
+#'     in addition when one division has more sections, subsequent sections
+#'     have codes increased by one (in reference to the previous one),
+#'   "DD" - code corresponding to the type of the division; multiples of three,
+#'     according to the following table (in Polish):
+#' \tabular{cl}{
+#' code \tab type's name \cr
+#'  3 \tab Wydział Cywilny \cr
+#'  6 \tab Wydział Karny \cr
+#'  9 \tab Wydział Cywilny Rodzinny \cr
+#'  12 \tab Wydział Rodzinny i Nieletnich \cr
+#'  15 \tab Wydział Pracy\cr
+#'  18 \tab Wydział Ubezpieczeń Społecznych \cr
+#'  21 \tab Wydział Pracy i Ubezpieczeń Społecznych \cr
+#'  24 \tab Wydział Ksiąg Wieczystych \cr
+#'  27 \tab Wydział Gospodarczy \cr
+#'  30 \tab Wydział Gospodarczy Rejestrowy \cr
+#'  33 \tab Wydział Gospodarczy Rejestru Zastawów \cr
+#'  36 \tab Wydział Krajowego Rejestru Sadowego \cr
+#'  39 \tab Wydział Penitencjarny i Nadzoru nad Wykonywaniem Orzeczeń Karnych \cr
+#'  42 \tab Wydział Grodzki \cr
+#'  45 \tab Wydział Antymonopolowy \cr
+#'  48 \tab Wydział Spraw Geologicznych i Górniczych \cr
+#'  51 \tab Wydział Egzekucyjny \cr
+#'  54 \tab Wydział Wykonawczy \cr
+#'  57 \tab Wydział Wizytacyjny \cr
+#'  60 \tab Wydział Lustracyjny \cr
+#'  }
 #' 
 #' There is no missing data except for structural \code{NA}s in \code{parentCourt}.
 #' 
