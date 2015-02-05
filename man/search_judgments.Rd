@@ -13,7 +13,7 @@ search_judgments(all = NULL, legalBase = NULL,
   scDivisionName = NULL, judgmentTypes = NULL, keywords = NULL,
   judgmentDateFrom = NULL, judgmentDateTo = NULL,
   sortingField = "DATABASE_ID", sortingDirection = "ASC", limit = NULL,
-  force = FALSE)
+  force = FALSE, progress = TRUE)
 }
 \arguments{
 \item{all}{Character. Search everywhere for given phrase.}
@@ -83,6 +83,8 @@ SC_COURT_DIVISIONS_CHAMBER_ID, SC_COURT_DIVISIONS_CHAMBER_NAME.}
 \item{limit}{Limit the number of search results.}
 
 \item{force}{If TRUE, force search request even if it seems extreme.}
+
+\item{progress}{Logical. If \code{TRUE} a progress bar shows up.}
 }
 \value{
 List of judgments as returned from API.

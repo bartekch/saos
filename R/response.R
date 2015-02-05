@@ -21,44 +21,38 @@ get_response <- function(url, query = NULL, simplify = FALSE){
 # function downloading exact number of pages for a given response
 get_limited_items <- function(url, limit = NULL, query = NULL, 
                               simplify = FALSE, flatten = FALSE, 
-                              simp_fun = NULL){
+                              simp_fun = NULL, progress = FALSE){
   if (is.null(simp_fun)) simp_fun <- base::identity
+  
+  if (is.null(limit)) limit <- Inf
+  
+  if (progress) pb <- txtProgressBar(style = 3)
   
   response <- get_response(url, query, simplify)
   items <- simp_fun(response$items)
   next_page <- extract_link(response)
-  if (is.null(limit)){
-    while (!is.null(next_page)){
-      response <- get_response(next_page, simplify = simplify)
-      if (simplify){
-        items <- rbind(items, simp_fun(response$items))
-      } else {
-        items <- c(items, response$items)
-      }
-      next_page <- extract_link(response)
+  number <- length(items)
+  
+  if (progress) setTxtProgressBar(pb, number / limit)
+  
+  while (!is.null(next_page) & (number < limit)){
+    response <- get_response(next_page, simplify = simplify)
+    if (simplify){
+      items <- rbind(items, simp_fun(response$items))
+    } else {
+      items <- c(items, response$items)
     }
-  } else {
-    pb <- txtProgressBar(style = 3)
     number <- length(items)
-    setTxtProgressBar(pb, number / limit)
-    while (!is.null(next_page) & (number < limit)){
-      response <- get_response(next_page, simplify = simplify)
-      if (simplify){
-        items <- rbind(items, simp_fun(response$items))
-      } else {
-        items <- c(items, response$items)
-      }
-      number <- length(items)
-      setTxtProgressBar(pb, number / limit)
-      next_page <- extract_link(response)
-    }
-    # reduce number of results to limit
-    if (number > limit){
-      items <- items[1:limit]
-    }
-    close(pb)
+    if (progress) setTxtProgressBar(pb, min(1, number / limit))
+    next_page <- extract_link(response)
   }
-
+  if (progress) close(pb)
+  
+  # reduce number of results to limit
+  if (number > limit){
+    items <- items[1:limit]
+  }
+  
   if (simplify & flatten) items <- jsonlite::flatten(items)
   items
 }

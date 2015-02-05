@@ -9,6 +9,7 @@
 #' @template query_param 
 #' @param limit Limit the number of search results.
 #' @param force If TRUE, force search request even if it seems extreme.
+#' @param progress Logical. If \code{TRUE} a progress bar shows up.
 #' 
 #' @return List of judgments as returned from API.
 #' 
@@ -73,7 +74,7 @@ search_judgments <- function(all  = NULL, legalBase  = NULL,
                              judgmentDateFrom  = NULL, judgmentDateTo  = NULL,
                              sortingField = "DATABASE_ID", 
                              sortingDirection = "ASC",
-                             limit = NULL, force = FALSE){
+                             limit = NULL, force = FALSE, progress = TRUE){
   
   query <- list(all  =  all, 
                 legalBase  =  legalBase, 
@@ -136,7 +137,8 @@ are sure to pull down everything use force = TRUE", limit))
   # get results
   message(sprintf("Number of records expected: %s.", count))
 
-  judgments <- get_limited_items(url, query = query, limit = limit)
+  judgments <- get_limited_items(url, query = query, limit = limit, 
+                                 progress = progress)
   
   message(sprintf("Number of records downloaded: %s.", length(judgments)))
   
