@@ -13,6 +13,22 @@
 #' @examples \donttest{
 #'  count_judgments(judgmentDateFrom="2014-01-01")
 #'  count_judgments(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30")
+#'  
+#'  
+#'  ## Examples of query operators, starting from most general query.
+#'  
+#'  # any of two words
+#'  count_judgments(all = "dobra OR osobiste")
+#'  
+#'  # both words
+#'  count_judgments(all = "dobra osobiste")
+#'  
+#'  # exactly given phrase
+#'  count_judgments(all = "\"dobra osobiste\"")
+#'  
+#'  # one word but not the other
+#'  count_judgments(all = "dobra -osobiste")
+#'  count_judgments(all = "-dobra osobiste")
 #'   }
 #'   
 #' @export

@@ -57,6 +57,22 @@
 #' s4 <- search_judgments(limit = 300, force = TRUE)
 #' 
 #' length(s1); length(s2); length(s3); length(s4)
+#' 
+#' 
+#' ## Examples of query operators, starting from most general query.
+#'  
+#'  # any of two words
+#'  s1 <- search_judgments(all = "dobra OR osobiste")
+#'  
+#'  # both words
+#'  s2 <- search_judgments(all = "dobra osobiste")
+#'  
+#'  # exactly given phrase
+#'  s3 <- search_judgments(all = "\"dobra osobiste\"")
+#'  
+#'  # one word but not the other
+#'  s4 <- search_judgments(all = "dobra -osobiste")
+#'  s5 <- search_judgments(all = "-dobra osobiste")
 #'  }
 #'  
 #' @export

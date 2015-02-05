@@ -89,12 +89,45 @@ Count the number of results for a given search. Useful to check before
 }
 \section{Query details}{
 
-All character parameters are case insensitive.
+All parameters are case insensitive.
+A few parameters (\code{"all", "legalBase", "referencedRegulation"}) support
+  advanced query parsing:
+  \itemize{
+  \item when query contains multiple words then search for judgments that
+    contains all of that words, e. g. \code{"dobra osobiste"}
+  \item operator "OR" - search for judgments that contains one of the words
+    in a query, e.g. \code{"dobra OR osobiste"},
+  \item quote - search for judgments that contains whole phrase,
+    e.g. \code{"\\"dobra osobiste\\""},
+  \item minus sign - search for judgments that doesn't contain this word,
+    e.g. \code{"dobra -osobiste"}.
+    }
+ Operators could be freely mixed, e.g \code{"\"dobra osobiste\" OR -kodeks"}.
+ Phrase \code{"word1 OR -word2"} is equivalent to \code{"word1 -word2"}.
+ A parameter has to remain a single string. Operators could be passed
+ to other (character) arguments without an error but it will probably
+ return meaningless results.
 }
 \examples{
 \donttest{
  count_judgments(judgmentDateFrom="2014-01-01")
  count_judgments(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30")
+
+
+ ## Examples of query operators, starting from most general query.
+
+ # any of two words
+ count_judgments(all = "dobra OR osobiste")
+
+ # both words
+ count_judgments(all = "dobra osobiste")
+
+ # exactly given phrase
+ count_judgments(all = "\\"dobra osobiste\\"")
+
+ # one word but not the other
+ count_judgments(all = "dobra -osobiste")
+ count_judgments(all = "-dobra osobiste")
   }
 }
 \seealso{
