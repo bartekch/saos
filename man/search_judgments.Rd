@@ -12,7 +12,7 @@ search_judgments(all = NULL, legalBase = NULL,
   scChamberId = NULL, scChamberName = NULL, scDivisionId = NULL,
   scDivisionName = NULL, judgmentTypes = NULL, keywords = NULL,
   judgmentDateFrom = NULL, judgmentDateTo = NULL,
-  sortingField = "DATABASE_ID", sortingDirection = "ASC", limit = 200,
+  sortingField = "DATABASE_ID", sortingDirection = "ASC", limit = NULL,
   force = FALSE)
 }
 \arguments{
@@ -88,7 +88,10 @@ SC_COURT_DIVISIONS_CHAMBER_ID, SC_COURT_DIVISIONS_CHAMBER_NAME.}
 List of judgments as returned from API.
 }
 \description{
-Search for judgments matching the given query
+Search for judgments matching the given query. By default set of results is
+  limited to 200. If you want to download more results, use
+  \code{force = TRUE}. However be aware that downloading huge number of
+  results could be time- and memory-consuming.
 }
 \section{Query details}{
 
@@ -96,14 +99,25 @@ All character parameters are case insensitive.
 }
 \examples{
 \donttest{
-search_judgments(judgmentDateFrom = "2014-11-20")
-search_judgments(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30")
+sj1 <- search_judgments(judgmentDateFrom = "2014-11-20")
+sj2 <- search_judgments(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30")
 
-# search with no query, various limit options
-search_judgments()
-search_judgments(limit = 50)
-search_judgments(limit = 300)
-search_judgments(limit = 300, force = TRUE)
+
+## Using limit and force arguments
+
+# Deafult values, downloadig 200 results
+s1 <- search_judgments()
+
+# Limit set to 50, downloading 50 results
+s2 <- search_judgments(limit = 50)
+
+# Limit set to 300, but force remains FALSE, downloading 200 results
+s3 <- search_judgments(limit = 300)
+
+# Limit set to 300, force is TRUE, downloading 300 results
+s4 <- search_judgments(limit = 300, force = TRUE)
+
+length(s1); length(s2); length(s3); length(s4)
  }
 }
 
