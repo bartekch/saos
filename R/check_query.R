@@ -67,17 +67,28 @@ check_query <- function(query){
 
 
 check_date <- function(date, format = "%Y-%m-%d"){
-  if (is.null(date)) return(date)
+  argname <- tail(strsplit(deparse(substitute(date)), "\\$")[[1]], 1)
   
-  if (length(date) > 1) stop("Date has to be length one.")
+  if (is.null(date)) return(date)
+  if (is.na(date)) stop(sprintf("%s cannot be NA", argname), call. = FALSE)
+  
+  if (length(date) > 1) 
+    stop(sprintf("Argument %s has to be length one.", argname), call. = FALSE)
   
   if (is.character(date)) {
     date <- as.POSIXct(date, format = format)
+    
     if (is.na(date))
-      stop(sprintf("Wrong date format, should be %s.", format))
+      stop(sprintf("Wrong %s format, should be %s.", argname, format), 
+           call. = FALSE)
+    
   } else {
-    date <- as.POSIXct(date)
+    date <- try(as.POSIXct(date, format = format), silent = TRUE)
+    
+    if (inherits(date, "try-error"))
+      stop(sprintf("%s cannot be coerced to POSIXt.", argname), call. = FALSE)
   }
+  
   date <- format(date, format = format)
   
   return(date)
@@ -85,23 +96,35 @@ check_date <- function(date, format = "%Y-%m-%d"){
 
 
 check_natural <- function(x){
+  argname <- tail(strsplit(deparse(substitute(x)), "\\$")[[1]], 1)
+  
   if (is.null(x)) return(x)
   
-  if (length(x) > 1) stop("Arg has to be length one.")
+  if (length(x) > 1) 
+    stop(sprintf("Argument %s has to be length one.", argname), call. = FALSE)
   
-  if (!is.numeric(x)) stop("Arg has to be numeric")
+  if (!is.numeric(x)) 
+    stop(sprintf("Argument %s has to be numeric.", argname), call. = FALSE)
   
-  if (x <= 0) stop("Arg has to be positive")
-  if (abs(x - round(x)) > .Machine$double.eps^0.5) stop("Arg has to be natural number")
+  if (x <= 0) 
+    stop(sprintf("Argument %s has to be positive.", argname), call. = FALSE)
+  
+  if (abs(x - round(x)) > .Machine$double.eps^0.5) 
+    stop(sprintf("Argument %s has to be natural number.", argname),
+         call. = FALSE)
   x
 }
 
 
 check_arg <- function(x){
+  argname <- tail(strsplit(deparse(substitute(x)), "\\$")[[1]], 1)
+  
   if (is.null(x)) return(x)
   
-  if (length(x) > 1) stop("Arg has to be length one.")
+  if (length(x) > 1) stop(sprintf("Argument %s has to be length one.", argname),
+                          call. = FALSE)
   
-  if (!is.character(x)) stop("Arg has to be character.")
+  if (!is.character(x)) stop(sprintf("Argument %s has to be character.", argname),
+                             call. = FALSE)
   x
 }
