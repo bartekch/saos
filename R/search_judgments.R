@@ -135,28 +135,8 @@ are sure to pull down everything use force = TRUE", limit))
   
   # get results
   message(sprintf("Number of records expected: %s.", count))
-  response <- get_response(url, query = query)
-  # judgments <- extract_judgments(response)
-  judgments <- response$items
-  #number <- nrow(judgments)
-  number <- length(judgments)
-  next_page <- extract_link(response)
-  while (!is.null(next_page) & (number < limit)){
-    response <- get_response(next_page)
-    #judgments <- rbind(judgments, extract_judgments(response))
-    judgments <- c(judgments, response$items)
-    number <- length(judgments)
-    next_page <- extract_link(response)
-  }
-  
-  #id <- as.integer(sapply(strsplit(judgments$href, "/"), function(x) tail(x, 1)))
-  #judgments <- cbind(id, judgments)
-  
-  # reduce number of results to limit
-  if (number > limit){
-    #judgments <- judgments[1:limit, ]
-    judgments <- judgments[1:limit]
-  }
+
+  judgments <- get_limited_items(url, query = query, limit = limit)
   
   message(sprintf("Number of records downloaded: %s.", length(judgments)))
   

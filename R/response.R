@@ -17,26 +17,73 @@ get_response <- function(url, query = NULL, simplify = FALSE){
   res
 }
 
-# function downloading all possible pages for a given response
-get_all_items <- function(url, query = NULL, simplify = FALSE, flatten = FALSE,
-                          simp_fun = NULL){
+
+# function downloading exact number of pages for a given response
+get_limited_items <- function(url, limit = NULL, query = NULL, 
+                              simplify = FALSE, flatten = FALSE, 
+                              simp_fun = NULL){
   if (is.null(simp_fun)) simp_fun <- base::identity
   
   response <- get_response(url, query, simplify)
-  
   items <- simp_fun(response$items)
   next_page <- extract_link(response)
-  while (!is.null(next_page)){
-    response <- get_response(next_page, simplify = simplify)
-    if (simplify){
-      items <- rbind(items, simp_fun(response$items))
-    } else {
-      items <- c(items, response$items)
+  if (is.null(limit)){
+    while (!is.null(next_page)){
+      response <- get_response(next_page, simplify = simplify)
+      if (simplify){
+        items <- rbind(items, simp_fun(response$items))
+      } else {
+        items <- c(items, response$items)
+      }
+      next_page <- extract_link(response)
     }
-    next_page <- extract_link(response)
+  } else {
+    number <- length(items)
+    while (!is.null(next_page) & (number < limit)){
+      response <- get_response(next_page, simplify = simplify)
+      if (simplify){
+        items <- rbind(items, simp_fun(response$items))
+      } else {
+        items <- c(items, response$items)
+      }
+      number <- length(items)
+      next_page <- extract_link(response)
+    }
+    # reduce number of results to limit
+    if (number > limit){
+      items <- items[1:limit]
+    }
   }
+
   if (simplify & flatten) items <- jsonlite::flatten(items)
   items
+}
+
+
+
+# function downloading all possible pages for a given response
+get_all_items <- function(url, query = NULL, simplify = FALSE, flatten = FALSE,
+                          simp_fun = NULL){
+  get_limited_items(url, limit = NULL, query = query, 
+                    simplify = simplify, flatten = flatten, 
+                    simp_fun = simp_fun)
+#   if (is.null(simp_fun)) simp_fun <- base::identity
+#   
+#   response <- get_response(url, query, simplify)
+#   
+#   items <- simp_fun(response$items)
+#   next_page <- extract_link(response)
+#   while (!is.null(next_page)){
+#     response <- get_response(next_page, simplify = simplify)
+#     if (simplify){
+#       items <- rbind(items, simp_fun(response$items))
+#     } else {
+#       items <- c(items, response$items)
+#     }
+#     next_page <- extract_link(response)
+#   }
+#   if (simplify & flatten) items <- jsonlite::flatten(items)
+#   items
 }
 
 # function extracting link for the next page from current response
