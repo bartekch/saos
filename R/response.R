@@ -38,7 +38,9 @@ get_limited_items <- function(url, limit = NULL, query = NULL,
       next_page <- extract_link(response)
     }
   } else {
+    pb <- txtProgressBar(style = 3)
     number <- length(items)
+    setTxtProgressBar(pb, number / limit)
     while (!is.null(next_page) & (number < limit)){
       response <- get_response(next_page, simplify = simplify)
       if (simplify){
@@ -47,12 +49,14 @@ get_limited_items <- function(url, limit = NULL, query = NULL,
         items <- c(items, response$items)
       }
       number <- length(items)
+      setTxtProgressBar(pb, number / limit)
       next_page <- extract_link(response)
     }
     # reduce number of results to limit
     if (number > limit){
       items <- items[1:limit]
     }
+    close(pb)
   }
 
   if (simplify & flatten) items <- jsonlite::flatten(items)
