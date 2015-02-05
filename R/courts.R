@@ -3,7 +3,9 @@
 #' A dataset containing basic information about Polish common courts and their
 #'   organisational structure. Up-to-date version of this dataset could be
 #'   obtained with \code{get_dump_courts(simplify = TRUE)}.
-#'
+#'   
+#' @encoding UTF-8
+#' 
 #' @format A data frame with 291 rows and 6 variables:
 #' \tabular{rlll}{
 #' n \tab name \tab class \tab description \cr
