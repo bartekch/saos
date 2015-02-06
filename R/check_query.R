@@ -48,10 +48,12 @@ check_query <- function(query){
                                        "REGULATION", "REASONS"))
   }
   
-  # check the rest of arguments - in future query language must be implemened somehow
-  query$all <- check_arg(query$all)
-  query$legalBase <- check_arg(query$legalBase)
-  query$referencedRegulation <- check_arg(query$referencedRegulation)
+  # check arguments with query language
+  query$all <- parse_query(query$all)
+  query$legalBase <- parse_query(query$legalBase)
+  query$referencedRegulation <- parse_query(query$referencedRegulation)
+  
+  # check the rest of arguments
   query$judgeName <- check_arg(query$judgeName)
   query$caseNumber <- check_arg(query$caseNumber)
   query$ccCourtCode <- check_arg(query$ccCourtCode)
@@ -128,3 +130,42 @@ check_arg <- function(x){
                              call. = FALSE)
   x
 }
+
+
+# parsing query accordign to query language
+parse_query <- function(x) UseMethod("parse_query")
+
+parse_query.default <- function(x){
+  if (is.null(x)) return(x)
+  argname <- tail(strsplit(deparse(substitute(x)), "\\$")[[1]], 1)
+  stop(sprintf("%s has to be a character vector or a list with one of two fields
+                'include' and 'exclude'.", argname), call. = FALSE)
+}
+
+parse_query.character <- function(x){
+  paste(x, collapse = " OR ")
+}
+
+parse_query.list <- function(x){
+  argname <- tail(strsplit(deparse(substitute(x)), "\\$")[[1]], 1)
+  
+  inc <- x$include
+  exc <- x$exclude
+  
+  if (is.null(inc) & is.null(exc)){
+    warning(argname, " doesn't contain 'include' and 'exlude' fields, using NULL.",
+            call. = FALSE)
+    return(NULL)
+  }
+  
+  
+  if (any((!is.character(inc) & !is.null(inc)) |
+          (!is.character(exc) & !is.null(exc))))
+    stop(sprintf("If %s is a list, fields 'include' and 'exclude' has to be
+                 character vectors or NULLs", argname))
+  
+  inc <- paste(paste0("\"", inc, "\""), collapse = " OR ")
+  exc <- if (is.null(exc)) { NULL } else { paste(paste0("-\"", exc, "\""), collapse = " ") }
+  paste(inc, exc)
+}
+

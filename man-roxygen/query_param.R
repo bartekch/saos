@@ -1,7 +1,9 @@
-#' @param all Character. Search everywhere for given phrase.
-#' @param legalBase Character. Search for legal basis of judgments.
-#' @param referencedRegulation Character. Search for regulations referenced 
-#'   in judgments.
+#' @param all Character vector or a list, see "Query details" section. Search 
+#'   everywhere for given phrase.
+#' @param legalBase Character vector or a list, see "Query details" section. 
+#'   Search for legal basis of judgments.
+#' @param referencedRegulation Character vector or a list, see "Query details"
+#'   section. Search for regulations referenced in judgments.
 #' @param judgeName Character. Search for name of any involved judge.
 #' @param caseNumber Character. Search for judgments with given signature.
 #' @param courtType Character, one from COMMON, SUPREME, ADMINISTRATIVE, 
@@ -55,8 +57,15 @@
 #'     }
 #'  Operators could be freely mixed, e.g \code{"\"dobra osobiste\" OR -kodeks"}.
 #'  Phrase \code{"word1 OR -word2"} is equivalent to \code{"word1 -word2"}.
-#'  A parameter has to remain a single string. Operators could be passed
-#'  to other (character) arguments without an error but it will probably 
-#'  return meaningless results.
+#'  A parameter could be a character vector or a list with any of two fields: 
+#'  \code{include} and \code{exclude}, which have to be character vectors or 
+#'  \code{NULLs}. In former case elements of vector will be pasted with "OR" 
+#'  operator. In the latter elements of \code{include} field will be pasted 
+#'  with "OR" operator and elements of \code{exclude} field will be preceded 
+#'  with "-" operator (warning - every element will be treated as exact phrase,
+#'  so if you want to include or exclude a few words independently, you need to
+#'  use a single element for every word). For example
+#'  \code{list(include = c("dobra osobiste", "kodeks karny"), exclude = "kodeks cywilny")}
+#'   will turn to \code{"dobra osobiste OR kodeks karny -\\"kodeks cywilny\\""}.
 #'  
 

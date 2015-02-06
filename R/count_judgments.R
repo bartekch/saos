@@ -29,6 +29,15 @@
 #'  # one word but not the other
 #'  count_judgments(all = "dobra -osobiste")
 #'  count_judgments(all = "-dobra osobiste")
+#'  
+#'  
+#'  ## Mixing operators
+#'  # in one string
+#'  count_judgments(all = "\"dobra osobiste\" -\"dobra publiczne\"")
+#'  
+#'  # as a list
+#'  count_judgments(all = list(include = "dobra osobiste",
+#'                             exclude = "dobra publiczne"))
 #'   }
 #'   
 #' @export

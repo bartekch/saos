@@ -15,12 +15,14 @@ count_judgments(all = NULL, legalBase = NULL, referencedRegulation = NULL,
   sortingDirection = "ASC")
 }
 \arguments{
-\item{all}{Character. Search everywhere for given phrase.}
+\item{all}{Character vector or a list, see "Query details" section. Search
+everywhere for given phrase.}
 
-\item{legalBase}{Character. Search for legal basis of judgments.}
+\item{legalBase}{Character vector or a list, see "Query details" section.
+Search for legal basis of judgments.}
 
-\item{referencedRegulation}{Character. Search for regulations referenced
-in judgments.}
+\item{referencedRegulation}{Character vector or a list, see "Query details"
+section. Search for regulations referenced in judgments.}
 
 \item{judgeName}{Character. Search for name of any involved judge.}
 
@@ -104,9 +106,16 @@ A few parameters (\code{"all", "legalBase", "referencedRegulation"}) support
     }
  Operators could be freely mixed, e.g \code{"\"dobra osobiste\" OR -kodeks"}.
  Phrase \code{"word1 OR -word2"} is equivalent to \code{"word1 -word2"}.
- A parameter has to remain a single string. Operators could be passed
- to other (character) arguments without an error but it will probably
- return meaningless results.
+ A parameter could be a character vector or a list with any of two fields:
+ \code{include} and \code{exclude}, which have to be character vectors or
+ \code{NULLs}. In former case elements of vector will be pasted with "OR"
+ operator. In the latter elements of \code{include} field will be pasted
+ with "OR" operator and elements of \code{exclude} field will be preceded
+ with "-" operator (warning - every element will be treated as exact phrase,
+ so if you want to include or exclude a few words independently, you need to
+ use a single element for every word). For example
+ \code{list(include = c("dobra osobiste", "kodeks karny"), exclude = "kodeks cywilny")}
+  will turn to \code{"dobra osobiste OR kodeks karny -\\"kodeks cywilny\\""}.
 }
 \examples{
 \donttest{
@@ -128,6 +137,15 @@ A few parameters (\code{"all", "legalBase", "referencedRegulation"}) support
  # one word but not the other
  count_judgments(all = "dobra -osobiste")
  count_judgments(all = "-dobra osobiste")
+
+
+ ## Mixing operators
+ # in one string
+ count_judgments(all = "\\"dobra osobiste\\" -\\"dobra publiczne\\"")
+
+ # as a list
+ count_judgments(all = list(include = "dobra osobiste",
+                            exclude = "dobra publiczne"))
   }
 }
 \seealso{

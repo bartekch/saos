@@ -73,6 +73,15 @@
 #'  # one word but not the other
 #'  s4 <- search_judgments(all = "dobra -osobiste")
 #'  s5 <- search_judgments(all = "-dobra osobiste")
+#'  
+#'  #'  ## Mixing operators
+#'  # in one string
+#'  s6 <- search_judgments(all = "\"dobra osobiste\" -\"dobra publiczne\"")
+#'  
+#'  # as a list
+#'  s7 <- search_judgments(all = list(include = "dobra osobiste",
+#'                             exclude = "dobra publiczne"))
+#'  identical(s6, s7)
 #'  }
 #'  
 #' @export
