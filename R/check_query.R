@@ -72,23 +72,22 @@ check_date <- function(date, format = "%Y-%m-%d"){
   argname <- tail(strsplit(deparse(substitute(date)), "\\$")[[1]], 1)
   
   if (is.null(date)) return(date)
-  if (is.na(date)) stop(sprintf("%s cannot be NA", argname), call. = FALSE)
+  if (is.na(date)) stop(argname, " cannot be NA", call. = FALSE)
   
   if (length(date) > 1) 
-    stop(sprintf("Argument %s has to be length one.", argname), call. = FALSE)
+    stop("Argument ", argname, " has to be of length one.", call. = FALSE)
   
   if (is.character(date)) {
     date <- as.POSIXct(date, format = format)
     
     if (is.na(date))
-      stop(sprintf("Wrong %s format, should be %s.", argname, format), 
-           call. = FALSE)
+      stop("Wrong ", argname, " format, should be ", format, call. = FALSE)
     
   } else {
     date <- try(as.POSIXct(date, format = format), silent = TRUE)
     
     if (inherits(date, "try-error"))
-      stop(sprintf("%s cannot be coerced to POSIXt.", argname), call. = FALSE)
+      stop(argname, " cannot be coerced to POSIXt.", call. = FALSE)
   }
   
   date <- format(date, format = format)
@@ -103,17 +102,16 @@ check_natural <- function(x){
   if (is.null(x)) return(x)
   
   if (length(x) > 1) 
-    stop(sprintf("Argument %s has to be length one.", argname), call. = FALSE)
+    stop("Argument ", argname, " has to be of length one.", call. = FALSE)
   
   if (!is.numeric(x)) 
-    stop(sprintf("Argument %s has to be numeric.", argname), call. = FALSE)
+    stop("Argument ", argname, " has to be numeric.", call. = FALSE)
   
   if (x <= 0) 
-    stop(sprintf("Argument %s has to be positive.", argname), call. = FALSE)
+    stop("Argument ", argname, " has to be positive.", call. = FALSE)
   
   if (abs(x - round(x)) > .Machine$double.eps^0.5) 
-    stop(sprintf("Argument %s has to be natural number.", argname),
-         call. = FALSE)
+    stop("Argument ", argname, " has to be natural number.", call. = FALSE)
   x
 }
 
@@ -123,10 +121,10 @@ check_arg <- function(x){
   
   if (is.null(x)) return(x)
   
-  if (length(x) > 1) stop(sprintf("Argument %s has to be length one.", argname),
+  if (length(x) > 1) stop("Argument ", argname, " has to be of length one.",
                           call. = FALSE)
   
-  if (!is.character(x)) stop(sprintf("Argument %s has to be character.", argname),
+  if (!is.character(x)) stop("Argument ", argname, " has to be character.",
                              call. = FALSE)
   x
 }
@@ -138,8 +136,8 @@ parse_query <- function(x) UseMethod("parse_query")
 parse_query.default <- function(x){
   if (is.null(x)) return(x)
   argname <- tail(strsplit(deparse(substitute(x)), "\\$")[[1]], 1)
-  stop(sprintf("%s has to be a character vector or a list with one of two fields
-                'include' and 'exclude'.", argname), call. = FALSE)
+  stop(argname, " has to be a character vector or a list with one of two fields",
+       "'include' and 'exclude'.", call. = FALSE)
 }
 
 parse_query.character <- function(x){
@@ -161,8 +159,8 @@ parse_query.list <- function(x){
   
   if (any((!is.character(inc) & !is.null(inc)) |
           (!is.character(exc) & !is.null(exc))))
-    stop(sprintf("If %s is a list, fields 'include' and 'exclude' has to be
-                 character vectors or NULLs", argname))
+    stop("If ", argname, " is a list, fields 'include' and 'exclude' have to be",
+         "character vectors or NULLs", call. = FALSE)
   
   inc <- paste(paste0("\"", inc, "\""), collapse = " OR ")
   exc <- if (is.null(exc)) { NULL } else { paste(paste0("-\"", exc, "\""), collapse = " ") }

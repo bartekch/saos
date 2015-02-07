@@ -150,8 +150,8 @@ search_judgments <- function(all  = NULL, legalBase  = NULL,
   
   # check for extreme number of results    
   if ((limit > 200) & !force){
-    message(sprintf("Pulling down only 200 out of expected %s results. If you
-are sure to pull down everything use force = TRUE", limit))
+    message("Pulling down only 200 out of expected ", limit, " results. If you ",
+            "are sure to pull down everything use force = TRUE")
     limit <- 200
   }
   
@@ -160,12 +160,12 @@ are sure to pull down everything use force = TRUE", limit))
   url <- "https://saos-test.icm.edu.pl/api/search/judgments"
   
   # get results
-  message(sprintf("Number of records expected: %s.", count))
+  message("Number of records expected: ", count)
 
   judgments <- get_limited_items(url, query = query, limit = limit, 
                                  progress = progress)
   
-  message(sprintf("Number of records downloaded: %s.", length(judgments)))
+  message("Number of records downloaded: ", length(judgments))
   
   judgments
 }
