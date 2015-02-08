@@ -33,7 +33,7 @@ get_limited_items <- function(url, limit = NULL, query = NULL,
   next_page <- extract_link(response)
   number <- length(items)
   
-  if (progress) setTxtProgressBar(pb, number / limit)
+  if (progress) setTxtProgressBar(pb, min(1, number / limit))
   
   while (!is.null(next_page) & (number < limit)){
     response <- get_response(next_page, simplify = simplify)
