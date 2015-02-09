@@ -1,43 +1,76 @@
-#' Get judgments with given IDs
+#' Get all data about judgments
 #' 
-#' Get all judgments, if available, with IDs from a given vector
+#' Get_judgments will download all information available about given judgments.
 #' 
-#' @param idlist integer vector with judgments' IDs
+#' @param x An object used to select a method.
 #' 
-#' @return data.frame with rows corresponding to judgments, or NA if none
-#'  judgment is available
-#'  
+#' @return A list with elements corresponding to judgments, as returned from API.
+#' 
 #' @examples \donttest{
+#' ## From list of IDs
 #' # single ID
-#' get_judgments(128334)
+#' judgments1 <- get_judgments(1)
 #' 
 #' # vector of IDs 
-#' get_judgments(c(128334, 77354))
+#' judgments2 <- get_judgments(c(1, 100))
 #' 
 #' # vector of IDs with non-existent judgment
-#' get_judgments(c(128334, 1, 77354))
+#' judgments3 <- get_judgments(c(128334, 1, 100))
+#' 
+#' 
+#' ## From search results
+#' search <- search_judgments(limit = 10, progress = FALSE)
+#' judgments4 <- get_judgments(search)
 #'  }
 #'  
 #' @export
 
-get_judgments <- function(idlist){
-  idlist <- sort(unique(idlist))
+get_judgments <- function(x) UseMethod("get_judgments")
+
+
+# default method
+#' @export
+get_judgments.default <- function(x){
+  stop("get_judgments accept arguments of class 'saos_search' or numeric vectors.")
+}
+
+#' @describeIn get_judgments Download judgments, if available, with IDs from a 
+#'   given vector. If judgment is not available (meaning it doesn't exist in
+#'   database) it will be skipped and warning will be generated.
+#' 
+#' @export
+
+get_judgments.numeric <- function(x){
+  idlist <- sort(unique(x))
   url <- "https://saos-test.icm.edu.pl/api/judgments/"
   links <- paste0(url, idlist)
-  result <- lapply(links, function(link){
-    response <- get_response_if_available(link)
-    if (is.null(response)){
-      NA
-    } else {
-      extract_judgments(response)
-    }
-  })
-  result <- do.call(rbind, result)
-  result$id <- idlist
+  result <- lapply(links, get_response_if_available)
+  
+  # skip NULLs
+  nulls <- sapply(result, is.null)
+  message("Following ID don't exist: \n", idlist[nulls])
+  result <- result[!nulls]
   result
 }
 
 
+#' @describeIn get_judgments Get details of all judgments in given search 
+#'   results.
+#' 
+#' @export
+
+get_judgments.saos_search <- function(x){
+  links <- sapply(x, `[[`, "href")
+  result <- lapply(links, get_response)
+  result
+}
+
+
+
+
+
+
+#########
 
 get_response_if_available <- function(link){
   tryCatch(get_response(link), http_404 = function(x) NULL)

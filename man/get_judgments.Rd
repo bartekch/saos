@@ -2,30 +2,50 @@
 % Please edit documentation in R/get_judgments.R
 \name{get_judgments}
 \alias{get_judgments}
-\title{Get judgments with given IDs}
+\alias{get_judgments.numeric}
+\alias{get_judgments.saos_search}
+\title{Get all data about judgments}
 \usage{
-get_judgments(idlist)
+get_judgments(x)
+
+\method{get_judgments}{numeric}(x)
+
+\method{get_judgments}{saos_search}(x)
 }
 \arguments{
-\item{idlist}{integer vector with judgments' IDs}
+\item{x}{An object used to select a method.}
 }
 \value{
-data.frame with rows corresponding to judgments, or NA if none
- judgment is available
+A list with elements corresponding to judgments, as returned from API.
 }
 \description{
-Get all judgments, if available, with IDs from a given vector
+Get_judgments will download all information available about given judgments.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{numeric}: Download judgments, if available, with IDs from a
+  given vector. If judgment is not available (meaning it doesn't exist in
+  database) it will be skipped and warning will be generated.
+
+\item \code{saos_search}: Get details of all judgments in given search
+  results.
+}}
 \examples{
 \donttest{
+## From list of IDs
 # single ID
-get_judgments(128334)
+judgments1 <- get_judgments(1)
 
 # vector of IDs
-get_judgments(c(128334, 77354))
+judgments2 <- get_judgments(c(1, 100))
 
 # vector of IDs with non-existent judgment
-get_judgments(c(128334, 1, 77354))
+judgments3 <- get_judgments(c(128334, 1, 100))
+
+
+## From search results
+search <- search_judgments(limit = 10, progress = FALSE)
+judgments4 <- get_judgments(search)
  }
 }
 
