@@ -167,5 +167,6 @@ search_judgments <- function(all  = NULL, legalBase  = NULL,
   
   message("Number of records downloaded: ", length(judgments))
   
+  class(judgments) <- c("saos_search", class(judgments))
   judgments
 }
