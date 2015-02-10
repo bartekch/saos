@@ -23,8 +23,8 @@
 #' @param scChamberName Character. Search for supreme court chamber name.
 #' @param scDivisionId Positive integer. Search for supreme court chamber division ID.
 #' @param scDivisionName Character. Search for supreme court chamber division name.
-#' @param judgmentTypes Character, one from DECISION, RESOLUTION, SENTENCE, 
-#'   REGULATION, REASONS. Search for judgments type.
+#' @param judgmentTypes Character vector, subset of DECISION, RESOLUTION, 
+#'   SENTENCE, REGULATION, REASONS. Search for judgments type.
 #' @param keywords Character. Search for keywords of judgments.
 #' @param judgmentDateFrom Any date/time object that could be properly converted
 #'   with \code{as.POSIXct}, or a string in a format "\%Y-\%m-\%d".Represents 
@@ -43,6 +43,7 @@
 #'   
 #' @section Query details:
 #' All parameters are case insensitive.
+#' 
 #' A few parameters (\code{"all", "legalBase", "referencedRegulation"}) support 
 #'   advanced query parsing:
 #'   \itemize{
@@ -67,5 +68,10 @@
 #'  use a single element for every word). For example
 #'  \code{list(include = c("dobra osobiste", "kodeks karny"), exclude = "kodeks cywilny")}
 #'   will turn to \code{"dobra osobiste OR kodeks karny -\\"kodeks cywilny\\""}.
+#' 
+#' Another special parameter is \code{judgmentTypes}. It accepts a character 
+#'  vector with any subset of set \{"DECISION", "RESOLUTION", "SENTENCE",
+#'  "REGULATION", "REASONS"\}. API will return judgments with type matching 
+#'  anyone from the given vector.
 #'  
 

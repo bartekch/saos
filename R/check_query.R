@@ -42,10 +42,12 @@ check_query <- function(query){
                                          "SEVEN_PERSON", "ALL_COURT", "ALL_CHAMBER",
                                          "JOINED_CHAMBERS"))
   }
+  
+  # parse judgmentType
   if (!is.null(query$judgmentTypes)){
-    query$judgmentTypes <- match.arg(toupper(query$judgmentTypes),
-                                     c("DECISION", "RESOLUTION", "SENTENCE",
-                                       "REGULATION", "REASONS"))
+    tmp <- sapply(query$judgmentTypes, match.arg, 
+                  c("DECISION", "RESOLUTION", "SENTENCE", "REGULATION", "REASONS"))
+    query$judgmentTypes <- paste(tmp, collapse = ",")
   }
   
   # check arguments with query language
