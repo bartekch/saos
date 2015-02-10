@@ -2,15 +2,20 @@
 % Please edit documentation in R/open_judgments.R
 \name{open_judgments}
 \alias{open_judgments}
+\alias{open_judgments.numeric}
+\alias{open_judgments.saos_search}
 \title{Open SAOS judgments' pages}
 \usage{
-open_judgments(judgments, limit = 5)
+open_judgments(x, limit = 5)
+
+\method{open_judgments}{numeric}(x, limit = 5)
+
+\method{open_judgments}{saos_search}(x, limit = 5)
 }
 \arguments{
-\item{judgments}{Data frame of search results, as returned from
-\code{\link{search_judgments}} or \code{\link{get_judgments}}.}
+\item{x}{An object used to select a method.}
 
-\item{limit}{Limit the number of opened pages.}
+\item{limit}{Integer. Limit the number of opened pages.}
 }
 \value{
 (Invisibly) Vector of character strings with URLs of abstracts opened.
@@ -18,9 +23,20 @@ open_judgments(judgments, limit = 5)
 \description{
 Open in web browser SAOS pages for given judgments.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{numeric}: Open in web browser SAOS pages for judgments with
+given IDs.
+
+\item \code{saos_search}: Open in web browser SAOS pages for judgments with
+from the given search results.
+}}
 \examples{
 \donttest{
-judgments <- search_judgments()
+
+open_judgments(1:3)
+
+judgments <- search_judgments(limit = 5, verbose = FALSE)
 open_judgments(judgments)
  }
 }
