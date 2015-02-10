@@ -11,8 +11,7 @@ count_judgments(all = NULL, legalBase = NULL, referencedRegulation = NULL,
   ccDivisionName = NULL, scPersonnelType = NULL, scChamberId = NULL,
   scChamberName = NULL, scDivisionId = NULL, scDivisionName = NULL,
   judgmentTypes = NULL, keywords = NULL, judgmentDateFrom = NULL,
-  judgmentDateTo = NULL, sortingField = "DATABASE_ID",
-  sortingDirection = "ASC")
+  judgmentDateTo = NULL, sortingField = NULL, sortingDirection = NULL)
 }
 \arguments{
 \item{all}{Character vector or a list, see "Query details" section. Search

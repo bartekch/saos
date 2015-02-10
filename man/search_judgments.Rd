@@ -11,9 +11,8 @@ search_judgments(all = NULL, legalBase = NULL,
   ccDivisionCode = NULL, ccDivisionName = NULL, scPersonnelType = NULL,
   scChamberId = NULL, scChamberName = NULL, scDivisionId = NULL,
   scDivisionName = NULL, judgmentTypes = NULL, keywords = NULL,
-  judgmentDateFrom = NULL, judgmentDateTo = NULL,
-  sortingField = "DATABASE_ID", sortingDirection = "ASC", limit = NULL,
-  force = FALSE, progress = TRUE)
+  judgmentDateFrom = NULL, judgmentDateTo = NULL, sortingField = NULL,
+  sortingDirection = NULL, limit = NULL, force = FALSE, progress = TRUE)
 }
 \arguments{
 \item{all}{Character vector or a list, see "Query details" section. Search

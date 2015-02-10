@@ -14,7 +14,8 @@ check_query <- function(query){
   query$scDivisionId <- check_natural(query$scDivisionId)
   
   # checking sort
-  query$sortingField <- match.arg(toupper(query$sortingField),
+  if (!is.null(query$sortingField)){
+    query$sortingField <- match.arg(toupper(query$sortingField),
                                   c("DATABASE_ID", "JUDGMENT_DATE", "CASE_NUMBER",
                                     "CC_COURT_TYPE", "CC_COURT_ID", "CC_COURT_CODE",
                                     "CC_COURT_NAME", "CC_COURT_DIVISION_ID",
@@ -23,7 +24,10 @@ check_query <- function(query){
                                     "SC_COURT_DIVISION_ID", "SC_COURT_DIVISION_NAME",
                                     "SC_COURT_DIVISIONS_CHAMBER_ID",
                                     "SC_COURT_DIVISIONS_CHAMBER_NAME"))
-  query$sortingDirection <- match.arg(toupper(query$sortingDirection), c("ASC", "DESC"))
+  }
+  if (!is.null(query$sortingDirection)){
+    query$sortingDirection <- match.arg(toupper(query$sortingDirection), c("ASC", "DESC"))
+  }
   
   # check arguments with predefined list of values and single value allowed only
   if (!is.null(query$courtType)){

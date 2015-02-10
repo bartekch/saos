@@ -97,8 +97,8 @@ search_judgments <- function(all  = NULL, legalBase  = NULL,
                              scDivisionId  = NULL, scDivisionName  = NULL, 
                              judgmentTypes  = NULL, keywords  = NULL, 
                              judgmentDateFrom  = NULL, judgmentDateTo  = NULL,
-                             sortingField = "DATABASE_ID", 
-                             sortingDirection = "ASC",
+                             sortingField = NULL, 
+                             sortingDirection = NULL,
                              limit = NULL, force = FALSE, progress = TRUE){
   
   query <- list(all  =  all, 
