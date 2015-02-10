@@ -26,33 +26,66 @@ get_limited_items <- function(url, limit = NULL, query = NULL,
   
   if (is.null(limit)) limit <- Inf
   
-  if (progress) pb <- txtProgressBar(style = 3)
-  
-  response <- get_response(url, query, simplify)
-  items <- simp_fun(response$items)
-  next_page <- extract_link(response)
-  number <- length(items)
-  
-  if (progress) setTxtProgressBar(pb, min(1, number / limit))
-  
-  while (!is.null(next_page) & (number < limit)){
-    response <- get_response(next_page, simplify = simplify)
-    if (simplify){
-      items <- rbind(items, simp_fun(response$items))
-    } else {
-      items <- c(items, response$items)
-    }
-    number <- length(items)
-    if (progress) setTxtProgressBar(pb, min(1, number / limit))
+  if (is.finite(limit) & !simplify) {
+    print("lol")
+    if (progress) pb <- txtProgressBar(style = 3)
+    
+    items <- vector("list", limit)
+    
+    response <- get_response(url, query, simplify)
+    tmp <- response$items
+    items[seq_along(tmp)] <- tmp
+    print(tracemem(items[[1]]))
     next_page <- extract_link(response)
+    number <- length(tmp)
+    
+    if (progress) setTxtProgressBar(pb, min(1, number / limit))
+    
+    while (!is.null(next_page) & (number < limit)){
+      response <- get_response(next_page, simplify = simplify)
+      tmp <- response$items
+      items[number + seq_along(tmp)] <- tmp
+      print(tracemem(items[[1]]))
+      number <- number + length(tmp)
+      
+      if (progress) setTxtProgressBar(pb, min(1, number / limit))
+      next_page <- extract_link(response)
+    }
+    if (progress) close(pb)
+    
+    # reduce number of results to limit
+    if (number > limit){
+      items <- items[1:limit]
+    }
+    
+  } else {
+    if (progress) pb <- txtProgressBar(style = 3)
+    
+    response <- get_response(url, query, simplify)
+    items <- simp_fun(response$items)
+    next_page <- extract_link(response)
+    number <- length(items)
+    
+    if (progress) setTxtProgressBar(pb, min(1, number / limit))
+    
+    while (!is.null(next_page) & (number < limit)){
+      response <- get_response(next_page, simplify = simplify)
+      if (simplify){
+        items <- rbind(items, simp_fun(response$items))
+      } else {
+        items <- c(items, response$items)
+      }
+      number <- length(items)
+      if (progress) setTxtProgressBar(pb, min(1, number / limit))
+      next_page <- extract_link(response)
+    }
+    if (progress) close(pb)
+    
+    # reduce number of results to limit
+    if (number > limit){
+      items <- items[1:limit]
+    }
   }
-  if (progress) close(pb)
-  
-  # reduce number of results to limit
-  if (number > limit){
-    items <- items[1:limit]
-  }
-  
   if (simplify & flatten) items <- jsonlite::flatten(items)
   items
 }
@@ -65,23 +98,23 @@ get_all_items <- function(url, query = NULL, simplify = FALSE, flatten = FALSE,
   get_limited_items(url, limit = NULL, query = query, 
                     simplify = simplify, flatten = flatten, 
                     simp_fun = simp_fun)
-#   if (is.null(simp_fun)) simp_fun <- base::identity
-#   
-#   response <- get_response(url, query, simplify)
-#   
-#   items <- simp_fun(response$items)
-#   next_page <- extract_link(response)
-#   while (!is.null(next_page)){
-#     response <- get_response(next_page, simplify = simplify)
-#     if (simplify){
-#       items <- rbind(items, simp_fun(response$items))
-#     } else {
-#       items <- c(items, response$items)
-#     }
-#     next_page <- extract_link(response)
-#   }
-#   if (simplify & flatten) items <- jsonlite::flatten(items)
-#   items
+  #   if (is.null(simp_fun)) simp_fun <- base::identity
+  #   
+  #   response <- get_response(url, query, simplify)
+  #   
+  #   items <- simp_fun(response$items)
+  #   next_page <- extract_link(response)
+  #   while (!is.null(next_page)){
+  #     response <- get_response(next_page, simplify = simplify)
+  #     if (simplify){
+  #       items <- rbind(items, simp_fun(response$items))
+  #     } else {
+  #       items <- c(items, response$items)
+  #     }
+  #     next_page <- extract_link(response)
+  #   }
+  #   if (simplify & flatten) items <- jsonlite::flatten(items)
+  #   items
 }
 
 # function extracting link for the next page from current response
