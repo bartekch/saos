@@ -70,6 +70,8 @@ check_query <- function(query){
   query$scDivisionName <- check_arg(query$scDivisionName)
   query$keywords <- check_arg(query$keywords)
   
+  # skip NULLs
+  query <- query[!sapply(query, is.null)]
   return(query)
 }
 

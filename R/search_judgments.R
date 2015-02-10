@@ -9,7 +9,8 @@
 #' @template query_param 
 #' @param limit Limit the number of search results.
 #' @param force If TRUE, force search request even if it seems extreme.
-#' @param progress Logical. If \code{TRUE} a progress bar shows up.
+#' @param verbose Logical. If \code{TRUE} details of searching are printed to 
+#'   the screen.
 #' 
 #' @return List of judgments as returned from API.
 #' 
@@ -99,7 +100,7 @@ search_judgments <- function(all  = NULL, legalBase  = NULL,
                              judgmentDateFrom  = NULL, judgmentDateTo  = NULL,
                              sortingField = NULL, 
                              sortingDirection = NULL,
-                             limit = NULL, force = FALSE, progress = TRUE){
+                             limit = NULL, force = FALSE, verbose = TRUE){
   
   query <- list(all  =  all, 
                 legalBase  =  legalBase, 
@@ -133,7 +134,7 @@ search_judgments <- function(all  = NULL, legalBase  = NULL,
   
   # check number of results  
   if (count == 0){
-    message("No search results.")
+    if (verbose) message("No search results.")
     return(NULL)
   }
   
@@ -144,28 +145,34 @@ search_judgments <- function(all  = NULL, legalBase  = NULL,
   # check limit size
   if (limit < 0) stop("Limit should be non-negative.")
   if (limit == 0){
-    message("Limit is set to 0, no results.")
+    warning("Limit is set to 0, no results.", call. = FALSE)
     return(NULL)
   }
   
   # check for extreme number of results    
   if ((limit > 200) & !force){
-    message("Pulling down only 200 out of expected ", limit, " results. If you ",
-            "are sure to pull down everything use force = TRUE")
+    warning("Pulling down only 200 out of expected ", limit, " results. If you ",
+            "are sure to pull down everything use force = TRUE", call. = FALSE)
     limit <- 200
   }
   
+  # print final version of query
+  if (verbose) {
+    message("Version of query sent to API:\n", 
+            paste(paste(names(query), query, sep = "="), collapse = "&"))
+  }
+
   # prepare link to API
   query <- c(query, pageSize = 100)
   url <- "https://saos-test.icm.edu.pl/api/search/judgments"
   
   # get results
-  message("Number of records expected: ", count)
+  if (verbose) message("Number of records expected: ", count)
 
   judgments <- get_limited_items(url, query = query, limit = limit, 
-                                 progress = progress)
+                                 progress = verbose)
   
-  message("Number of records downloaded: ", length(judgments))
+  if (verbose) message("Number of records downloaded: ", length(judgments))
   
   class(judgments) <- c("saos_search", class(judgments))
   judgments

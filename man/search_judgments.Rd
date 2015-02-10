@@ -12,7 +12,7 @@ search_judgments(all = NULL, legalBase = NULL,
   scChamberId = NULL, scChamberName = NULL, scDivisionId = NULL,
   scDivisionName = NULL, judgmentTypes = NULL, keywords = NULL,
   judgmentDateFrom = NULL, judgmentDateTo = NULL, sortingField = NULL,
-  sortingDirection = NULL, limit = NULL, force = FALSE, progress = TRUE)
+  sortingDirection = NULL, limit = NULL, force = FALSE, verbose = TRUE)
 }
 \arguments{
 \item{all}{Character vector or a list, see "Query details" section. Search
@@ -85,7 +85,8 @@ SC_COURT_DIVISIONS_CHAMBER_ID, SC_COURT_DIVISIONS_CHAMBER_NAME.}
 
 \item{force}{If TRUE, force search request even if it seems extreme.}
 
-\item{progress}{Logical. If \code{TRUE} a progress bar shows up.}
+\item{verbose}{Logical. If \code{TRUE} details of searching are printed to
+  the screen.}
 }
 \value{
 List of judgments as returned from API.
