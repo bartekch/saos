@@ -50,6 +50,7 @@ get_judgments.numeric <- function(x){
   nulls <- sapply(result, is.null)
   message("Following ID don't exist: \n", idlist[nulls])
   result <- result[!nulls]
+  class(result) <- c("saos_judgments", "list")
   result
 }
 
@@ -62,6 +63,7 @@ get_judgments.numeric <- function(x){
 get_judgments.saos_search <- function(x){
   links <- sapply(x, `[[`, "href")
   result <- lapply(links, get_response)
+  class(result) <- c("saos_judgments", "list")
   result
 }
 
