@@ -44,12 +44,18 @@ get_judgments.numeric <- function(x){
   idlist <- sort(unique(x))
   url <- "https://saos-test.icm.edu.pl/api/judgments/"
   links <- paste0(url, idlist)
-  result <- lapply(links, get_response_if_available)
+  result <- lapply(links, function(link) {
+    response <- get_response_if_available(link)
+    response$data
+    })
   
   # skip NULLs
   nulls <- sapply(result, is.null)
-  message("Following ID don't exist: \n", idlist[nulls])
-  result <- result[!nulls]
+  if (any(nulls)) {
+    message("Following ID don't exist: \n", idlist[nulls])
+    result <- result[!nulls]
+  }
+  
   class(result) <- c("saos_judgments", "list")
   result
 }
@@ -62,7 +68,10 @@ get_judgments.numeric <- function(x){
 
 get_judgments.saos_search <- function(x){
   links <- sapply(x, `[[`, "href")
-  result <- lapply(links, get_response)
+  result <- lapply(links, function(link) {
+    response <- get_response(link)
+    response$data
+    })
   class(result) <- c("saos_judgments", "list")
   result
 }
