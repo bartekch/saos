@@ -41,6 +41,7 @@ get_judgments.default <- function(x){
 #' @export
 
 get_judgments.numeric <- function(x){
+  x <- check_idlist(x)
   idlist <- sort(unique(x))
   url <- "https://saos-test.icm.edu.pl/api/judgments/"
   links <- paste0(url, idlist)
@@ -86,3 +87,14 @@ get_judgments.saos_search <- function(x){
 get_response_if_available <- function(link){
   tryCatch(get_response(link), http_404 = function(x) NULL)
 }
+
+
+check_idlist <- function(x) {
+  if (any(x <= 0)) 
+    stop("All id's have to be positive integers.", call. = FALSE)
+  
+  if (any(abs(x - round(x)) > .Machine$double.eps^0.5))
+    stop("All id's have to be positive integers.", call. = FALSE)
+  x
+}
+  

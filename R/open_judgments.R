@@ -31,6 +31,7 @@ open_judgments.default <- function(x, limit){
 #'   given IDs.
 #' @export
 open_judgments.numeric <- function(x, limit = 5){
+  x <- check_idlist(x)
   stopifnot(limit >= 1)
   links <- paste("https://saos-test.icm.edu.pl/judgments/", x, sep = "")
     
