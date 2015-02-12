@@ -12,7 +12,8 @@ License: GPL-2
 LazyData: true
 Imports:
     jsonlite,
-    httr
+    httr,
+    dplyr
 Suggests:
     knitr
 VignetteBuilder: knitr

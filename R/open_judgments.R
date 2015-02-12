@@ -22,7 +22,7 @@ open_judgments <- function(x, limit = 5) UseMethod("open_judgments")
 
 # default method
 #' @export
-open_judgments.default <- function(x){
+open_judgments.default <- function(x, limit){
   stop("open_judgments accept arguments of class 'saos_search' or numeric vectors.")
 }
 
