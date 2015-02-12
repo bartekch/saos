@@ -2,31 +2,91 @@
 % Please edit documentation in R/extract.R
 \name{extract}
 \alias{extract}
-\title{Extract information from search results}
+\alias{extract.saos_judgments}
+\alias{extract.saos_search}
+\title{Extract information from judgments' list}
 \usage{
-extract(results, element = c("id", "caseNumber", "judges", "judgmentType",
-  "textContent", "keywords", "division", "judgmentDate"))
+extract(x, element)
+
+\method{extract}{saos_search}(x, element)
+
+\method{extract}{saos_judgments}(x, element)
 }
 \arguments{
-\item{results}{list, result of searching}
+\item{x}{An object used to select a method.}
 
-\item{element}{Piece of information to extract}
+\item{element}{Name of element to extract, see Details.}
 }
 \value{
-data.frame with specific information
+A data.frame with first column indicating ID of judgment and the rest
+  depending on which element was extracted, see Details.
 }
 \description{
-Extrac specific elements
+Extract as a data frame specific elements from judgements' list as returned
+  from \code{\link{search_judgments}} or \code{\link{get_judgments}}.
 }
 \details{
-Elements:
-id
-caseNumber
-judges
-judgmentType
-textContent
-keywords
-division
-judgmentDate
+Available elements for all methods are:
+\itemize{
+ \item id,
+ \item href,
+ \item courtCases,
+ \item judgmentType,
+ \item judges,
+ \item textContent,
+ \item keywords,
+ \item division,
+ \item judgmentDate.
+ }
+ Additionally for class \code{saos_judgments} there are more elements:
+ \itemize{
+ \item courtType,
+ \item source,
+ \item courtReporters,
+ \item decision,
+ \item summary,
+ \item legalBases,
+ \item referencedRegulations,
+ \item referencedCourtCases.
+ }
+
+Data frame with data for all given judgments is always returned. If there is
+  no data, a row with only \code{NA} (except for id) is insertes in the data
+  frame. Data frames are always in long format, for example when one judge
+  has a few roles, his name is multiplied accordingly.
+}
+\section{Methods (by class)}{
+\itemize{
+\item \code{saos_search}: Extract data from list of results from
+  \code{\link{search_judgments}}.
+
+\item \code{saos_judgments}: Extract data from list of judgments from
+  \code{\link{get_judgments}}.
+}}
+\examples{
+\donttest{
+saos_search <- search_judgments(limit = 150, verbose = FALSE)
+saos_judgments <- get_judgments(saos_search)
+
+# for class "saos_search"
+judges <- extract(saos_search, "judges")
+dim(judges)
+names(judges)
+
+divisions <- extract(saos_search, "division")
+dim(divisions)
+names(divisions)
+
+
+# for class "saos_judgments"
+sources < extract(saos_judgments, "source")
+dim(sources)
+names(sources)
+
+ref_reg <- extract(saos_judgments, "referencedRegulations")
+dim(ref_reg)
+names(ref_reg)
+
+}
 }
 
