@@ -3,6 +3,7 @@
 #' Get_judgments will download all information available about given judgments.
 #' 
 #' @param x An object used to select a method.
+#' @param verbose Logical. Whether or not display progress bar.
 #' 
 #' @return A list with elements corresponding to judgments, as returned from API.
 #' 
@@ -19,20 +20,25 @@
 #' 
 #' 
 #' ## From search results
-#' search <- search_judgments(limit = 10, progress = FALSE)
+#' search <- search_judgments(limit = 10, verbose = FALSE)
 #' judgments4 <- get_judgments(search)
 #'  }
 #'  
 #' @export
 
-get_judgments <- function(x) UseMethod("get_judgments")
+get_judgments <- function(x, verbose = TRUE) UseMethod("get_judgments")
 
 
 # default method
 #' @export
-get_judgments.default <- function(x){
+get_judgments.default <- function(x, verbose){
   stop("get_judgments accept arguments of class 'saos_search' or numeric vectors.")
 }
+
+
+
+
+
 
 #' @describeIn get_judgments Download judgments, if available, with IDs from a 
 #'   given vector. If judgment is not available (meaning it doesn't exist in
@@ -40,21 +46,35 @@ get_judgments.default <- function(x){
 #' 
 #' @export
 
-get_judgments.numeric <- function(x){
+get_judgments.numeric <- function(x, verbose = TRUE){
   x <- check_idlist(x)
   idlist <- sort(unique(x))
   url <- "https://saos-test.icm.edu.pl/api/judgments/"
   links <- paste0(url, idlist)
-  result <- lapply(links, function(link) {
-    response <- get_response_if_available(link)
-    response$data
-    })
   
-  # skip NULLs
-  nulls <- sapply(result, is.null)
+  l <- length(x)
+  result <- vector("list", l)
+  nulls <- logical(l)
+  
+  if (verbose) pb <- txtProgressBar(style = 3)
+  
+  for (i in seq(l)) {
+    response <- get_response_if_available(links[i])
+    if (is.null(response)){
+      result[[i]] <- NULL
+      nulls[i] <- TRUE
+    } else {
+      result[[i]] <- response$data
+    }
+    if (verbose) setTxtProgressBar(pb, i / l)
+  }
+  
+  if (verbose) close(pb)
+  
+  # message about NULLs
   if (any(nulls)) {
-    message("Following ID don't exist: \n", idlist[nulls])
-    result <- result[!nulls]
+    message("Following IDs don't exist: \n", 
+            paste(idlist[nulls], collapse = ", "))
   }
   
   class(result) <- c("saos_judgments", "list")
@@ -62,17 +82,30 @@ get_judgments.numeric <- function(x){
 }
 
 
+
+
+
+
 #' @describeIn get_judgments Get details of all judgments in given search 
 #'   results.
 #' 
 #' @export
 
-get_judgments.saos_search <- function(x){
+get_judgments.saos_search <- function(x, verbose = TRUE){
   links <- sapply(x, `[[`, "href")
-  result <- lapply(links, function(link) {
-    response <- get_response(link)
-    response$data
-    })
+  l <- length(x)
+  result <- vector("list", l)
+  
+  if (verbose) pb <- txtProgressBar(style = 3)
+  
+  for (i in seq(l)) {
+    response <- get_response(links[i])
+    result[[i]] <- response$data
+    if (verbose) setTxtProgressBar(pb, i / l)
+  }
+  
+  if (verbose) close(pb)
+  
   class(result) <- c("saos_judgments", "list")
   result
 }

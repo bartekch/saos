@@ -6,14 +6,16 @@
 \alias{get_judgments.saos_search}
 \title{Get all data about judgments}
 \usage{
-get_judgments(x)
+get_judgments(x, verbose = TRUE)
 
-\method{get_judgments}{numeric}(x)
+\method{get_judgments}{numeric}(x, verbose = TRUE)
 
-\method{get_judgments}{saos_search}(x)
+\method{get_judgments}{saos_search}(x, verbose = TRUE)
 }
 \arguments{
 \item{x}{An object used to select a method.}
+
+\item{verbose}{Logical. Whether or not display progress bar.}
 }
 \value{
 A list with elements corresponding to judgments, as returned from API.
@@ -44,7 +46,7 @@ judgments3 <- get_judgments(c(128334, 1, 100))
 
 
 ## From search results
-search <- search_judgments(limit = 10, progress = FALSE)
+search <- search_judgments(limit = 10, verbose = FALSE)
 judgments4 <- get_judgments(search)
  }
 }
