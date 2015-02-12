@@ -65,8 +65,8 @@ Data frame with data for all given judgments is always returned. If there is
 }}
 \examples{
 \donttest{
-saos_search <- search_judgments(limit = 150, verbose = FALSE)
-saos_judgments <- get_judgments(saos_search)
+saos_search <- search_judgments(limit = 50, verbose = FALSE)
+saos_judgments <- get_judgments(saos_search, verbose = FALSE)
 
 # for class "saos_search"
 judges <- extract(saos_search, "judges")
@@ -79,7 +79,7 @@ names(divisions)
 
 
 # for class "saos_judgments"
-sources < extract(saos_judgments, "source")
+sources <- extract(saos_judgments, "source")
 dim(sources)
 names(sources)
 

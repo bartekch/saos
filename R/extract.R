@@ -39,8 +39,8 @@
 #'   depending on which element was extracted, see Details.
 #'  
 #' @examples \donttest{
-#' saos_search <- search_judgments(limit = 150, verbose = FALSE)
-#' saos_judgments <- get_judgments(saos_search)
+#' saos_search <- search_judgments(limit = 50, verbose = FALSE)
+#' saos_judgments <- get_judgments(saos_search, verbose = FALSE)
 #' 
 #' # for class "saos_search"
 #' judges <- extract(saos_search, "judges")
@@ -53,7 +53,7 @@
 #' 
 #' 
 #' # for class "saos_judgments"
-#' sources < extract(saos_judgments, "source")
+#' sources <- extract(saos_judgments, "source")
 #' dim(sources)
 #' names(sources)
 #' 
@@ -205,9 +205,9 @@ extract_keywords <- function(x) {
 }
 
 extract_division <- function(x) {
-  df_na <- data.frame(name = NA, href = NA, code = NA, type = NA)
+  df_na <- data.frame(id = NA, name = NA, href = NA, code = NA, type = NA)
   result <- extractor_df(x, "division", df_na)
-  names(result)[2] <- "division.id"
+  names(result)[which(names(result) == "id.1")] <- "division.id"
   result
 }
 
