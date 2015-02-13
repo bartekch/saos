@@ -17,6 +17,7 @@
 #' @template dump_param
 #' @param flatten Logical, works only if \code{simplify = TRUE}. If \code{TRUE}
 #'   resulting \code{data.frame} will be flattened (with \code{jsonlite::flatten}).
+#' @param verbose Logical. Whether or not display progress bar.
 #'   
 #' @return If \code{simplify = FALSE} the list of judgments as returned 
 #'   from API. Every element of the list represents one judgment and has the 
@@ -102,7 +103,7 @@
 
 get_dump_judgments <- function(start_date = NULL, end_date = NULL,
                                modification_date = NULL, simplify = FALSE,
-                               flatten = simplify){
+                               flatten = simplify, verbose = TRUE){
   url <- "https://saos-test.icm.edu.pl/api/dump/judgments/"
   
   # check arguments
@@ -110,17 +111,29 @@ get_dump_judgments <- function(start_date = NULL, end_date = NULL,
   end_date <- check_date(end_date)
   modification_date <- check_date(modification_date, 
                                   format = "%Y-%m-%dT%H:%M:%S")
-  if (!is.null(modification_date))
+  if (!is.null(modification_date)) {
     modification_date <- paste0(modification_date, ".000")
+    if (verbose) {
+      warning("Cannot estimate the size of results set when modification_date is given",
+              call. = FALSE)
+      verbose <- FALSE
+    }
+  }
   
+  number <- if (verbose)  { 
+    count_judgments(judgmentDateFrom = start_date, judgmentDateTo = end_date)
+  } else { NULL }
+    
   # prepare link to API
   query <- list(pageSize = 100, judgmentStartDate = start_date, 
              judgmentEndDate = end_date,
              sinceModificationDate = modification_date)
   
   # get results
+  if (verbose) message(number, " judgments to download.\n")
   judgments <- get_all_items(url, query = query, simplify = simplify,
-                             flatten = flatten)
+                             flatten = flatten, verbose = verbose, 
+                             number = number)
   
   # simplify courtcases
   if (simplify) judgments$courtCases <- unlist(judgments$courtCases)

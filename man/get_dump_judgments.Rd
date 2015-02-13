@@ -6,7 +6,8 @@
 \title{Download all judgments}
 \usage{
 get_dump_judgments(start_date = NULL, end_date = NULL,
-  modification_date = NULL, simplify = FALSE, flatten = simplify)
+  modification_date = NULL, simplify = FALSE, flatten = simplify,
+  verbose = TRUE)
 }
 \arguments{
 \item{start_date}{Any date/time object that could be properly converted with
@@ -28,7 +29,9 @@ time. If missing, no time limit is set.}
 \code{data.frame}.}
 
 \item{flatten}{Logical, works only if \code{simplify = TRUE}. If \code{TRUE}
-  resulting \code{data.frame} will be flattened (with \code{jsonlite::flatten}).}
+resulting \code{data.frame} will be flattened (with \code{jsonlite::flatten}).}
+
+\item{verbose}{Logical. Whether or not display progress bar.}
 }
 \value{
 If \code{simplify = FALSE} the list of judgments as returned

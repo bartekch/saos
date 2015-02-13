@@ -61,10 +61,10 @@ get_limited_items <- function(url, limit = NULL, query = NULL,
 
 # function downloading all possible pages for a given response
 get_all_items <- function(url, query = NULL, simplify = FALSE, flatten = FALSE,
-                          simp_fun = NULL){
-  get_limited_items(url, limit = NULL, query = query, 
+                          simp_fun = NULL, verbose = FALSE, number = NULL){
+  get_limited_items(url, limit = number, query = query, 
                     simplify = simplify, flatten = flatten, 
-                    simp_fun = simp_fun)
+                    simp_fun = simp_fun, progress = verbose)
 #   if (is.null(simp_fun)) simp_fun <- base::identity
 #   
 #   response <- get_response(url, query, simplify)
