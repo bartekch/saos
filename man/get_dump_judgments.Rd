@@ -86,6 +86,9 @@ If \code{simplify = FALSE} the list of judgments as returned
  If \code{simplify = TRUE} a \code{data.frame} as described in
    TODO is returned. If also \code{flatten = TRUE}, a \code{data.frame} will
    be flattened.
+ WARNING - when \code{simplify = TRUE} the resulting data frame has not
+   always the same structure. In particular some columns may be lists or
+   atomic vectors.
 }
 \description{
 Download the list of all judgments within (and including) given dates.

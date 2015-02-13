@@ -71,6 +71,9 @@
 #'  If \code{simplify = TRUE} a \code{data.frame} as described in 
 #'    TODO is returned. If also \code{flatten = TRUE}, a \code{data.frame} will
 #'    be flattened.
+#'  WARNING - when \code{simplify = TRUE} the resulting data frame has not 
+#'    always the same structure. In particular some columns may be lists or 
+#'    atomic vectors. 
 #'    
 #' @examples 
 #' \dontrun{
@@ -138,6 +141,9 @@ get_dump_judgments <- function(start_date = NULL, end_date = NULL,
   # simplify courtcases
   if (simplify) {
     judgments$courtCases <- unlist(judgments$courtCases)
+    warning("When simplifying the resulting data frame not always has the same ",
+            "structure, double check this when using programmatically.", 
+            call. = FALSE)
   } else {
     class(judgments) <- c("saos_judgments_dump", "list")
   }
