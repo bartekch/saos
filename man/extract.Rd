@@ -51,7 +51,10 @@ Available elements for all methods are:
  \item summary,
  \item legalBases,
  \item referencedRegulations,
- \item referencedCourtCases.
+ \item referencedCourtCases,
+ \item personnelType,
+ \item judgmentForm (\code{saos_judgments}) or form (\code{saos_judgments_dump}),
+ \item chambers.
  }
 
  For class \code{saos_judgments} there is also element "href".

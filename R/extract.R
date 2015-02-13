@@ -28,7 +28,10 @@
 #'  \item summary, 
 #'  \item legalBases,
 #'  \item referencedRegulations,
-#'  \item referencedCourtCases.
+#'  \item referencedCourtCases,
+#'  \item personnelType,
+#'  \item judgmentForm (\code{saos_judgments}) or form (\code{saos_judgments_dump}),
+#'  \item chambers.
 #'  }
 #'  
 #'  For class \code{saos_judgments} there is also element "href".
@@ -126,7 +129,8 @@ extract.saos_judgments <- function(x, element) {
                                   "source", "courtReporters", "decision", 
                                   "summary", "textContent", "legalBases",
                                   "referencedRegulations", "keywords",
-                                  "referencedCourtCases", "division"))
+                                  "referencedCourtCases", "division",
+                                  "personnelType", "judgmentForm", "chambers"))
   ids <- sapply(x, `[[`, "id")
   
   if (element == "id") return(data.frame(id = ids))
@@ -149,7 +153,10 @@ extract.saos_judgments <- function(x, element) {
                  referencedRegulations = extract_refreg(x),
                  referencedCourtCases = extract_refcc(x),
                  keywords = extract_keywords(x),
-                 division = extract_division(x))
+                 division = extract_division(x),
+                 personnelType = extract_personnel(x),
+                 judgmentForm = extract_form(x, "judgmentForm"),
+                 chambers = extract_chambers(x))
   
   # convert IDs to true values 
   info$id <- ids[info$id]
@@ -170,6 +177,7 @@ extract.saos_judgments_dump <- function(x, element) {
                                   "source", "courtReporters", "decision", 
                                   "summary", "textContent", "legalBases",
                                   "referencedRegulations", "keywords",
+                                  "personnelType", "form", "chambers",
                                   "referencedCourtCases", "division"))
   ids <- sapply(x, `[[`, "id")
   
@@ -192,7 +200,10 @@ extract.saos_judgments_dump <- function(x, element) {
                  referencedRegulations = extract_refreg(x),
                  referencedCourtCases = extract_refcc(x),
                  keywords = extract_keywords(x),
-                 division = extract_division(x))
+                 division = extract_division(x),
+                 personnelType = extract_personnel(x),
+                 form = extract_form(x, "form"),
+                 chambers = extract_chambers(x))
   
   # convert IDs to true values 
   info$id <- ids[info$id]
@@ -206,9 +217,14 @@ extract.saos_judgments_dump <- function(x, element) {
 # problem: some fields are very often empty; it could happen than in given
 #  judgments all fields of chosen type are empty. In such case we return data
 #  frame with NA in all rows and columns corresponding to this field, instead
-#  of a data frame with only IDs. It must be coherent - always returns the same
-#  data frame, even if there is no data in it. Therefore we need an empty 
-#  template of a data frame.
+#  of a data frame with only IDs. It must be coherent - for given method
+#  always return the same data frame, even if there is no data in it. 
+#  Therefore we need an empty template of a data frame. 
+# What is more, sometimes the same fields have different structure for different
+#  judgments (difference between supreme and common courts). The solution is to
+#  include always all possible columns. 
+# Another problem is difference in structure between classes. Solution - 
+#  declaring NA template inside method, not in 'extract_' functions. 
 
 extract_id <- function(judgments){
   as.numeric(sapply(judgments, function(x) tail(strsplit(x$href, "/")[[1]], 1)))
@@ -257,7 +273,8 @@ extract_keywords <- function(x) {
 }
 
 extract_division <- function(x) {
-  df_na <- data.frame(id = NA, name = NA, href = NA, code = NA, type = NA)
+  #df_na <- data.frame(id = NA, name = NA, href = NA, code = NA, type = NA)
+  df_na <- data.frame(id = NA)
   result <- extractor_df(x, "division", df_na)
   names(result)[which(names(result) == "id.1")] <- "division.id"
   result
@@ -301,6 +318,22 @@ extract_refreg <- function(x) {
 
 extract_refcc <- function(x) {
   extractor_list(x, "referencedCourtCases")
+}
+
+extract_personnel <- function(x) {
+  extractor_single(x, "personnelType")
+}
+
+extract_form <- function(x, name) {
+  extractor_list(x, name)
+}
+
+extract_chambers <- function(x) {
+  #df_na <- data.frame(id = NA, name = NA, href = NA, code = NA, type = NA)
+  df_na <- data.frame(id = NA)
+  result <- extractor_df(x, "chambers", df_na)
+  names(result)[which(names(result) == "id.1")] <- "chambers.id"
+  result
 }
 
 
