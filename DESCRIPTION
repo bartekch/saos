@@ -15,5 +15,6 @@ Imports:
     httr,
     dplyr
 Suggests:
-    knitr
+    knitr,
+    testthat
 VignetteBuilder: knitr
