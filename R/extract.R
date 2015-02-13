@@ -1,7 +1,8 @@
 #' Extract information from judgments' list
 #' 
 #' Extract as a data frame specific elements from judgements' list as returned
-#'   from \code{\link{search_judgments}} or \code{\link{get_judgments}}.
+#'   from \code{\link{search_judgments}}, \code{\link{get_judgments}} or
+#'   \code{\link{get_dump_judgments}}.
 #'
 #' @param x An object used to select a method.
 #' @param element Name of element to extract, see Details.
@@ -9,7 +10,6 @@
 #' @details Available elements for all methods are:
 #' \itemize{
 #'  \item id,
-#'  \item href,
 #'  \item courtCases,
 #'  \item judgmentType,
 #'  \item judges,
@@ -18,7 +18,8 @@
 #'  \item division,
 #'  \item judgmentDate.
 #'  }
-#'  Additionally for class \code{saos_judgments} there are more elements:
+#'  Additionally for classes \code{saos_judgments} and \code{saos_judgments_dump}
+#'    there are more elements:
 #'  \itemize{
 #'  \item courtType,
 #'  \item source, 
@@ -29,6 +30,8 @@
 #'  \item referencedRegulations,
 #'  \item referencedCourtCases.
 #'  }
+#'  
+#'  For class \code{saos_judgments} there is also element "href".
 #'  
 #' Data frame with data for all given judgments is always returned. If there is
 #'   no data, a row with only \code{NA} (except for id) is insertes in the data
@@ -61,6 +64,13 @@
 #' dim(ref_reg)
 #' names(ref_reg)
 #' 
+#' 
+#' ## for class "saos_judgments_dump"
+#' judgments <- get_dup_judgments(start_date = "2015-01-01", 
+#'                                end_date = "2015-10-01", verbose = FALSE)
+#' court <- extract(judgments, "courtType")
+#' dim(court)
+#' names(court)                                
 #' }
 #' 
 #' @export
@@ -70,7 +80,7 @@ extract <- function(x, element) UseMethod("extract")
 # default function
 #' @export
 extract.default <- function(x, element) {
-  stop("extract accepts arguments of class saos_search and saos_judgments.",
+  stop("extract accepts arguments of class saos_search, saos_judgments or saos_judgments_dump.",
        call. = FALSE)
 }
 
@@ -146,6 +156,48 @@ extract.saos_judgments <- function(x, element) {
   info
 }
 
+
+
+
+
+#' @describeIn extract Extract data from list of judgments from 
+#'   \code{\link{get_dump_judgments}}.
+#' 
+#' @export
+extract.saos_judgments_dump <- function(x, element) {
+  element <- match.arg(element, c("id", "courtType", "courtCases", 
+                                  "judgmentType", "judgmentDate", "judges", 
+                                  "source", "courtReporters", "decision", 
+                                  "summary", "textContent", "legalBases",
+                                  "referencedRegulations", "keywords",
+                                  "referencedCourtCases", "division"))
+  ids <- sapply(x, `[[`, "id")
+  
+  if (element == "id") return(data.frame(id = ids))
+  
+  # extract chosen element
+  # in first column there are always IDs numbered within given search (1,2,...)
+  info <- switch(element,
+                 courtType = extract_courttype(x),
+                 courtCases = extract_courtcases(x),
+                 judgmentType = extract_judgmenttype(x),
+                 judgmentDate = extract_judgmentdate(x),
+                 judges = extract_judges(x),
+                 source = extract_source(x),
+                 courtReporters = extract_courtreporters(x),
+                 decision = extract_decision(x),
+                 summary = extract_summary(x),
+                 textContent = extract_text(x),
+                 legalBases = extract_legalbases(x),
+                 referencedRegulations = extract_refreg(x),
+                 referencedCourtCases = extract_refcc(x),
+                 keywords = extract_keywords(x),
+                 division = extract_division(x))
+  
+  # convert IDs to true values 
+  info$id <- ids[info$id]
+  info
+}
 
 
 

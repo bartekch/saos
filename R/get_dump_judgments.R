@@ -136,7 +136,11 @@ get_dump_judgments <- function(start_date = NULL, end_date = NULL,
                              number = number)
   
   # simplify courtcases
-  if (simplify) judgments$courtCases <- unlist(judgments$courtCases)
+  if (simplify) {
+    judgments$courtCases <- unlist(judgments$courtCases)
+  } else {
+    class(judgments) <- c("saos_judgments_dump", "list")
+  }
   
   judgments
 }

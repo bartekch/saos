@@ -3,6 +3,7 @@
 \name{extract}
 \alias{extract}
 \alias{extract.saos_judgments}
+\alias{extract.saos_judgments_dump}
 \alias{extract.saos_search}
 \title{Extract information from judgments' list}
 \usage{
@@ -11,6 +12,8 @@ extract(x, element)
 \method{extract}{saos_search}(x, element)
 
 \method{extract}{saos_judgments}(x, element)
+
+\method{extract}{saos_judgments_dump}(x, element)
 }
 \arguments{
 \item{x}{An object used to select a method.}
@@ -23,13 +26,13 @@ A data.frame with first column indicating ID of judgment and the rest
 }
 \description{
 Extract as a data frame specific elements from judgements' list as returned
-  from \code{\link{search_judgments}} or \code{\link{get_judgments}}.
+  from \code{\link{search_judgments}}, \code{\link{get_judgments}} or
+  \code{\link{get_dump_judgments}}.
 }
 \details{
 Available elements for all methods are:
 \itemize{
  \item id,
- \item href,
  \item courtCases,
  \item judgmentType,
  \item judges,
@@ -38,7 +41,8 @@ Available elements for all methods are:
  \item division,
  \item judgmentDate.
  }
- Additionally for class \code{saos_judgments} there are more elements:
+ Additionally for classes \code{saos_judgments} and \code{saos_judgments_dump}
+   there are more elements:
  \itemize{
  \item courtType,
  \item source,
@@ -49,6 +53,8 @@ Available elements for all methods are:
  \item referencedRegulations,
  \item referencedCourtCases.
  }
+
+ For class \code{saos_judgments} there is also element "href".
 
 Data frame with data for all given judgments is always returned. If there is
   no data, a row with only \code{NA} (except for id) is insertes in the data
@@ -62,6 +68,9 @@ Data frame with data for all given judgments is always returned. If there is
 
 \item \code{saos_judgments}: Extract data from list of judgments from
   \code{\link{get_judgments}}.
+
+\item \code{saos_judgments_dump}: Extract data from list of judgments from
+  \code{\link{get_dump_judgments}}.
 }}
 \examples{
 \donttest{
@@ -87,6 +96,13 @@ ref_reg <- extract(saos_judgments, "referencedRegulations")
 dim(ref_reg)
 names(ref_reg)
 
+
+## for class "saos_judgments_dump"
+judgments <- get_dup_judgments(start_date = "2015-01-01",
+                               end_date = "2015-10-01", verbose = FALSE)
+court <- extract(judgments, "courtType")
+dim(court)
+names(court)
 }
 }
 
