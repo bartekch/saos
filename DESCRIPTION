@@ -4,8 +4,11 @@ Version: 0.1
 Authors@R: person("Bartosz", "Chrol", email="bartek.chrol@gmail.com",
     role=c("aut", "cre"))
 Description: An interface to the API for SAOS, a repository of judgments from
-    Polish common courts (district, regional and appellate) and the Supreme
-    Court of Poland
+    Polish courts of all kinds - common courts (district, regional and appellate),
+    administrative courts, the Supreme Court of Poland, the Constitutional 
+    Tribunal, National Appeal Chamber.
+URL: https://github.com/bartekch/saos
+BugReports: https://github.com/bartekch/saos/issues
 Depends:
     R (>= 3.1.1)
 License: GPL-2
