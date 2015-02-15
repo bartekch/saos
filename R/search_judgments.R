@@ -135,7 +135,7 @@ search_judgments <- function(all  = NULL, legalBase  = NULL,
   # check number of results  
   if (count == 0){
     if (verbose) message("No search results.")
-    return(NULL)
+    return(empty_search_result())
   }
   
   # set limit
@@ -145,8 +145,8 @@ search_judgments <- function(all  = NULL, legalBase  = NULL,
   # check limit size
   if (limit < 0) stop("Limit should be non-negative.")
   if (limit == 0){
-    warning("Limit is set to 0, no results.", call. = FALSE)
-    return(NULL)
+    if (verbose) message("Limit is set to 0, no results.")
+    return(empty_search_result())
   }
   
   # check for extreme number of results    
@@ -176,4 +176,13 @@ search_judgments <- function(all  = NULL, legalBase  = NULL,
   
   class(judgments) <- c("saos_search", class(judgments))
   judgments
+}
+
+
+
+# function returning empty list with proper class attribute
+empty_search_result <- function() {
+  res <- list()
+  class(res) <- c("saos_search", "list")
+  res
 }
