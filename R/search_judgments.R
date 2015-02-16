@@ -179,6 +179,25 @@ search_judgments <- function(all  = NULL, legalBase  = NULL,
 }
 
 
+# method for concatenating search results
+#' @export
+c.saos_search <- function(..., recursive = FALSE) {
+  res <- unlist(list(...), recursive = FALSE)
+  class(res) <- c("saos_search", "list")
+  res
+}
+
+# method for subsetting
+#' @export
+`[.saos_search` <- function(x, ind) {
+  res <- unclass(x)[ind]
+  class(res) <- c("saos_search", "list")
+  res
+} 
+
+
+
+#### utility functions ####
 
 # function returning empty list with proper class attribute
 empty_search_result <- function() {

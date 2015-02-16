@@ -111,11 +111,35 @@ get_judgments.saos_search <- function(x, verbose = TRUE){
 }
 
 
+# method for concatenating judgments list
+#' @export
+c.saos_judgments <- function(..., recursive = FALSE) {
+  res <- unlist(list(...), recursive = FALSE)
+  class(res) <- c("saos_judgments", "list")
+  res
+}
+
+# method for subsetting
+#' @export
+`[.saos_judgments` <- function(x, ind) {
+  res <- unclass(x)[ind]
+  class(res) <- c("saos_judgments", "list")
+  res
+} 
 
 
 
 
-#########
+
+#### utility functions ####
+
+# function returning empty list with proper class attribute
+empty_get_result <- function() {
+  res <- list()
+  class(res) <- c("saos_judgments", "list")
+  res
+}
+
 
 get_response_if_available <- function(link){
   tryCatch(get_response(link), http_404 = function(x) NULL)
@@ -130,4 +154,4 @@ check_idlist <- function(x) {
     stop("All id's have to be positive integers.", call. = FALSE)
   x
 }
-  
+

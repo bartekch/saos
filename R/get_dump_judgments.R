@@ -149,3 +149,30 @@ get_dump_judgments <- function(start_date = NULL, end_date = NULL,
   
   judgments
 }
+
+
+# method for concatenating judgments list
+#' @export
+c.saos_judgments_dump <- function(..., recursive = FALSE) {
+  res <- unlist(list(...), recursive = FALSE)
+  class(res) <- c("saos_judgments_dump", "list")
+  res
+}
+
+# method for subsetting
+#' @export
+`[.saos_judgments_dump` <- function(x, ind) {
+  res <- unclass(x)[ind]
+  class(res) <- c("saos_judgments_dump", "list")
+  res
+} 
+
+#### utility functions ####
+
+# function returning empty list with proper class attribute
+empty_dump_result <- function() {
+  res <- list()
+  class(res) <- c("saos_judgments_dump", "list")
+  res
+}
+
