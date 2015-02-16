@@ -117,8 +117,7 @@ get_dump_judgments <- function(start_date = NULL, end_date = NULL,
   if (!is.null(modification_date)) {
     modification_date <- paste0(modification_date, ".000")
     if (verbose) {
-      warning("Cannot estimate the size of results set when modification_date is given",
-              call. = FALSE)
+      message("Cannot estimate the size of results set when modification_date is given")
       verbose <- FALSE
     }
   }
