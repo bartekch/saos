@@ -98,7 +98,7 @@ get_judgments.saos_search <- function(x, verbose = TRUE){
   
   if (verbose) pb <- txtProgressBar(style = 3)
   
-  for (i in seq(l)) {
+  for (i in seq_along(x)) {
     response <- get_response(links[i])
     result[[i]] <- response$data
     if (verbose) setTxtProgressBar(pb, i / l)
