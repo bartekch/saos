@@ -7,8 +7,8 @@ test_that("extracting from empty lists returns empty data frame", {
   options(stringsAsFactors = FALSE)
   
   methods <- list(empty_search = empty_search_result(),
-                  empty_get = get_judgments(empty_search_result(), verbose = FALSE),
-                  empty_dump = get_dump_judgments(end_date = "0001-01-01", verbose = FALSE))
+                  empty_get = empty_get_result(),
+                  empty_dump = empty_dump_result())
   templates <- list(id = data.frame(),
                     courtCases = data.frame(caseNumber = character()),
                     judgmentType = data.frame(judgmentType = character()),
