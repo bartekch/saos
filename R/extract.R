@@ -34,7 +34,8 @@
 #'  \item chambers.
 #'  }
 #'  
-#'  For class \code{saos_judgments} there is also element "href".
+#'  For class \code{saos_judgments} and \code{saos_search} there is also 
+#'    element "href".
 #'  
 #' Data frame with data for all given judgments is always returned. If there is
 #'   no data, a row with only \code{NA} (except for id) is insertes in the data
@@ -132,7 +133,7 @@ extract.saos_judgments <- function(x, element) {
                                   "referencedCourtCases", "division",
                                   "personnelType", "judgmentForm", "chambers"))
   ids <- sapply(x, `[[`, "id")
-  
+  if (length(ids) == 0) ids <- integer()
   if (element == "id") return(data.frame(id = ids))
   
   # extract chosen element
@@ -180,7 +181,7 @@ extract.saos_judgments_dump <- function(x, element) {
                                   "personnelType", "form", "chambers",
                                   "referencedCourtCases", "division"))
   ids <- sapply(x, `[[`, "id")
-  
+  if (length(ids) == 0) ids <- integer()
   if (element == "id") return(data.frame(id = ids))
   
   # extract chosen element
@@ -227,7 +228,7 @@ extract.saos_judgments_dump <- function(x, element) {
 #  declaring NA template inside method, not in 'extract_' functions. 
 
 extract_id <- function(judgments){
-  as.numeric(sapply(judgments, function(x) tail(strsplit(x$href, "/")[[1]], 1)))
+  as.integer(sapply(judgments, function(x) tail(strsplit(x$href, "/")[[1]], 1)))
 }
 
 extract_href <- function(x){
@@ -235,7 +236,8 @@ extract_href <- function(x){
 }
 
 extract_courtcases <- function(x){
-  extractor_dflist(x, "courtCases", data.frame(caseNumber = NA))
+  extractor_dflist(x, "courtCases", data.frame(caseNumber = character(),
+                                               stringsAsFactors = FALSE))
 }
 
 extract_judgmenttype <- function(x){
@@ -243,7 +245,13 @@ extract_judgmenttype <- function(x){
 }
 
 extract_judges <- function(results) {
-  df_na <- data.frame(name = NA, "function" = NA, specialRoles = NA)
+  df_template <- data.frame(name = character(), "function" = character(),
+                            specialRoles = character(), stringsAsFactors = FALSE)
+  if (length(results) == 0) {
+    return(data.frame(id = integer(), df_template))
+  }
+  
+  df_na <- df_template[NA_character_,, drop = FALSE]
   el <- lapply(results, function(x) {
     if (length(x$judges) == 0){
       df_na
@@ -273,9 +281,9 @@ extract_keywords <- function(x) {
 }
 
 extract_division <- function(x) {
-  #df_na <- data.frame(id = NA, name = NA, href = NA, code = NA, type = NA)
-  df_na <- data.frame(id = NA)
-  result <- extractor_df(x, "division", df_na)
+  df_temp <- data.frame(id = integer(), name = character(),
+                        href = character(), stringsAsFactors = FALSE)
+  result <- extractor_df(x, "division", df_temp)
   names(result)[which(names(result) == "id.1")] <- "division.id"
   result
 }
@@ -289,9 +297,11 @@ extract_courttype <- function(x){
 }
 
 extract_source <- function(x) {
-  df_na <- data.frame(code = NA, judgmentUrl = NA, judgmentId = NA,
-                      publisher = NA, reviser = NA, publicationDate = NA)
-  extractor_df(x, "source", df_na)
+  df_temp <- data.frame(code = character(), judgmentUrl = character(), 
+                        judgmentId = character(),publisher = character(),
+                        reviser = character(), publicationDate = character(),
+                        stringsAsFactors = FALSE)
+  extractor_df(x, "source", df_temp)
 }
 
 extract_courtreporters <- function(x) {
@@ -311,9 +321,10 @@ extract_legalbases <- function(x){
 }
 
 extract_refreg <- function(x) {
-  df_na <- data.frame(journalTitle = NA, journalNo = NA, journalYear = NA,
-                      journalEntry = NA, text = NA)
-  extractor_dflist(x, "referencedRegulations", df_na)
+  df_temp <- data.frame(journalTitle = character(), journalNo = integer(),
+                        journalYear = integer(), journalEntry = integer(),
+                        text = character(), stringsAsFactors = FALSE)
+  extractor_dflist(x, "referencedRegulations", df_temp)
 }
 
 extract_refcc <- function(x) {
@@ -329,9 +340,8 @@ extract_form <- function(x, name) {
 }
 
 extract_chambers <- function(x) {
-  #df_na <- data.frame(id = NA, name = NA, href = NA, code = NA, type = NA)
-  df_na <- data.frame(id = NA)
-  result <- extractor_df(x, "chambers", df_na)
+  df_temp <- data.frame(id = integer())
+  result <- extractor_df(x, "chambers", df_temp)
   names(result)[which(names(result) == "id.1")] <- "chambers.id"
   result
 }
@@ -341,6 +351,11 @@ extract_chambers <- function(x) {
 
 # extractors
 extractor_single <- function(judgments, field_name) {
+  if (length(judgments) == 0) {
+    tmp <- data.frame(id = integer(), var = character(), stringsAsFactors = FALSE)
+    names(tmp)[2] <- field_name
+    return(tmp)
+  }
   el <- lapply(judgments, `[[`, field_name)
   el <- sapply(el, function(x) if (is.null(x)) { NA } else { x })
   el <- data.frame(seq_along(el), el, stringsAsFactors = FALSE)
@@ -349,6 +364,11 @@ extractor_single <- function(judgments, field_name) {
 }
 
 extractor_list <- function(judgments, field_name) {
+  if (length(judgments) == 0) {
+    tmp <- data.frame(id = integer(), var = character(), stringsAsFactors = FALSE)
+    names(tmp)[2] <- field_name
+    return(tmp)
+  }
   el <- lapply(judgments, function(x) {
     if (length(x[[field_name]]) == 0) {
       NA
@@ -364,9 +384,13 @@ extractor_list <- function(judgments, field_name) {
 }
 
 extractor_df <- function(judgments, field_name, df_template) {
+  if (length(judgments) == 0) {
+    return(data.frame(id = integer(), df_template))
+  }
+  df_na <- df_template[NA_character_,, drop = FALSE]
   el <- lapply(judgments, function(x) {
     if (length(x[[field_name]]) == 0){
-      df_template
+      df_na
     } else {
       tmp <- lapply(x[[field_name]], function(f) if (is.null(f)) { NA } else { f })
       as.data.frame(tmp, stringsAsFactors = FALSE)
@@ -379,9 +403,14 @@ extractor_df <- function(judgments, field_name, df_template) {
 }
 
 extractor_dflist <- function(judgments, field_name, df_template) {
+  if (length(judgments) == 0) {
+    return(data.frame(id = integer(), df_template))
+  }
+  
+  df_na <- df_template[NA_character_,, drop = FALSE]
   el <- lapply(judgments, function(x) {
     if (length(x[[field_name]]) == 0){
-      df_template
+      df_na
     } else {
       dplyr::bind_rows(lapply(x[[field_name]], dplyr::as_data_frame))
     }})

@@ -57,7 +57,8 @@ Available elements for all methods are:
  \item chambers.
  }
 
- For class \code{saos_judgments} there is also element "href".
+ For class \code{saos_judgments} and \code{saos_search} there is also
+   element "href".
 
 Data frame with data for all given judgments is always returned. If there is
   no data, a row with only \code{NA} (except for id) is insertes in the data
