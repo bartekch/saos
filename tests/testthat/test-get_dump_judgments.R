@@ -12,8 +12,11 @@ test_that("proper objects are returned", {
 
 test_that("c and [ methods works properly", {
   g0 <- empty_dump_result()
-  expect_that(inherits(c(g, g), "saos_judgments_dump"), is_true())
-  expect_that(inherits(c(g, g0), "saos_judgments_dump"), is_true())
-  expect_that(inherits(c(g0, g0), "saos_judgments_dump"), is_true())
-  expect_that(inherits(g[1:5], "saos_judgments_dump"), is_true())
+  expect_is(c(g, g), c("saos_judgments_dump", "list"))
+  expect_is(c(g, g0), c("saos_judgments_dump", "list"))
+  expect_is(c(g0, g0), c("saos_judgments_dump", "list"))
+  expect_is(g[1:5], c("saos_judgments_dump", "list"))
+  expect_equal(length(c(g, g)), 2 * length(g))
+  expect_equal(length(c(g, g0)), length(g))
+  expect_equal(length(c(g0, g0)), 0)
 })

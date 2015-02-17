@@ -4,7 +4,7 @@ test_that("proper objects are returned", {
   skip_on_cran()
   expect_is(get_dump_courts(), "list")
   expect_is(get_dump_scChambers(), "list")
-  expect_is(get_dump_enrichments(), "list")
+  #expect_is(get_dump_enrichments(), "list")
 })
 
 test_that("data file are up-to-date", {
