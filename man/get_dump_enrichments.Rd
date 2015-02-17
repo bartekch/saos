@@ -24,9 +24,19 @@ If \code{simplify = FALSE} the list of enrichment tags as returned
  ..$ referencedIds       :List of 1 \cr
  .. ..$ : int 1728 \cr
 
- Detailed description of the meaning of all elements TODO.
+ Detailed description of the meaning of all elements could be found below.
 
- If \code{simplify = TRUE} a \code{data.frame} described in TODO is returned.
+ If \code{simplify = TRUE} a \code{data.frame} with following columns:
+\tabular{rlll}{
+n \tab name \tab class \tab description \cr
+[,1] \tab id \tab integer \tab ID of a tag \cr
+[,2] \tab judgmentId \tab integer \tab ID of tagged judgment \cr
+[,3] \tab tagType \tab character \tab type of tag \cr
+[,4] \tab value \tab list \tab tag's details, depend on type of a tag \cr
+}
+
+There are a few types of tags listed below:
+ TODO
 }
 \description{
 Download the list of all tags with extra information abour judgments
