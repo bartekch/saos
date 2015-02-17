@@ -70,8 +70,9 @@
 #' 
 #' 
 #' ## for class "saos_judgments_dump"
-#' judgments <- get_dup_judgments(start_date = "2015-01-01", 
-#'                                end_date = "2015-10-01", verbose = FALSE)
+#' judgments <- get_dump_judgments(judgmentStartDate = "2015-01-01", 
+#'                                 judgmentEndDate = "2015-10-01", 
+#'                                 verbose = FALSE)
 #' court <- extract(judgments, "courtType")
 #' dim(court)
 #' names(court)                                

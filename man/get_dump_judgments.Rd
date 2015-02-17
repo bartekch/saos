@@ -5,21 +5,21 @@
 \alias{get_dump_judgments}
 \title{Download all judgments}
 \usage{
-get_dump_judgments(start_date = NULL, end_date = NULL,
-  modification_date = NULL, verbose = TRUE)
+get_dump_judgments(judgmentStartDate = NULL, judgmentEndDate = NULL,
+  sinceModificationDate = NULL, verbose = TRUE)
 }
 \arguments{
-\item{start_date}{Any date/time object that could be properly converted with
+\item{judgmentStartDate}{Any date/time object that could be properly converted with
 \code{as.POSIXct}, or a string in a format "\%Y-\%m-\%d".
 Represents the earliest allowed judgment's date on the list.
 If missing, no time limit is set.}
 
-\item{end_date}{Any date/time object that could be properly converted with
+\item{judgmentEndDate}{Any date/time object that could be properly converted with
 \code{as.POSIXct}, or a string in a format "\%Y-\%m-\%d".
 Represents the latest allowed judgment's date on the list.
 If missing, no time limit is set.}
 
-\item{modification_date}{Any date/time object that could be properly converted with
+\item{sinceModificationDate}{Any date/time object that could be properly converted with
 \code{as.POSIXct}, or a string in format "\%Y-\%m-\%dT\%H:\%M:\%S".
 Allows to select judgments which were modified later than the specified
 time. If missing, no time limit is set.}
@@ -82,13 +82,13 @@ Download the list of all judgments within (and including) given dates.
 \examples{
 \dontrun{
 full <- get_dump_judgments()
-lastchanges <- get_dump_judgments(modification_date = Sys.Date() - 7)
+lastchanges <- get_dump_judgments(sinceModificationDate = Sys.Date() - 7)
 }
 \donttest{
 # Download judgments from last month as a:
 # - list
-lastmonth_l <- get_dump_judgments(start_date = Sys.Date() - 30,
-                                  end_date = Sys.Date())
+lastmonth_l <- get_dump_judgments(judgmentStartDate = Sys.Date() - 30,
+                                  judgmentEndDate = Sys.Date())
 
 class(lastmonth_l)
 length(lastmonth_l)

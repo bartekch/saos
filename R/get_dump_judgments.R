@@ -2,21 +2,22 @@
 #' 
 #' Download the list of all judgments within (and including) given dates.
 #'  
-#' @param start_date Any date/time object that could be properly converted with 
+#' @param judgmentStartDate Any date/time object that could be properly converted with 
 #'   \code{as.POSIXct}, or a string in a format "\%Y-\%m-\%d". 
 #'   Represents the earliest allowed judgment's date on the list. 
 #'   If missing, no time limit is set.
-#' @param end_date Any date/time object that could be properly converted with 
+#' @param judgmentEndDate Any date/time object that could be properly converted with 
 #'   \code{as.POSIXct}, or a string in a format "\%Y-\%m-\%d". 
 #'   Represents the latest allowed judgment's date on the list. 
 #'   If missing, no time limit is set.
-#' @param modification_date Any date/time object that could be properly converted with 
+#' @param sinceModificationDate Any date/time object that could be properly converted with 
 #'   \code{as.POSIXct}, or a string in format "\%Y-\%m-\%dT\%H:\%M:\%S". 
 #'   Allows to select judgments which were modified later than the specified 
 #'   time. If missing, no time limit is set.
-#' @encoding UTF-8
 #' @param verbose Logical. Whether or not display progress bar.
 #'   
+#' @encoding UTF-8
+#' 
 #' @return The list of judgments as returned from API. 
 #'   Every element of the list represents one judgment and has the 
 #'   following, illustrative structure: \cr
@@ -69,13 +70,13 @@
 #' @examples 
 #' \dontrun{
 #' full <- get_dump_judgments()
-#' lastchanges <- get_dump_judgments(modification_date = Sys.Date() - 7)
+#' lastchanges <- get_dump_judgments(sinceModificationDate = Sys.Date() - 7)
 #' }
 #' \donttest{
 #' # Download judgments from last month as a:
 #' # - list
-#' lastmonth_l <- get_dump_judgments(start_date = Sys.Date() - 30, 
-#'                                   end_date = Sys.Date())
+#' lastmonth_l <- get_dump_judgments(judgmentStartDate = Sys.Date() - 30, 
+#'                                   judgmentEndDate = Sys.Date())
 #'                                      
 #' class(lastmonth_l)
 #' length(lastmonth_l)
@@ -83,17 +84,19 @@
 #'  
 #' @export
 
-get_dump_judgments <- function(start_date = NULL, end_date = NULL,
-                               modification_date = NULL, verbose = TRUE){
+get_dump_judgments <- function(judgmentStartDate = NULL, 
+                               judgmentEndDate = NULL,
+                               sinceModificationDate = NULL, 
+                               verbose = TRUE){
   url <- "https://saos-test.icm.edu.pl/api/dump/judgments/"
   
   # check arguments
-  start_date <- check_date(start_date)
-  end_date <- check_date(end_date)
-  modification_date <- check_date(modification_date, 
+  judgmentStartDate <- check_date(judgmentStartDate)
+  judgmentEndDate <- check_date(judgmentEndDate)
+  sinceModificationDate <- check_date(sinceModificationDate, 
                                   format = "%Y-%m-%dT%H:%M:%S")
-  if (!is.null(modification_date)) {
-    modification_date <- paste0(modification_date, ".000")
+  if (!is.null(sinceModificationDate)) {
+    sinceModificationDate <- paste0(sinceModificationDate, ".000")
     if (verbose) {
       message("Cannot estimate the size of results set when modification_date is given")
       verbose <- FALSE
@@ -101,13 +104,14 @@ get_dump_judgments <- function(start_date = NULL, end_date = NULL,
   }
   
   number <- if (verbose)  { 
-    count_judgments(judgmentDateFrom = start_date, judgmentDateTo = end_date)
+    count_judgments(judgmentDateFrom = judgmentStartDate, 
+                    judgmentDateTo = judgmentEndDate)
   } else { NULL }
     
   # prepare link to API
-  query <- list(pageSize = 100, judgmentStartDate = start_date, 
-             judgmentEndDate = end_date,
-             sinceModificationDate = modification_date)
+  query <- list(pageSize = 100, judgmentStartDate = judgmentStartDate, 
+             judgmentEndDate = judgmentEndDate,
+             sinceModificationDate = sinceModificationDate)
   
   # get results
   if (verbose) message(number, " judgments to download.\n")
