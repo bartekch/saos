@@ -1,6 +1,6 @@
 
 # function for accessing API and processing a response
-get_response <- function(url, query = NULL, simplify = FALSE){
+get_response <- function(url, query = NULL){
   
   # if query is NULL we probably have DIRECT link, so we do not want to
   # override it with NULL  
@@ -13,75 +13,46 @@ get_response <- function(url, query = NULL, simplify = FALSE){
   httr::stop_for_status(res)
   
   res <- httr::content(res, as = "text")
-  res <- jsonlite::fromJSON(res, simplifyVector = simplify)
+  res <- jsonlite::fromJSON(res, simplifyVector = FALSE)
   res
 }
 
 
 # function downloading exact number of pages for a given response
-get_limited_items <- function(url, limit = NULL, query = NULL, 
-                              simplify = FALSE, flatten = FALSE, 
-                              simp_fun = NULL, progress = FALSE){
-  if (is.null(simp_fun)) simp_fun <- base::identity
-  
+get_limited_items <- function(url, limit = NULL, query = NULL, verbose = FALSE){
   if (is.null(limit)) limit <- Inf
   
-  if (progress) pb <- txtProgressBar(style = 3)
+  if (verbose) pb <- txtProgressBar(style = 3)
   
-  response <- get_response(url, query, simplify)
-  items <- simp_fun(response$items)
+  response <- get_response(url, query)
+  items <- response$items
   next_page <- extract_link(response)
   number <- length(items)
   
-  if (progress) setTxtProgressBar(pb, min(1, number / limit))
+  if (verbose) setTxtProgressBar(pb, min(1, number / limit))
   
   while (!is.null(next_page) & (number < limit)){
-    response <- get_response(next_page, simplify = simplify)
-    if (simplify){
-      items <- rbind(items, simp_fun(response$items))
-    } else {
-      items <- c(items, response$items)
-    }
+    response <- get_response(next_page)
+    items <- c(items, response$items)
     number <- length(items)
-    if (progress) setTxtProgressBar(pb, min(1, number / limit))
+    if (verbose) setTxtProgressBar(pb, min(1, number / limit))
     next_page <- extract_link(response)
   }
-  if (progress) close(pb)
+  if (verbose) close(pb)
   
   # reduce number of results to limit
   if (number > limit){
     items <- items[1:limit]
   }
   
-  if (simplify & flatten) items <- jsonlite::flatten(items)
   items
 }
 
 
 
 # function downloading all possible pages for a given response
-get_all_items <- function(url, query = NULL, simplify = FALSE, flatten = FALSE,
-                          simp_fun = NULL, verbose = FALSE, number = NULL){
-  get_limited_items(url, limit = number, query = query, 
-                    simplify = simplify, flatten = flatten, 
-                    simp_fun = simp_fun, progress = verbose)
-#   if (is.null(simp_fun)) simp_fun <- base::identity
-#   
-#   response <- get_response(url, query, simplify)
-#   
-#   items <- simp_fun(response$items)
-#   next_page <- extract_link(response)
-#   while (!is.null(next_page)){
-#     response <- get_response(next_page, simplify = simplify)
-#     if (simplify){
-#       items <- rbind(items, simp_fun(response$items))
-#     } else {
-#       items <- c(items, response$items)
-#     }
-#     next_page <- extract_link(response)
-#   }
-#   if (simplify & flatten) items <- jsonlite::flatten(items)
-#   items
+get_all_items <- function(url, query = NULL, verbose = FALSE, number = NULL){
+  get_limited_items(url, limit = number, query = query, verbose = verbose)
 }
 
 # function extracting link for the next page from current response

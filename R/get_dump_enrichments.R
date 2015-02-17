@@ -26,7 +26,21 @@ get_dump_enrichments <- function(simplify = FALSE){
   url <- "https://saos-test.icm.edu.pl/api/dump/enrichments"
   
   # get results
-  tags <- get_all_items(url, query = list(pageSize = 100), simplify = simplify)
-  
+  tags <- get_all_items(url, query = list(pageSize = 100))
+  if (simplify) tags <- simplify_tags(tags)
   tags
+}
+
+
+
+#### utility functions ####
+
+# simplifying to data frame
+simplify_tags <- function(tags){
+  res <- data.frame(id = sapply(tags, `[[`, "id"), 
+                    judgmentId = sapply(tags, `[[`, "judgmentId"), 
+                    tagType = sapply(tags, `[[`, "tagType"), 
+                    stringsAsFactors = FALSE)
+  res$value <- lapply(tags, `[[`, "value")
+  res
 }

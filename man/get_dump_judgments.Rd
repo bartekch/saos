@@ -6,8 +6,7 @@
 \title{Download all judgments}
 \usage{
 get_dump_judgments(start_date = NULL, end_date = NULL,
-  modification_date = NULL, simplify = FALSE, flatten = simplify,
-  verbose = TRUE)
+  modification_date = NULL, verbose = TRUE)
 }
 \arguments{
 \item{start_date}{Any date/time object that could be properly converted with
@@ -25,17 +24,11 @@ If missing, no time limit is set.}
 Allows to select judgments which were modified later than the specified
 time. If missing, no time limit is set.}
 
-\item{simplify}{Logical. If \code{TRUE} results will be returned as
-\code{data.frame}.}
-
-\item{flatten}{Logical, works only if \code{simplify = TRUE}. If \code{TRUE}
-resulting \code{data.frame} will be flattened (with \code{jsonlite::flatten}).}
-
 \item{verbose}{Logical. Whether or not display progress bar.}
 }
 \value{
-If \code{simplify = FALSE} the list of judgments as returned
-  from API. Every element of the list represents one judgment and has the
+The list of judgments as returned from API.
+  Every element of the list represents one judgment and has the
   following, illustrative structure: \cr
  List of 18 \cr
  $ id                   : int 76452 \cr
@@ -82,13 +75,6 @@ If \code{simplify = FALSE} the list of judgments as returned
  $ judgmentDate         : chr "1994-01-20" \cr
 
  Detailed description of the meaning of all elements could be found in TODO
-
- If \code{simplify = TRUE} a \code{data.frame} as described in
-   TODO is returned. If also \code{flatten = TRUE}, a \code{data.frame} will
-   be flattened.
- WARNING - when \code{simplify = TRUE} the resulting data frame has not
-   always the same structure. In particular some columns may be lists or
-   atomic vectors.
 }
 \description{
 Download the list of all judgments within (and including) given dates.
@@ -103,21 +89,9 @@ lastchanges <- get_dump_judgments(modification_date = Sys.Date() - 7)
 # - list
 lastmonth_l <- get_dump_judgments(start_date = Sys.Date() - 30,
                                   end_date = Sys.Date())
-# - data.frame
-lastmonth_df <- get_dump_judgments(start_date = Sys.Date() - 30,
-                                   end_date = Sys.Date(),
-                                   simplify = TRUE, flatten = FALSE)
-# - flattened data.frame
-lastmonth_df_f <- get_dump_judgments(start_date = Sys.Date() - 30,
-                                     end_date = Sys.Date(),
-                                     simplify = TRUE)
 
 class(lastmonth_l)
-class(lastmonth_df)
-class(lastmonth_df_f)
 length(lastmonth_l)
-dim(lastmonth_df)
-dim(lastmonth_df_f)
  }
 }
 

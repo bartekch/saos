@@ -42,13 +42,29 @@
 
 get_dump_courts <- function(simplify = FALSE){
   url <- "https://saos-test.icm.edu.pl/api/dump/courts"
-  courts <- get_all_items(url, query = list(pageSize = 100),
-                          simplify = simplify, simp_fun = simp_courts)
+  courts <- get_all_items(url, query = list(pageSize = 100))
+  if (simplify) courts <- simplify_courts(courts)
   courts
 }
 
- 
-simp_courts <- function(items){
-  items$parentCourt <- items$parentCourt[,1]
-  items
+
+
+#### utility functions ####
+
+# simplifying to data frame
+simplify_courts <- function(courts){
+  parentCourt <- sapply(courts, function(x) {
+    if (is.null(x$parentCourt)) { NA } else { x[["parentCourt"]][[1]] }
+    })
+  divisions <- lapply(courts, function(x) {
+    as.data.frame(dplyr::bind_rows(lapply(x$divisions, dplyr::as_data_frame)))
+  })
+  res <- data.frame(id = sapply(courts, `[[`, "id"), 
+                    name = sapply(courts, `[[`, "name"), 
+                    type = sapply(courts, `[[`, "type"), 
+                    code = sapply(courts, `[[`, "code"),
+                    parentCourt = parentCourt, 
+                    stringsAsFactors = FALSE)
+  res$divisions <- divisions
+  res
 }

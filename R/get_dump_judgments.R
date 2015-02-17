@@ -14,13 +14,11 @@
 #'   \code{as.POSIXct}, or a string in format "\%Y-\%m-\%dT\%H:\%M:\%S". 
 #'   Allows to select judgments which were modified later than the specified 
 #'   time. If missing, no time limit is set.
-#' @template dump_param
-#' @param flatten Logical, works only if \code{simplify = TRUE}. If \code{TRUE}
-#'   resulting \code{data.frame} will be flattened (with \code{jsonlite::flatten}).
+#' @encoding UTF-8
 #' @param verbose Logical. Whether or not display progress bar.
 #'   
-#' @return If \code{simplify = FALSE} the list of judgments as returned 
-#'   from API. Every element of the list represents one judgment and has the 
+#' @return The list of judgments as returned from API. 
+#'   Every element of the list represents one judgment and has the 
 #'   following, illustrative structure: \cr
 #'  List of 18 \cr
 #'  $ id                   : int 76452 \cr
@@ -68,13 +66,6 @@
 #'  
 #'  Detailed description of the meaning of all elements could be found in TODO
 #'    
-#'  If \code{simplify = TRUE} a \code{data.frame} as described in 
-#'    TODO is returned. If also \code{flatten = TRUE}, a \code{data.frame} will
-#'    be flattened.
-#'  WARNING - when \code{simplify = TRUE} the resulting data frame has not 
-#'    always the same structure. In particular some columns may be lists or 
-#'    atomic vectors. 
-#'    
 #' @examples 
 #' \dontrun{
 #' full <- get_dump_judgments()
@@ -85,28 +76,15 @@
 #' # - list
 #' lastmonth_l <- get_dump_judgments(start_date = Sys.Date() - 30, 
 #'                                   end_date = Sys.Date())
-#' # - data.frame                                 
-#' lastmonth_df <- get_dump_judgments(start_date = Sys.Date() - 30, 
-#'                                    end_date = Sys.Date(),
-#'                                    simplify = TRUE, flatten = FALSE)
-#' # - flattened data.frame                                    
-#' lastmonth_df_f <- get_dump_judgments(start_date = Sys.Date() - 30, 
-#'                                      end_date = Sys.Date(),
-#'                                      simplify = TRUE)
 #'                                      
 #' class(lastmonth_l)
-#' class(lastmonth_df)                           
-#' class(lastmonth_df_f)
 #' length(lastmonth_l)
-#' dim(lastmonth_df)
-#' dim(lastmonth_df_f)
 #'  }
 #'  
 #' @export
 
 get_dump_judgments <- function(start_date = NULL, end_date = NULL,
-                               modification_date = NULL, simplify = FALSE,
-                               flatten = simplify, verbose = TRUE){
+                               modification_date = NULL, verbose = TRUE){
   url <- "https://saos-test.icm.edu.pl/api/dump/judgments/"
   
   # check arguments
@@ -133,20 +111,10 @@ get_dump_judgments <- function(start_date = NULL, end_date = NULL,
   
   # get results
   if (verbose) message(number, " judgments to download.\n")
-  judgments <- get_all_items(url, query = query, simplify = simplify,
-                             flatten = flatten, verbose = verbose, 
+  judgments <- get_all_items(url, query = query, verbose = verbose, 
                              number = number)
   
-  # simplify courtcases
-  if (simplify) {
-    judgments$courtCases <- unlist(judgments$courtCases)
-    warning("When simplifying the resulting data frame not always has the same ",
-            "structure, double check this when using programmatically.", 
-            call. = FALSE)
-  } else {
-    class(judgments) <- c("saos_judgments_dump", "list")
-  }
-  
+  class(judgments) <- c("saos_judgments_dump", "list")
   judgments
 }
 

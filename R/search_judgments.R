@@ -170,7 +170,7 @@ search_judgments <- function(all  = NULL, legalBase  = NULL,
   if (verbose) message("Number of records expected: ", count)
 
   judgments <- get_limited_items(url, query = query, limit = limit, 
-                                 progress = verbose)
+                                 verbose = verbose)
   
   if (verbose) message("Number of records downloaded: ", length(judgments))
   

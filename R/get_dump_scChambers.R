@@ -33,6 +33,23 @@
 
 get_dump_scChambers <- function(simplify = FALSE){
   url <- "https://saos-test.icm.edu.pl/api/dump/scChambers"
-  chambers <- get_all_items(url, simplify = simplify)
+  chambers <- get_all_items(url)
+  if (simplify) chambers <- simplify_chambers(chambers)
   chambers
+}
+
+
+
+#### utility functions ####
+
+# simplifying to data frame
+simplify_chambers <- function(chambers){
+  divisions <- lapply(chambers, function(x) {
+    as.data.frame(dplyr::bind_rows(lapply(x$divisions, dplyr::as_data_frame)))
+  })
+  res <- data.frame(id = sapply(chambers, `[[`, "id"), 
+                    name = sapply(chambers, `[[`, "name"), 
+                    stringsAsFactors = FALSE)
+  res$divisions <- divisions
+  res
 }
