@@ -13,7 +13,9 @@ test_that("arguments are checked for correctness", {
   expect_error(search_judgments(ccCourtId = 1.5))
   expect_error(search_judgments(judgmentDateFrom = "a"))
   expect_error(search_judgments(judgmentDateFrom = 2))
-  #expect_error(search_judgments(judgmentDateFrom = "01-01-2001"))
+  expect_error(search_judgments(judgmentDateFrom = "01-01-2001"))
+  expect_error(search_judgments(judgmentDateFrom = "01-01-01"))
+  expect_error(search_judgments(judgmentDateFrom = "2001-20-01"))
 })
 
 test_that("arguments are parsed correctly", {

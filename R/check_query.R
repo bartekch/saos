@@ -86,7 +86,18 @@ check_date <- function(date, format = "%Y-%m-%d"){
     stop("Argument ", argname, " has to be of length one.", call. = FALSE)
   
   if (is.character(date)) {
-    date <- as.POSIXct(date, format = format)
+    if (format == "%Y-%m-%d") {
+      # parsing date partially by hand, none of the existing functions 
+      # do exactly what i expect
+      tmp <- strsplit(date, "-")[[1]]
+      if (any(sapply(tmp, nchar) != c(4, 2, 2))) {
+        date <- NA
+      } else {
+        date <- as.POSIXct(paste(tmp, collapse = "-"), format = "%Y-%m-%d")
+      }
+    } else {
+      date <- as.POSIXct(date, format = format)
+    }
     
     if (is.na(date))
       stop("Wrong ", argname, " format, should be ", format, call. = FALSE)
