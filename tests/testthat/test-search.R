@@ -1,10 +1,36 @@
 context("test searching functionality")
 
 test_that("arguments are checked for correctness", {
-  
+  expect_error(search_judgments(all = 1))
+  expect_error(search_judgments(all = NA))
+  expect_error(search_judgments(all = list(include = 0)))
+  expect_error(search_judgments(all = list(exclude = 0)))
+  expect_error(search_judgments(judgeName = 0))
+  expect_error(search_judgments(judgeName = list()))
+  expect_error(search_judgments(judgeName = c("a", "b")))
+  expect_error(search_judgments(ccCourtId = -1))
+  expect_error(search_judgments(ccCourtId = 0))
+  expect_error(search_judgments(ccCourtId = 1.5))
   expect_error(search_judgments(judgmentDateFrom = "a"))
+  expect_error(search_judgments(judgmentDateFrom = 2))
+  #expect_error(search_judgments(judgmentDateFrom = "01-01-2001"))
 })
 
+test_that("arguments are parsed correctly", {
+  expect_warning(search_judgments(all = list(), limit = 1, verbose = FALSE))
+  expect_message(search_judgments(all = c("kodeks", "cywilny"), limit = 1),
+                 "all=\"kodeks\" \"cywilny\"")
+  expect_message(search_judgments(all = list(include = c("kodeks", "cywilny"), 
+                                             exclude = c("dobra osobiste")), limit = 1),
+                 "all=\"kodeks\" \"cywilny\" -\"dobra osobiste\"")
+  expect_message(search_judgments(judgmentTypes = c("DECISION", "REASONS"), limit = 1),
+                 "judgmentTypes=DECISION,REASONS")
+  expect_message(search_judgments(judgmentDateFrom = "2015-01-01", limit = 1),
+                 "judgmentDateFrom=2015-01-01")
+  expect_message(search_judgments(judgmentDateFrom = as.POSIXct(1e6, origin = "1990-01-01"),
+                                  limit = 1),
+                 "judgmentDateFrom=1990-01-12")
+})
 
 test_that("search with no results returns proper object", {
   expect_identical(search_judgments(judgmentDateTo = "0001-01-01", verbose = FALSE),
