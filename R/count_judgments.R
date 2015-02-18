@@ -18,18 +18,18 @@
 #'  ## Examples of query operators, starting from most general query.
 #'  
 #'  # any of two words
-#'  count_judgments(all = "dobra OR osobiste")
+#'  AorB <- count_judgments(all = "dobra OR osobiste")
 #'  
 #'  # both words
-#'  count_judgments(all = "dobra osobiste")
+#'  AandB <- count_judgments(all = "dobra osobiste")
 #'  
 #'  # exactly given phrase
 #'  count_judgments(all = "\"dobra osobiste\"")
 #'  
 #'  # one word but not the other
-#'  count_judgments(all = "dobra -osobiste")
-#'  count_judgments(all = "-dobra osobiste")
-#'  
+#'  onlyA <- count_judgments(all = "dobra -osobiste")
+#'  onlyB <- count_judgments(all = "-dobra osobiste")
+#'  AorB == AandB + onlyA + onlyB
 #'  
 #'  ## Mixing operators
 #'  # in one string

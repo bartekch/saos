@@ -1,9 +1,9 @@
-#' @param all Character vector or a list, see "Query details" section. Search 
-#'   everywhere for given phrase.
-#' @param legalBase Character vector or a list, see "Query details" section. 
-#'   Search for legal basis of judgments.
-#' @param referencedRegulation Character vector or a list, see "Query details"
-#'   section. Search for regulations referenced in judgments.
+#' @param all Character, character vector or a list, see "Query details" section.
+#'   Search everywhere for given phrase.
+#' @param legalBase Character, character vector or a list, see "Query details" 
+#'   section. Search for legal basis of judgments.
+#' @param referencedRegulation Character, character vector or a list, see 
+#'   "Query details" section. Search for regulations referenced in judgments.
 #' @param judgeName Character. Search for name of any involved judge.
 #' @param caseNumber Character. Search for judgments with given signature.
 #' @param courtType Character, one from COMMON, SUPREME, ADMINISTRATIVE, 
@@ -48,26 +48,50 @@
 #'   advanced query parsing:
 #'   \itemize{
 #'   \item when query contains multiple words then search for judgments that 
-#'     contains all of that words, e. g. \code{"dobra osobiste"}
+#'     contains all of that words, as if connected by implicit AND operator;
+#'     e.g. \code{"dobra osobiste"},
 #'   \item operator "OR" - search for judgments that contains one of the words 
 #'     in a query, e.g. \code{"dobra OR osobiste"},
 #'   \item quote - search for judgments that contains whole phrase, 
 #'     e.g. \code{"\\"dobra osobiste\\""},
-#'   \item minus sign - search for judgments that doesn't contain this word, 
+#'   \item minus sign - search for judgments that don't contain this word, 
 #'     e.g. \code{"dobra -osobiste"}.
 #'     }
-#'  Operators could be freely mixed, e.g \code{"\"dobra osobiste\" OR -kodeks"}.
+#'  Operators could be mixed, e.g \code{"\"dobra osobiste\" OR kodeks"}, with 
+#'  precedence: quote, OR, implicit AND. OR takes into account only two 
+#'  immediate neighbours, so query \code{"dobra osobiste OR kodeks"} will search
+#'  for judgments containing words \code{"dobra"} and at least one from set
+#'  \code{\{"osobiste", "kodeks"\}}. 
+#'  
+#'  Qutation on a single word has no effect.
+#'  
 #'  Phrase \code{"word1 OR -word2"} is equivalent to \code{"word1 -word2"}.
+#'  
 #'  A parameter could be a character vector or a list with any of two fields: 
 #'  \code{include} and \code{exclude}, which have to be character vectors or 
-#'  \code{NULLs}. In former case elements of vector will be pasted with "OR" 
-#'  operator. In the latter elements of \code{include} field will be pasted 
-#'  with "OR" operator and elements of \code{exclude} field will be preceded 
-#'  with "-" operator (warning - every element will be treated as exact phrase,
-#'  so if you want to include or exclude a few words independently, you need to
-#'  use a single element for every word). For example
+#'  \code{NULLs}. In case of a vector, if it has length one (i.e. single string)
+#'  it will be send to API as is. If it has two or more elements they 
+#'  will be pasted with a space (i.e. implicit AND operator). 
+#'  In case of a list elements of \code{include} 
+#'  field will be pasted with a space and elements of \code{exclude} field will 
+#'  be preceded with "-" operator and then pasted with a space.
+#'  WARNING - every element will be treated as exact phrase, so if you want to 
+#'  include or exclude a few words independently, you need to use a single 
+#'  element for every word. For example
+#'   
 #'  \code{list(include = c("dobra osobiste", "kodeks karny"), exclude = "kodeks cywilny")}
-#'   will turn to \code{"dobra osobiste OR kodeks karny -\\"kodeks cywilny\\""}.
+#'  
+#'  will turn to 
+#'  
+#'  \code{"\\"dobra osobiste\\" \\"kodeks karny\\" -\\"kodeks cywilny\\""},
+#'  
+#'  or 
+#'  
+#'  \code{c("kodeks karny", "cywilny")} 
+#'  
+#'  will turn to 
+#'  
+#'  \code{"\\"kodeks karny\\" cywilny"}.
 #' 
 #' Another special parameter is \code{judgmentTypes}. It accepts a character 
 #'  vector with any subset of set \{"DECISION", "RESOLUTION", "SENTENCE",

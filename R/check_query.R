@@ -149,7 +149,11 @@ parse_query.default <- function(x){
 }
 
 parse_query.character <- function(x){
-  paste(x, collapse = " OR ")
+  if (length(x) == 1) {
+    x
+  } else {
+    paste(paste0("\"", x, "\""), collapse = " ")
+  }
 }
 
 parse_query.list <- function(x){
@@ -170,7 +174,7 @@ parse_query.list <- function(x){
     stop("If ", argname, " is a list, fields 'include' and 'exclude' have to be",
          "character vectors or NULLs", call. = FALSE)
   
-  inc <- paste(paste0("\"", inc, "\""), collapse = " OR ")
+  inc <- paste(paste0("\"", inc, "\""), collapse = " ")
   exc <- if (is.null(exc)) { NULL } else { paste(paste0("-\"", exc, "\""), collapse = " ") }
   paste(inc, exc)
 }
