@@ -152,14 +152,18 @@ search_judgments <- function(all  = NULL, legalBase  = NULL,
   # check for extreme number of results    
   if ((limit > 200) & !force){
     warning("Pulling down only 200 out of expected ", limit, " results. If you ",
-            "are sure to pull down everything use force = TRUE", call. = FALSE)
+            "are sure to pull down everything use force = TRUE.", call. = FALSE)
     limit <- 200
   }
   
   # print final version of query
   if (verbose) {
-    message("Version of query sent to API:\n", 
-            paste(paste(names(query), query, sep = "="), collapse = "&"))
+    if (length(query) > 0) {
+      text <- paste(paste(names(query), query, sep = "="), collapse = "&")
+    } else {
+      text <- "<empty>"
+    }
+    message("Version of query sent to API:\n", text)
   }
 
   # prepare link to API
@@ -167,12 +171,11 @@ search_judgments <- function(all  = NULL, legalBase  = NULL,
   url <- "https://saos-test.icm.edu.pl/api/search/judgments"
   
   # get results
-  if (verbose) message("Number of records expected: ", count)
+  if (verbose) message("Number of records matching query: ", count,
+                       "\nNumber of records to download: ", limit)
 
   judgments <- get_limited_items(url, query = query, limit = limit, 
                                  verbose = verbose)
-  
-  if (verbose) message("Number of records downloaded: ", length(judgments))
   
   class(judgments) <- c("saos_search", class(judgments))
   judgments
