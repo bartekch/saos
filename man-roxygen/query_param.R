@@ -48,12 +48,13 @@
 #'   advanced query parsing:
 #'   \itemize{
 #'   \item when query contains multiple words then search for judgments that 
-#'     contains all of that words, as if connected by implicit AND operator;
+#'     contain all of these words, as if connected by implicit AND operator;
 #'     e.g. \code{"dobra osobiste"},
 #'   \item operator "OR" - search for judgments that contains one of the words 
 #'     in a query, e.g. \code{"dobra OR osobiste"},
 #'   \item quote - search for judgments that contains whole phrase, 
-#'     e.g. \code{"\\"dobra osobiste\\""},
+#'     e.g. \code{"\\"dobra osobiste\\""}; note that in R we need to escape 
+#'     quotation marks to obtain expected result,
 #'   \item minus sign - search for judgments that don't contain this word, 
 #'     e.g. \code{"dobra -osobiste"}.
 #'     }
