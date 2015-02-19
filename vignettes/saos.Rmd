@@ -5,14 +5,24 @@ vignette: >
   %\VignetteIndexEntry{Using saos API}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
+  %\SweaveUTF8
 ---
 
 [SAOS](https://saos-test.icm.edu.pl/) is a repository of judgments from Polish courts of all kinds - common courts (district, regional and appellate), administrative courts, the Supreme Court of Poland, the Constitutional Tribunal and National Appeal Chamber. The [saos](http://github.com/bartekch/saos) package is an R interface to [SAOS API](https://saos-test.icm.edu.pl/api). The API does not require an API key.
 
 The package directly reflects the structure and functionalities of the API. There are two main parts of API: `search` and `dump`. `search` allows to search for judgments matching given query. `dump` allows direct access to whole repository. Both parts are described in detail below, precede by an example of basic usage.
 
+# Installation
 
-## Basic usage
+Right now you may install the package only from [GitHub](https://github.com/bartekch/saos) with `devtools::install_github()`:
+  
+```{r, eval = FALSE}
+install.packages("devtools", repos = "http://cran.rstudio.com/")
+library(devtools)
+install_github("bartekch/saos")
+```
+
+# Quick start
 
 The core function is `search_judgments()`, which enables to search repository (through API) for judgments matching given query. Query handles a variety of parameters available in API. Following example will search for the first 10 judgments (starting from the lates) with any reference to words "dobra" and "osobiste", passed by common court:
 
@@ -47,11 +57,15 @@ str(date)
 ```
 
 
-## Searching
+# Searching
 
 SAOS enables searching through [GUI](https://saos-test.icm.edu.pl/search) and [API](https://saos-test.icm.edu.pl/api/search). Both ways are equivalent to each other in a sense that the output from API contains the same information as you would see in GUI. In particular, text of judgment is truncated. To see full record you need to take additinal step, described in the next section. `search_judgments` function is a direct implementation of API search with a few enhancements. 
 
 In general - `saos_search` always returns an object of class `saos_search`, which is basically a list of judgments. Objects of class `saos_search` could be concatenated and subset as ordinary lists.
+```{r}
+judgments <- search_judgments(limit = 1, verbose = FALSE)
+class(judgments)
+```
 
 ### Count search results
 
@@ -76,7 +90,7 @@ j <- search_judgments(verbose = FALSE)
 length(j)
 ```
 
-Now we want do download more judgments, so we set `limit = 500`.
+Now we want to download more judgments, so we set `limit = 500`.
 ```{r}
 j <- search_judgments(limit = 500, verbose = FALSE)
 length(j)
@@ -87,7 +101,7 @@ system.time(j <- search_judgments(limit = 500, force = TRUE, verbose = FALSE))
 length(j)
 object.size(j)
 ```
-We see that function call took around 20 seconds and almost all of this time was spent on communicating with API. The resulting set uses around 3Mb - and there are only search results, not full records.
+We see that function call took around 20 seconds (may vary by a few second) and almost all of this time was spent on communicating with API. The resulting set uses around 3Mb - and there are only search results, not full records.
 
 
 ### Query parameters
@@ -110,16 +124,19 @@ cat(text)
 ```
 
 
-Back to parameters' details. Currently three parameters: `all`, `legalBases` and `referencedRegulations` support parsing similar to that in Google search, i. e. accepts following operators:
+Back to parameters' details. Currently three parameters: `all`, `legalBases` and `referencedRegulations` support parsing similar to that in Google search, i.e. accepts following operators:
+
 * implicit "AND"" - when query contains multiple words separated by space then API will search for judgments that contain all of these words; you shouldn't use "AND" explicitly,
 * "OR" operator - API wil search for judgments that contains one of the words connected by "OR",
 * quotation - API will search for judgments that contains whole phrase inside quotation marks; quotaion has no effect if placed around single word, i.e. `"kodeks"` will give the same search results as `kodeks`,
 * "-" sign - API will search for judgments that don't contain word preceded by "-" sign; the "-" sign has to be placed immediately before a word, without a space.
 
 Operators could be mixed, e.g `\"dobra osobiste\" OR kodeks`, with following precedence:
+
 1. quotation, 
 2. OR, 
 3. implicit AND.
+
 "OR"" takes into account only two immediate neighbours, so query `dobra osobiste OR kodeks` will search for judgments containing words "dobra" and either "osobiste" or "kodeks". However quotation has higher priority than "OR", so query `"dobra osobiste" OR kodeks` will search for judgments with either whole phrase "dobra osobiste" or word "kodeks". Phrase "word1 OR -word2" is equivalent to "word1 -word2", not exactly clear why it is so.
 
 All above refers to parameters given as single string, as in following examples
@@ -167,8 +184,67 @@ print_query(judgmentTypes = c("RESOLUTION", "REASONS"))
 
 
 
-## Getting all details about judgments
+# Getting all details about judgments
 
-## Dump
+As said before, object of class `saos_search` contain only this information, which is visible in GUI search view. It lacks some details, in particular full text of a judgment. Complete record of a judgment is accessible at API judgments view, which in turn is accessible with `get_judgments()` function in `saos` package. Function `get_judgment()` always returns an object of class `saos_judgments`, that is similar to `saos_search` but contains more data. You could use it in two ways:
 
-## Extracting
+* providing search results
+```{r}
+j <- search_judgments(limit = 10, verbose = FALSE)
+judgments <- get_judgments(j, verbose = FALSE)
+class(judgments)
+```
+* providing ID of judgments you are interested in
+```{r}
+judgments <- get_judgments(1:10, verbose = FALSE)
+class(judgments)
+```
+
+Setting `verbose` to `TRUE` allows displaying progress bar. 
+
+Note that every judgments is stored in separate record, therefore function `get_judgments()` send as many requests to API as there are judgments, what could be really time-consuming.
+
+
+# Dump
+
+Another way to access complete records is to take advantage of `dump` functionality in API. It enables access to whole databases of judgments, common courts, Supreme Court chambers and enrichment tags, implemented in functions, respectively, `get_dump_judgments()`, `get_dump_courts()`, `get_dump_scChambers()` and `get_dump_enrichments()`.
+
+### Judgments
+
+`get_dump_judgments()` allows to download complete records of judgments. However, its functionality is rather limited. You could only choose to download judgments from the given time range and/or last modified since specified time. Function always returns an object of class `saos_judgments_dump`, which is almost identical to `saos_judgments`. `ge_dump_judgments()` is much faster than `get_judgments()` because in one request it gets not one but one hundred judgments. 
+
+Example:
+```{r}
+lastmonth <- get_dump_judgments(judgmentStartDate = Sys.Date() - 30,
+                                judgmentEndDate = Sys.Date(),
+                                verbose = FALSE)
+class(lastmonth)
+length(lastmonth)
+```
+
+
+### Courts and Supreme Court chambers
+
+`get_dump_courts()` and `get_dump_scChambers()` download database of comon courts and Supreme Court chambers, respectively. They return list of courts or chambers or, if you could set `simplify` argument to `TRUE`, data frames with rows corresponding to courts or chambers. The saos package provides those two data frame as datasets `courts` and `scchambers`. 
+
+### Enrichment tags
+
+This is still an experimental part of the project. Enrichment tags are additional information about judgments extracted with text mining techniques, which weren't originally included in data. Therefore there are less reliable, but still could provide some interesting insight. `get_dump_enrichments()` returns a list of tags, with every element corresponding to one tag for one judgment. If you set `simplify=TRUE` the list will be coerced to data frame. Currently there are no more funcionalities available.
+
+
+# Extracting
+
+Let's says we have a list of judgments in an object of class `saos_search`, `saos_judgments`, `saos_judgments_dump`. To extract specific piece of information we may use `extract()` function. It is always used in the same way - first argument is the list of judgments ans the second is the name of the field we are interested in. The names of the field are exactly the same as in API, but case insensitive, see help pages for `extract()` for complete list. `extract()` always returns a data frame, whose first column is names `id` and contains judgments ID's. The rest of the columns depends on chosen field. For example if you want to extract ID you will get data frame with only one column. Sometimes there will be more rows for one judgment. For example if you want to extract judges details, you will get data frame with so many rows for every judgment as there are judges. See examples.
+
+```{r}
+judges <- extract(lastmonth, "judges")
+str(judges)
+type <- extract(lastmonth, "judgmentType")
+str(type)
+date <- extract(lastmonth, "judgmentDate")
+str(date)
+```
+
+Note that because of ongoing development there is possibility that there are fields in API that aren't yet implemented in the package, and vice verse. Caution is recommended.
+
+
