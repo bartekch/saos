@@ -7,12 +7,168 @@ vignette: >
   %\usepackage[utf8]{inputenc}
 ---
 
-SAOS is an online repository for judgments made by Polish courts and the Supreme Court of Poland. It enables to browse through judgments and search for judgments by their date, signature, type and trial court. In addition it contains database of all courts and Supreme Court chambers together with their divisions.
+[SAOS](https://saos-test.icm.edu.pl/) is a repository of judgments from Polish courts of all kinds - common courts (district, regional and appellate), administrative courts, the Supreme Court of Poland, the Constitutional Tribunal and National Appeal Chamber. The [saos](http://github.com/bartekch/saos) package is an R interface to [SAOS API](https://saos-test.icm.edu.pl/api). The API does not require an API key.
 
-## Browsing courts
-
-To obtain the latest version of courts or Supreme Court chambers database use `get_courts()` or `get_scChambers()` respectively. Both functions return data frames.
-
-## To be continued
+The package directly reflects the structure and functionalities of the API. There are two main parts of API: `search` and `dump`. `search` allows to search for judgments matching given query. `dump` allows direct access to whole repository. Both parts are described in detail below, precede by an example of basic usage.
 
 
+## Basic usage
+
+The core function is `search_judgments()`, which enables to search repository (through API) for judgments matching given query. Query handles a variety of parameters available in API. Following example will search for the first 10 judgments (starting from the lates) with any reference to words "dobra" and "osobiste", passed by common court:
+
+```{r}
+library(saos)
+judgments <- search_judgments(all = "dobra osobiste", 
+                              courtType = "COMMON",
+                              sortingField = "JUDGMENT_DATE",
+                              sortingDirection = "DESC",
+                              limit = 10, 
+                              verbose = FALSE)
+class(judgments)
+length(judgments)
+str(judgments[[1]])
+```
+
+Search results do not include all available information about judgments. If you want to get all the details you need to use `get_judgments()` function:
+
+```{r}
+judgments_details <- get_judgments(judgments, verbose = FALSE)
+```
+
+Afterwards you could extract specific information with `extract()`:
+
+```{r}
+judges <- extract(judgments_details, "judges")
+str(judges)
+type <- extract(judgments_details, "judgmentType")
+str(type)
+date <- extract(judgments, "judgmentDate")
+str(date)
+```
+
+
+## Searching
+
+SAOS enables searching through [GUI](https://saos-test.icm.edu.pl/search) and [API](https://saos-test.icm.edu.pl/api/search). Both ways are equivalent to each other in a sense that the output from API contains the same information as you would see in GUI. In particular, text of judgment is truncated. To see full record you need to take additinal step, described in the next section. `search_judgments` function is a direct implementation of API search with a few enhancements. 
+
+In general - `saos_search` always returns an object of class `saos_search`, which is basically a list of judgments. Objects of class `saos_search` could be concatenated and subset as ordinary lists.
+
+### Count search results
+
+Sometimes it is useful to know the number of matched judgments without downloading everything. That is where function `count_judgments` comes in handy. It accepts exactly the same arguments as `search_judgments`, expect for meaningless in this case `limit`, `force` and `verbose`. For example to check how many judgments are in the repository right now:
+```{r}
+count_judgments()
+```
+
+### Details during run-time
+
+If `verbose` argument will be `TRUE` (default value) a few messages will be printed: final version of query sent to API, number of matching judgments, number of downloaded judgments, a progress bar and sometimes more. It is useful only in interactive mode really. If `verbose = FALSE` all messages are suppressed, but still a warning would be visible if generated.
+
+### Limiting results set
+
+An API could return only 100 judgments on one page, but you don't have to worry about this because paging mechanism is built in the package. However, number of judgments in search result could be huge, what will result in numerous requests to API, what, in turn, is time-consuming. Additionaly judgments are stored mainly as text, sometimes long, so the output could be of significant size. Therefore there are some precautionary measures implemented in the package.  
+
+By default the search results are limited to 200. You could override it by setting `limit` argument to possitive integer or `NULL` if you want everything. But there is also second safeguard - the `force` argument indicates whether or not a hardcoded limit (200) should be ignored. By default it is set to `TRUE`, so if you are confident that you want to download everything, you have to use combination `limit = NULL, force = TRUE`. If you forget about `force` argument, maximally 200 judgments will be downloaded and warning will be generated. Consider the following  examples.
+
+Empty query, so all judgments are matched. No `limit` is set so 200 judgments will be downloaded and warning will be generated.
+```{r}
+j <- search_judgments(verbose = FALSE)
+length(j)
+```
+
+Now we want do download more judgments, so we set `limit = 500`.
+```{r}
+j <- search_judgments(limit = 500, verbose = FALSE)
+length(j)
+```
+We've got warning again - we forgot about `force` argument. We are sure we want everything, so we set `force = TRUE`. In addition we'll see how long it takes to download 500 judgments.
+```{r}
+system.time(j <- search_judgments(limit = 500, force = TRUE, verbose = FALSE))
+length(j)
+object.size(j)
+```
+We see that function call took around 20 seconds and almost all of this time was spent on communicating with API. The resulting set uses around 3Mb - and there are only search results, not full records.
+
+
+### Query parameters
+
+All parameters are named identically as in API, like `courtType`, `judgmentType` or `judgmentDateFrom` (whole list together with descriptions could be found in man pages for `saos_search`). Most of parameters are directly passed to API after simple format check. There are a few expections though.
+
+But firstly a small utility function. You could check if the query sent to API is what you expected with `print_query` function. It does nothing but returning string with final version of the query, actually a part of the URL if printed with `cat`. This function doesn't communicate with API so it's fast. See examples (note the difference between `cat` and `print`):
+```{r}
+print_query()
+print_query(judgmentDateFrom="2014-01-01")
+print_query(judgeName="Maria Tyszel", judgmentDateTo="2014-06-30")
+print_query(judgmentTypes = c("SENTENCE", "DECISION"))
+print_query(all = "\"dobra osobiste\" -\"dobra publiczne\"")
+print_query(all = list(include = "dobra osobiste",
+                       exclude = "dobra publiczne"))
+text <- print_query(all = c("dobra osobiste", "kodeks cywilny"))
+print(text)
+# as in URL
+cat(text)
+```
+
+
+Back to parameters' details. Currently three parameters: `all`, `legalBases` and `referencedRegulations` support parsing similar to that in Google search, i. e. accepts following operators:
+* implicit "AND"" - when query contains multiple words separated by space then API will search for judgments that contain all of these words; you shouldn't use "AND" explicitly,
+* "OR" operator - API wil search for judgments that contains one of the words connected by "OR",
+* quotation - API will search for judgments that contains whole phrase inside quotation marks; quotaion has no effect if placed around single word, i.e. `"kodeks"` will give the same search results as `kodeks`,
+* "-" sign - API will search for judgments that don't contain word preceded by "-" sign; the "-" sign has to be placed immediately before a word, without a space.
+
+Operators could be mixed, e.g `\"dobra osobiste\" OR kodeks`, with following precedence:
+1. quotation, 
+2. OR, 
+3. implicit AND.
+"OR"" takes into account only two immediate neighbours, so query `dobra osobiste OR kodeks` will search for judgments containing words "dobra" and either "osobiste" or "kodeks". However quotation has higher priority than "OR", so query `"dobra osobiste" OR kodeks` will search for judgments with either whole phrase "dobra osobiste" or word "kodeks". Phrase "word1 OR -word2" is equivalent to "word1 -word2", not exactly clear why it is so.
+
+All above refers to parameters given as single string, as in following examples
+```{r}
+print_query(all = "dobra")
+print_query(all = "dobra osobiste")
+print_query(all = "dobra OR osobiste")
+print_query(all = "\"dobra osobiste \"")
+print_query(all = "-dobra -osobiste")
+```
+
+You could also pass parameters (those respecting query language) as a character vector or a list with any of two fields - `include` and `exclude`, which have to be character vectors or `NULL`. In case of a vector, if it is of length 2 or more, its elements will be put inside quation marks (so one element is one phrase) and pasted together with a space (i.e. implicit AND operator).
+```{r}
+print_query(all = c("dobra", "osobiste"))
+print_query(all = c("dobra osobiste", "kodeks cywilny", "kara"))
+```
+In case of a list elements of `include` field will be put inside quotation marks and pasted with a space, and elements of `exclude` field will be additionaly preceded with `-` operator.
+```{r}
+print_query(list(include = c("dobra osobiste", "kodeks karny"), 
+                 exclude = "kodeks cywilny"))
+```
+These two functionalities could be useful when programmatically sending many similar requests to API from some set of words. Consider a following example. We've got a set of words and for each word we want to count how many judgments contain this word but don't contain any from the rest of the set. If we want to do it manually it will be somewhat complicated and hard to read.
+```{r}
+words <- c("spadek", "syn", "córka", "dług")
+for (i in seq_along(words)){
+  query <- paste(c(words[i], paste0("-", words[-i])), collapse = " ")
+  print(count_judgments(all = query))
+}
+```
+Using advanced query parsing it is more clear what we are looking for.
+```{r}
+words <- c("spadek", "syn", "córka", "dług")
+for (i in seq_along(words)){
+  print(count_judgments(all = list(include = words[i],
+                                   exclude = words[-i])))
+}
+```
+
+
+Another special parameter is `judgmentTypes`. It accepts a character vector with any subset of set {"DECISION", "RESOLUTION", "SENTENCE", "REGULATION", "REASONS"}. API will return judgments with type matching any from the given vector.
+```{r}
+print_query(judgmentTypes = "DECISION")
+print_query(judgmentTypes = c("RESOLUTION", "REASONS"))
+```
+
+
+
+## Getting all details about judgments
+
+## Dump
+
+## Extracting
