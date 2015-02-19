@@ -157,14 +157,7 @@ search_judgments <- function(all  = NULL, legalBase  = NULL,
   }
   
   # print final version of query
-  if (verbose) {
-    if (length(query) > 0) {
-      text <- paste(paste(names(query), query, sep = "="), collapse = "&")
-    } else {
-      text <- "<empty>"
-    }
-    message("Version of query sent to API:\n", text)
-  }
+  if (verbose) message("Version of query sent to API:\n", print_query_(query))
 
   # prepare link to API
   query <- c(query, pageSize = 100)
