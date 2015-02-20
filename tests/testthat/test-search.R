@@ -34,22 +34,32 @@ test_that("arguments are parsed correctly", {
                  "judgmentDateFrom=1990-01-12")
 })
 
-test_that("search with no results returns proper object", {
+  
+s <- search_judgments(sortingField = "JUDGMENT_DATE", sortingDirection = "DESC",
+                      limit = 20, verbose = FALSE)
+s0 <- empty_search_result()
+
+test_that("search returns proper object", {
+  expect_is(s, c("saos_search", "list"))
+  
   expect_identical(search_judgments(judgmentDateTo = "0001-01-01", verbose = FALSE),
-                   empty_search_result())
-  expect_identical(search_judgments(limit = 0, verbose = FALSE), 
-                   empty_search_result())
+                   s0)
+  expect_identical(search_judgments(limit = 0, verbose = FALSE), s0)
 })
 
+test_that("no new fields appear", {
+  expect_identical(names(table(sapply(s, names))),
+                   c("courtCases", "division", "href", "judges", "judgmentDate",
+                     "judgmentType", "keywords", "textContent"))
+})
 
 test_that("c and [ methods works properly", {
-  s <- search_judgments(limit = 10, verbose = FALSE)
-  s0 <- empty_search_result()
+  l <- length(s)
   expect_is(c(s, s), c("saos_search", "list"))
   expect_is(c(s, s0), c("saos_search", "list"))
   expect_is(c(s0, s0), c("saos_search", "list"))
   expect_is(s[1:5], c("saos_search", "list"))
-  expect_equal(length(c(s, s)), 20)
-  expect_equal(length(c(s, s0)), 10)
+  expect_equal(length(c(s, s)), 2*l)
+  expect_equal(length(c(s, s0)), l)
   expect_equal(length(c(s0, s0)), 0)
 })
