@@ -23,51 +23,57 @@ section. Search for legal basis of judgments.}
 \item{referencedRegulation}{Character, character vector or a list, see
 "Query details" section. Search for regulations referenced in judgments.}
 
-\item{judgeName}{Character. Search for name of any involved judge.}
+\item{judgeName}{Character. Search for the name of any involved judge.}
 
-\item{caseNumber}{Character. Search for judgments with given signature.}
+\item{caseNumber}{Character. Search for judgments with a given signature.}
 
 \item{courtType}{Character, one from COMMON, SUPREME, ADMINISTRATIVE,
-CONSTITUTIONAL_TRIBUNAL, NATIONAL_APPEAL_CHAMBER. Search for type of court.}
+CONSTITUTIONAL_TRIBUNAL, NATIONAL_APPEAL_CHAMBER. Search for a type of
+a court.}
 
 \item{ccCourtType}{Character, one from APPEAL, REGIONAL, DISTRICT. Search for
-type of common court.}
+a type of a common court.}
 
-\item{ccCourtId}{Positive integer. Search for the given common court ID.}
+\item{ccCourtId}{Positive integer. Search for the given common court's ID.}
 
-\item{ccCourtCode}{Character. Search for the given common court code.}
+\item{ccCourtCode}{Character. Search for the given common court's code.}
 
-\item{ccCourtName}{Character. Search for the given common court name.}
+\item{ccCourtName}{Character. Search for the given common court's name.}
 
-\item{ccDivisionId}{Positive integer. Search for given common court division ID.}
+\item{ccDivisionId}{Positive integer. Search for the given common court
+division's ID.}
 
-\item{ccDivisionCode}{Character. Search for given common court division code.}
+\item{ccDivisionCode}{Character. Search for the given common court division's
+code.}
 
-\item{ccDivisionName}{Character. Search for given common court division name.}
+\item{ccDivisionName}{Character. Search for the given common court division's
+name.}
 
 \item{scPersonnelType}{Character, one from ONE_PERSON, THREE_PERSON,
 FIVE_PERSON, SEVEN_PERSON, ALL_COURT, ALL_CHAMBER, JOINED_CHAMBERS. Search
-for supreme court judgment's personnel type.}
+for the type of judgment's personnel in the Supreme Court.}
 
-\item{scChamberId}{Positive integer. Search for supreme court chamber ID.}
+\item{scChamberId}{Positive integer. Search for the Supreme Court chamber's ID.}
 
-\item{scChamberName}{Character. Search for supreme court chamber name.}
+\item{scChamberName}{Character. Search for the Supreme Court chamber's name.}
 
-\item{scDivisionId}{Positive integer. Search for supreme court chamber division ID.}
+\item{scDivisionId}{Positive integer. Search for the Supreme Court chamber
+division's ID.}
 
-\item{scDivisionName}{Character. Search for supreme court chamber division name.}
+\item{scDivisionName}{Character. Search for the Supreme Court chamber
+division's name.}
 
 \item{judgmentTypes}{Character vector, subset of DECISION, RESOLUTION,
-SENTENCE, REGULATION, REASONS. Search for judgments type.}
+SENTENCE, REGULATION, REASONS. Search for judgments with any of given types.}
 
 \item{keywords}{Character. Search for keywords of judgments.}
 
 \item{judgmentDateFrom}{Any date/time object that could be properly converted
-with \code{as.POSIXct}, or a string in a format "\%Y-\%m-\%d".Represents
+with \code{as.POSIXct}, or a string in a format "\%Y-\%m-\%d". Represents
 the earliest allowed judgment's date on the list.}
 
 \item{judgmentDateTo}{Any date/time object that could be properly converted
-with \code{as.POSIXct}, or a string in a format "\%Y-\%m-\%d".Represents
+with \code{as.POSIXct}, or a string in a format "\%Y-\%m-\%d". Represents
 the latest allowed judgment's date on the list.}
 
 \item{sortingField}{Character. Represents the field by which you want to sort a list

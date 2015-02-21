@@ -19,7 +19,7 @@ install_github("bartekch/saos")
 
 ### Basic usage
 
-The core function is `search_judgments()`, which enables to search repository (through API) for judgments matching given query. Query handles a variety of parameters available in API. Following example will search for the first 100 judgments (starting from the lates) with any reference to words "dobra" and "osobiste", passed by common court:
+The core function is `search_judgments()`, which enables to search repository (through API) for judgments matching given query. Query handles a variety of parameters available in API. Following example will search for the first 100 judgments (starting from the latest) with any reference to words "dobra" and "osobiste", passed by common court:
 
 ```r
 library(saos)
@@ -46,7 +46,7 @@ judges <- extract(judgments_details, "judges")
 str(judges)
 type <- extract(judgments_details, "judgmentType")
 str(type)
-date <- extract(judgments, "judgmentDate")
+date <- extract(judgments_details, "judgmentDate")
 str(date)
 ```
 

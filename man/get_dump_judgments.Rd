@@ -85,13 +85,12 @@ full <- get_dump_judgments()
 lastchanges <- get_dump_judgments(sinceModificationDate = Sys.Date() - 7)
 }
 \donttest{
-# Download judgments from last month as a:
-# - list
-lastmonth_l <- get_dump_judgments(judgmentStartDate = Sys.Date() - 30,
-                                  judgmentEndDate = Sys.Date())
+# Download judgments from last month
+lastmonth <- get_dump_judgments(judgmentStartDate = Sys.Date() - 30,
+                                judgmentEndDate = Sys.Date())
 
-class(lastmonth_l)
-length(lastmonth_l)
+class(lastmonth)
+length(lastmonth)
  }
 }
 

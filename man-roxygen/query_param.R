@@ -4,33 +4,39 @@
 #'   section. Search for legal basis of judgments.
 #' @param referencedRegulation Character, character vector or a list, see 
 #'   "Query details" section. Search for regulations referenced in judgments.
-#' @param judgeName Character. Search for name of any involved judge.
-#' @param caseNumber Character. Search for judgments with given signature.
+#' @param judgeName Character. Search for the name of any involved judge.
+#' @param caseNumber Character. Search for judgments with a given signature.
 #' @param courtType Character, one from COMMON, SUPREME, ADMINISTRATIVE, 
-#'   CONSTITUTIONAL_TRIBUNAL, NATIONAL_APPEAL_CHAMBER. Search for type of court.
+#'   CONSTITUTIONAL_TRIBUNAL, NATIONAL_APPEAL_CHAMBER. Search for a type of 
+#'   a court.
 #' @param ccCourtType Character, one from APPEAL, REGIONAL, DISTRICT. Search for
-#'   type of common court.
-#' @param ccCourtId Positive integer. Search for the given common court ID.
-#' @param ccCourtCode Character. Search for the given common court code.
-#' @param ccCourtName Character. Search for the given common court name.
-#' @param ccDivisionId Positive integer. Search for given common court division ID.
-#' @param ccDivisionCode Character. Search for given common court division code.
-#' @param ccDivisionName Character. Search for given common court division name.
+#'   a type of a common court.
+#' @param ccCourtId Positive integer. Search for the given common court's ID.
+#' @param ccCourtCode Character. Search for the given common court's code.
+#' @param ccCourtName Character. Search for the given common court's name.
+#' @param ccDivisionId Positive integer. Search for the given common court 
+#'   division's ID.
+#' @param ccDivisionCode Character. Search for the given common court division's
+#'   code.
+#' @param ccDivisionName Character. Search for the given common court division's
+#'   name.
 #' @param scPersonnelType Character, one from ONE_PERSON, THREE_PERSON, 
 #'   FIVE_PERSON, SEVEN_PERSON, ALL_COURT, ALL_CHAMBER, JOINED_CHAMBERS. Search
-#'   for supreme court judgment's personnel type.
-#' @param scChamberId Positive integer. Search for supreme court chamber ID.
-#' @param scChamberName Character. Search for supreme court chamber name.
-#' @param scDivisionId Positive integer. Search for supreme court chamber division ID.
-#' @param scDivisionName Character. Search for supreme court chamber division name.
+#'   for the type of judgment's personnel in the Supreme Court.
+#' @param scChamberId Positive integer. Search for the Supreme Court chamber's ID.
+#' @param scChamberName Character. Search for the Supreme Court chamber's name.
+#' @param scDivisionId Positive integer. Search for the Supreme Court chamber
+#'   division's ID.
+#' @param scDivisionName Character. Search for the Supreme Court chamber 
+#'   division's name.
 #' @param judgmentTypes Character vector, subset of DECISION, RESOLUTION, 
-#'   SENTENCE, REGULATION, REASONS. Search for judgments type.
+#'   SENTENCE, REGULATION, REASONS. Search for judgments with any of given types.
 #' @param keywords Character. Search for keywords of judgments.
 #' @param judgmentDateFrom Any date/time object that could be properly converted
-#'   with \code{as.POSIXct}, or a string in a format "\%Y-\%m-\%d".Represents 
+#'   with \code{as.POSIXct}, or a string in a format "\%Y-\%m-\%d". Represents 
 #'   the earliest allowed judgment's date on the list.
 #' @param judgmentDateTo Any date/time object that could be properly converted
-#'   with \code{as.POSIXct}, or a string in a format "\%Y-\%m-\%d".Represents 
+#'   with \code{as.POSIXct}, or a string in a format "\%Y-\%m-\%d". Represents 
 #'   the latest allowed judgment's date on the list.
 #' @param sortingField Character. Represents the field by which you want to sort a list 
 #'   of items, one from: DATABASE_ID, JUDGMENT_DATE, CASE_NUMBER, CC_COURT_TYPE,

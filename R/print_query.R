@@ -61,7 +61,8 @@ print_query <- function(all  = NULL, legalBase  = NULL,
                 sortingDirection = sortingDirection)
   
   query <- check_query(query)
-  print_query_(query)
+  cat(print_query_(query), "\n")
+  return(invisible(NULL))
 }
 
 

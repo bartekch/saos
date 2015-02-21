@@ -2,13 +2,14 @@
 #' 
 #' Search for judgments matching the given query. By default set of results is
 #'   limited to 200. If you want to download more results, use 
-#'   \code{force = TRUE}. However be aware that downloading huge number of 
-#'   results could be time- and memory-consuming.
+#'   \code{limit = NULL, force = TRUE}. However be aware that downloading 
+#'   huge number of results could be time- and memory-consuming. You could
+#'   always check number of results with \code{\link[saos]{count_judgments}}.
 #' 
 #'
 #' @template query_param 
-#' @param limit Limit the number of search results.
-#' @param force If TRUE, force search request even if it seems extreme.
+#' @param limit Non-negative integer or NULL. Limit the number of search results.
+#' @param force Logical. If \code{TRUE} all search results will be downloaded.
 #' @param verbose Logical. If \code{TRUE} details of searching are printed to 
 #'   the screen.
 #' 
@@ -128,6 +129,9 @@ search_judgments <- function(all  = NULL, legalBase  = NULL,
                 sortingDirection = sortingDirection)
 
   query <- check_query(query)
+
+  # print final version of query
+  if (verbose) message("Version of query sent to API:\n", print_query_(query))
   
   # count expected number of results 
   count <- count_judgments_(query)
@@ -156,9 +160,6 @@ search_judgments <- function(all  = NULL, legalBase  = NULL,
     limit <- 200
   }
   
-  # print final version of query
-  if (verbose) message("Version of query sent to API:\n", print_query_(query))
-
   # prepare link to API
   query <- c(query, pageSize = 100)
   url <- "https://saos-test.icm.edu.pl/api/search/judgments"
