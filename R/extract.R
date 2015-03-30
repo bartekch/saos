@@ -19,7 +19,8 @@
 #'  \item judgmentDate.
 #'  }
 #'  Additionally for classes \code{saos_judgments} and \code{saos_judgments_dump}
-#'    there are more elements:
+#'    there are more elements. NOTE - some fields are specific to single court type,
+#'    thus are not always present, it is indicated in parentheses.
 #'  \itemize{
 #'  \item courtType,
 #'  \item source, 
@@ -29,11 +30,15 @@
 #'  \item legalBases,
 #'  \item referencedRegulations,
 #'  \item referencedCourtCases,
-#'  \item personnelType,
+#'  \item judgmentResult,
+#'  \item receiptDate,
+#'  \item meansOfAppeal,
+#'  \item lowerCourtJudgments,
 #'  \item judgmentForm (\code{saos_judgments}) or form (\code{saos_judgments_dump}),
-#'  \item chambers.
+#'    (only SUPREME COURT),
+#'  \item personnelType (only SUPREME COURT),
+#'  \item chambers (only SUPREME COURT).
 #'  }
-#'  
 #'  For class \code{saos_judgments} and \code{saos_search} there is also 
 #'    element "href".
 #'  
@@ -132,7 +137,9 @@ extract.saos_judgments <- function(x, element) {
                                   "summary", "textContent", "legalBases",
                                   "referencedRegulations", "keywords",
                                   "referencedCourtCases", "division",
-                                  "personnelType", "judgmentForm", "chambers"))
+                                  "personnelType", "judgmentForm", "chambers",
+                                  "judgmentResult", "receiptDate", 
+                                  "meansOfAppeal", "lowerCourtJudgments"))
   ids <- sapply(x, `[[`, "id")
   if (length(ids) == 0) ids <- integer()
   if (element == "id") return(data.frame(id = ids))
@@ -158,7 +165,11 @@ extract.saos_judgments <- function(x, element) {
                  division = extract_division(x),
                  personnelType = extract_personnel(x),
                  judgmentForm = extract_form(x, "judgmentForm"),
-                 chambers = extract_chambers(x))
+                 chambers = extract_chambers(x),
+                 judgmentResult = extract_result(x),
+                 receiptDate = extract_receiptdate(x),
+                 meansOfAppeal = extract_means(x),
+                 lowerCourtJudgments = extract_lowercourt(x))
   
   # convert IDs to true values 
   info$id <- ids[info$id]
@@ -180,7 +191,9 @@ extract.saos_judgments_dump <- function(x, element) {
                                   "summary", "textContent", "legalBases",
                                   "referencedRegulations", "keywords",
                                   "personnelType", "form", "chambers",
-                                  "referencedCourtCases", "division"))
+                                  "referencedCourtCases", "division", 
+                                  "judgmentResult", "receiptDate",
+                                  "meansOfAppeal", "lowerCourtJudgments"))
   ids <- sapply(x, `[[`, "id")
   if (length(ids) == 0) ids <- integer()
   if (element == "id") return(data.frame(id = ids))
@@ -205,7 +218,11 @@ extract.saos_judgments_dump <- function(x, element) {
                  division = extract_division(x),
                  personnelType = extract_personnel(x),
                  form = extract_form(x, "form"),
-                 chambers = extract_chambers(x))
+                 chambers = extract_chambers(x),
+                 judgmentResult = extract_result(x),
+                 receiptDate = extract_receiptdate(x),
+                 meansOfAppeal = extract_means(x),
+                 lowerCourtJudgments = extract_lowercourt(x))
   
   # convert IDs to true values 
   info$id <- ids[info$id]
@@ -347,8 +364,21 @@ extract_chambers <- function(x) {
   result
 }
 
+extract_result <- function(x) {
+  extractor_single(x, "judgmentResult")
+}
 
+extract_receiptdate <- function(x) {
+  extractor_single(x, "receiptDate")
+}
 
+extract_means <- function(x) {
+  extractor_single(x, "meansOfAppeal")
+}
+
+extract_lowercourt <- function(x) {
+  extractor_list(x, "lowerCourtJudgments")
+}
 
 # extractors
 extractor_single <- function(judgments, field_name) {

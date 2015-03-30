@@ -14,12 +14,14 @@ test_that("get returns proper object", {
 })
 
 test_that("no new fields appear", {
-  expect_identical(names(table(sapply(g, names))),
+  expect_true( all(sapply(g, names) %in%
                    c("courtCases", "courtReporters", "courtType", "decision",
                      "division", "href", "id", "judges", "judgmentDate", 
-                     "judgmentType", "keywords", "legalBases",
+                     "judgmentResult", "judgmentType", "keywords", "legalBases",
+                     "lowerCourtJudgments", "meansOfAppeal", "receiptDate",
                      "referencedCourtCases", "referencedRegulations", "source",
-                     "summary", "textContent"))
+                     "summary", "textContent", "chambers", "personnelType", 
+                     "judgmentForm")))
 })
 
 test_that("c and [ methods works properly", {

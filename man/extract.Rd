@@ -42,7 +42,8 @@ Available elements for all methods are:
  \item judgmentDate.
  }
  Additionally for classes \code{saos_judgments} and \code{saos_judgments_dump}
-   there are more elements:
+   there are more elements. NOTE - some fields are specific to single court type,
+   thus are not always present, it is indicated in parentheses.
  \itemize{
  \item courtType,
  \item source,
@@ -52,11 +53,15 @@ Available elements for all methods are:
  \item legalBases,
  \item referencedRegulations,
  \item referencedCourtCases,
- \item personnelType,
+ \item judgmentResult,
+ \item receiptDate,
+ \item meansOfAppeal,
+ \item lowerCourtJudgments,
  \item judgmentForm (\code{saos_judgments}) or form (\code{saos_judgments_dump}),
- \item chambers.
+   (only SUPREME COURT),
+ \item personnelType (only SUPREME COURT),
+ \item chambers (only SUPREME COURT).
  }
-
  For class \code{saos_judgments} and \code{saos_search} there is also
    element "href".
 

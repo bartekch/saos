@@ -33,6 +33,10 @@ test_that("extracting from empty lists returns empty data frame", {
                     referencedCourtCases = data.frame(referencedCourtCases = character()),
                     personnelType = data.frame(personnelType = character()),
                     chambers = data.frame(chambers.id = integer()),
+                    judgmentResult = data.frame(judgmentResult = character()),
+                    receiptDate = data.frame(receiptDate = character()),
+                    meansOfAppeal = data.frame(meansOfAppeal = character()),
+                    lowerCourtJudgments = data.frame(lowerCourtJudgments = character()),
                     href = data.frame(href = character()))
   templates <- lapply(templates, function(temp) data.frame(id = integer(), temp))
   
@@ -45,7 +49,7 @@ test_that("extracting from empty lists returns empty data frame", {
   
   # elements for saos_judgments and saos_dump_judgments
   for (method in methods[2:3]) {
-    for (element in names(templates[9:18])) {
+    for (element in names(templates[9:22])) {
       expect_empty_equal(method, element, templates[[element]])
     }
   }
