@@ -69,7 +69,7 @@ code \tab type's name \cr
 
 There is no missing data except for structural \code{NA}s in \code{parentCourt}.}
 \source{
-\url{https://saos-test.icm.edu.pl/api/dump/courts}
+\url{https://saos-test.icm.edu.pl/api/dump/commonCourts}
 }
 \usage{
 courts

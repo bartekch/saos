@@ -41,7 +41,7 @@
 #' @export
 
 get_dump_courts <- function(simplify = FALSE){
-  url <- "https://saos-test.icm.edu.pl/api/dump/courts"
+  url <- "https://saos-test.icm.edu.pl/api/dump/commonCourts"
   courts <- get_all_items(url, query = list(pageSize = 100))
   if (simplify) courts <- simplify_courts(courts)
   courts
