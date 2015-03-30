@@ -65,14 +65,12 @@
 #'     e.g. \code{"dobra -osobiste"}.
 #'     }
 #'  Operators could be mixed, e.g \code{"\"dobra osobiste\" OR kodeks"}, with 
-#'  precedence: quote, OR, implicit AND. OR takes into account only two 
+#'  precedence: quote, minus sign, OR, implicit AND. OR takes into account only two 
 #'  immediate neighbours, so query \code{"dobra osobiste OR kodeks"} will search
 #'  for judgments containing words \code{"dobra"} and at least one from set
 #'  \code{\{"osobiste", "kodeks"\}}. 
 #'  
 #'  Qutation on a single word has no effect.
-#'  
-#'  Phrase \code{"word1 OR -word2"} is equivalent to \code{"word1 -word2"}.
 #'  
 #'  A parameter could be a character vector or a list with any of two fields: 
 #'  \code{include} and \code{exclude}, which have to be character vectors or 
