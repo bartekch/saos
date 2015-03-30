@@ -89,17 +89,20 @@ Empty query, so all judgments are matched. `limit` is set to 100, so the first 1
 j <- search_judgments(limit = 100, verbose = FALSE)
 length(j)
 ```
+
 Now we want to download more judgments, so we set `limit = 500`.
 ```{r}
 j <- search_judgments(limit = 500, verbose = FALSE)
 length(j)
 ```
+
 We've got warning  - we forgot about `force` argument. We are sure we want everything, so we set `force = TRUE`. In addition we'll see how long it takes to download 500 judgments.
 ```{r}
 system.time(j <- search_judgments(limit = 500, force = TRUE, verbose = FALSE))
 length(j)
 object.size(j)
 ```
+
 We see that function call took around 20 seconds (may vary by a few second) and almost all of this time was spent on communication with API. The resulting set uses around 3Mb - and these are only search results, not full records.
 
 
@@ -130,10 +133,11 @@ As for parameters, currently there are three, namely `all`, `legalBases` and `re
 Operators could be mixed, e.g `\"dobra osobiste\" OR kodeks`, with following precedence:
 
 1. quotation, 
-2. `OR`, 
-3. implicit AND.
+2. negation,
+3. `OR`, 
+4. implicit AND.
 
-`OR` takes into account only two immediate neighbours, so query `dobra osobiste OR kodeks` will search for judgments containing words "dobra" and either "osobiste" or "kodeks". However quotation has higher priority than `OR`, so query `"dobra osobiste" OR kodeks` will search for judgments with either the whole phrase "dobra osobiste" or the word "kodeks". Phrase `word1 OR -word2` is equivalent to `word1 -word2`, not exactly clear why it is so.
+`OR` takes into account only two immediate neighbours, so query `dobra osobiste OR kodeks` will search for judgments containing words "dobra" and either "osobiste" or "kodeks". However quotation has higher priority than `OR`, so query `"dobra osobiste" OR kodeks` will search for judgments with either the whole phrase "dobra osobiste" or the word "kodeks".
 
 All above refers to parameters given as a single string, as in following examples.
 ```{r}
@@ -149,11 +153,13 @@ You could also pass parameters (those accepting query language) as a character v
 print_query(all = c("dobra", "osobiste"))
 print_query(all = c("dobra osobiste", "kodeks cywilny", "kara"))
 ```
+
 In case of a list elements of both `include` and `exclude` will be put inside quotation marks and pasted with a space, but elements of `exclude` will be additionaly preceded with `-` operator.
 ```{r}
 print_query(list(include = c("dobra osobiste", "kodeks karny"), 
                  exclude = "kodeks cywilny"))
 ```
+
 These two functionalities could be useful when programmatically sending many similar requests to API, e.g. from some set of words. Consider a following example - we've got a set of words and for each word we want to count how many judgments contain this word but don't contain any word from the rest of the set. If we want to do it manually it will be somewhat complicated and hard to read.
 ```{r}
 words <- c("spadek", "syn", "córka", "dług")
@@ -162,6 +168,7 @@ for (i in seq_along(words)){
   print(count_judgments(all = query))
 }
 ```
+
 Using advanced query parsing it is more clear what we are looking for.
 ```{r}
 words <- c("spadek", "syn", "córka", "dług")
