@@ -89,7 +89,7 @@ count_judgments <- function(all  = NULL, legalBase  = NULL,
 
 count_judgments_ <- function(query){
   url <- "https://saos-test.icm.edu.pl/api/search/judgments"
-  query <- c(query, pageSize = 1)
+  query <- c(query, pageSize = 10)
   response <- get_response(url, query = query)
   response$info$totalResults
 }
