@@ -103,8 +103,8 @@ extract.saos_search <- function(x, element) {
   element <- match.arg(element, c("id", "href", "courtCases", "judgmentType",
                                   "judges", "textContent", "keywords", 
                                   "division", "judgmentDate"))
-  ids <- extract_id(x)
-  
+  ids <- sapply(x, `[[`, "id")
+  if (length(ids) == 0) ids <- integer()
   if (element == "id") return(data.frame(id = ids))
   
   # extract chosen element
