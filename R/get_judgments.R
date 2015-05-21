@@ -4,6 +4,7 @@
 #' 
 #' @param x An object used to select a method.
 #' @param verbose Logical. Whether or not display progress bar.
+#' @param updateProgress Function for updating progress (i.e. in Shiny).
 #' 
 #' @return A list with elements corresponding to judgments, as returned from API.
 #' 
@@ -26,12 +27,12 @@
 #'  
 #' @export
 
-get_judgments <- function(x, verbose = TRUE) UseMethod("get_judgments")
+get_judgments <- function(x, verbose = TRUE, updateProgress = NULL) UseMethod("get_judgments")
 
 
 # default method
 #' @export
-get_judgments.default <- function(x, verbose){
+get_judgments.default <- function(x, verbose, updateProgress){
   stop("get_judgments accept arguments of class 'saos_search' or numeric vectors.")
 }
 
@@ -46,7 +47,7 @@ get_judgments.default <- function(x, verbose){
 #' 
 #' @export
 
-get_judgments.numeric <- function(x, verbose = TRUE){
+get_judgments.numeric <- function(x, verbose = TRUE, updateProgress = NULL){
   x <- check_idlist(x)
   idlist <- sort(unique(x))
   url <- "https://saos-test.icm.edu.pl/api/judgments/"
@@ -67,6 +68,9 @@ get_judgments.numeric <- function(x, verbose = TRUE){
       result[[i]] <- response$data
     }
     if (verbose) setTxtProgressBar(pb, i / l)
+    if (is.function(updateProgress)) {
+      updateProgress(value = i/l)
+    }
   }
   
   if (verbose) close(pb)
@@ -91,7 +95,7 @@ get_judgments.numeric <- function(x, verbose = TRUE){
 #' 
 #' @export
 
-get_judgments.saos_search <- function(x, verbose = TRUE){
+get_judgments.saos_search <- function(x, verbose = TRUE, updateProgress = NULL){
   links <- sapply(x, `[[`, "href")
   l <- length(x)
   result <- vector("list", l)
@@ -102,6 +106,9 @@ get_judgments.saos_search <- function(x, verbose = TRUE){
     response <- get_response(links[i])
     result[[i]] <- response$data
     if (verbose) setTxtProgressBar(pb, i / l)
+    if (is.function(updateProgress)) {
+      updateProgress(value = i/l)
+    }
   }
   
   if (verbose) close(pb)

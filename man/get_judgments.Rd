@@ -6,16 +6,19 @@
 \alias{get_judgments.saos_search}
 \title{Get all data about judgments}
 \usage{
-get_judgments(x, verbose = TRUE)
+get_judgments(x, verbose = TRUE, updateProgress = NULL)
 
-\method{get_judgments}{numeric}(x, verbose = TRUE)
+\method{get_judgments}{numeric}(x, verbose = TRUE, updateProgress = NULL)
 
-\method{get_judgments}{saos_search}(x, verbose = TRUE)
+\method{get_judgments}{saos_search}(x, verbose = TRUE,
+  updateProgress = NULL)
 }
 \arguments{
 \item{x}{An object used to select a method.}
 
 \item{verbose}{Logical. Whether or not display progress bar.}
+
+\item{updateProgress}{Function for updating progress (i.e. in Shiny).}
 }
 \value{
 A list with elements corresponding to judgments, as returned from API.
