@@ -210,7 +210,39 @@ Setting `verbose` to `TRUE` allows displaying progress bar.
 
 Note that every judgments is stored in separate record, therefore function `get_judgments()` sends as many requests to API as there are judgments, what could be really time-consuming.
 
+## Shiny progress bar
 
+It is possible to take advantage of shiny's progress bar funcionalities. Just pass `updateProgress` function as an argument to `get_judgments`. Below there is a minimal shiny app showing how it works.
+```{r, eval=FALSE}
+library("shiny")
+library("saos")
+s <- search_judgments(limit = 50)
+
+ui <- basicPage(
+  actionButton('go', 'go'),
+  textOutput("text")
+)
+
+server <- function(input, output) {
+  output$text <- renderText({
+    input$go
+    if(input$go == 0) return()
+    
+    progress <- shiny::Progress$new(min = 0, max = 1)
+    progress$set(message = "Downloading judgments: ", value = 0)
+    on.exit(progress$close())
+    
+    prog <- function(value = NULL, detail = NULL) {
+      progress$set(value = value, detail = paste0(100 * value, "%"))
+    }
+    
+    invisible(get_judgments(s, verbose = FALSE, updateProgress = prog))
+    return("OK")
+  })
+}
+
+runApp(list(ui = ui, server = server))
+```
 # Dump
 
 Another way to access complete records is to take advantage of `dump` functionality in API. It enables access to whole databases of judgments, common courts, Supreme Court chambers and enrichment tags, implemented in functions, respectively, `get_dump_judgments()`, `get_dump_courts()`, `get_dump_scChambers()` and `get_dump_enrichments()`.
