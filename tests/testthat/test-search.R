@@ -49,7 +49,7 @@ test_that("search returns proper object", {
 
 test_that("no new fields appear", {
   expect_identical(names(table(sapply(s, names))),
-                   c("courtCases", "division", "href", "id", "judges", "judgmentDate",
+                   c("courtCases", "courtType", "division", "href", "id", "judges", "judgmentDate",
                      "judgmentType", "keywords", "textContent"))
 })
 
